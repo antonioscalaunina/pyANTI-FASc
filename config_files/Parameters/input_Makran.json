@@ -1,0 +1,36 @@
+{"zone_name": "makran2", 
+	"Merc_zone": 41,
+    "acronym": "MaK",
+	"mesh_gen": 0,
+    "slab_file": "kur_slab2_dep_02.24.18.xyz",
+    "seismog_depth": 60,
+    "depth_interpolator": "v4",
+    "mesh_convex": 0.5,
+    "element_size": 12.5e3,
+       	
+"Event": {
+"Name": "Makran",
+"Hypo_LonLat" : [142.369, 38.322],
+"Magnitude" : 9.0
+},
+"Configure": {
+"application": "Hazard",
+"shape": "Rectangle",
+"numb_stoch": 10,
+"variable_mu": 1,
+"mesh_sub_boundary": 0,
+"preprocess": 1,
+"file_baryc": 0,
+"file_baryc_name": "ScenarioProb_nsig2_Mw83_2015_0916_illapel_World.mat",
+"Magnitude_lb": 0.15,
+"Magnitude_ub": 0.15,
+"minimum_bnd_distance": 0.25,
+"minimum_interdistance": 0.1,
+"hypo_baryc_distance": 1.0,
+"Fact_area_scaling": 1,
+"Rigidity_file_logic": 1,
+"Rigidity_file": "Rigidity_variation.txt",
+"Stress_drop_var": 0,
+"Fact_rigidity": 0.5
+}
+}

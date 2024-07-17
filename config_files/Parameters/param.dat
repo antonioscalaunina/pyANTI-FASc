@@ -1,0 +1,48 @@
+#input for k223
+# rigidity   [range is 17-67 GPa]
+mu=3.0e10
+# variable rigidity Yes/No
+# If homogeneous rigidity is imposed (rigidity=0) the above value of mu is used
+# If variable rigidity (rigidity=1) the above rigidity is used to renormalize the slip
+rigidity=0
+# number of cracks
+nb cracks=1000 
+# minumum crack radius (expressed in terms of number of cells)
+rmin=1.
+# maximum crack radius (fraction of fault width)
+rmax=0.25 
+# Magnitude target
+magnitude=6.6
+# Seed
+seed=100
+# depth of surface (m)
+z threshold = 10e3
+# slip surface taper mode
+# slip taper=0 taper in surface
+# slip taper=1 no taper in surface for border lesser than z threshold
+# slip taper=2 slip cut at z threshold depth
+slip taper=1
+# Type of nucleation barycenters
+# nuc_mode=0 polygon of the nucleation boundary - Nucleation to be extracted
+# nuc_mode=1 pre-assigned area
+nucleation mode=1
+# Computation distance
+# distance=0 distance to be computed by lateration algorithm
+# distance=1 distance precomputed in a file
+distance=0
+# pdf_variable
+# pdf variable=0 no rigidity variation - only stochastic Gaussian PDF
+# pdf variable=1 rigidity variation - Gaussian PDF to be combined with SPDF
+pdf variable=0
+# seed pre-assigned
+# seed stochastic=0 seed for the stochastic has to be extracted (homogeneous case)
+# seed stochastic=1 seed for the stochastic is already in the seed_file (variable case)
+seed stochastic=0
+#Geogrphic Area ('HeA' Hellenic Arc; 'CaA' Calabrian Arc; 'CyA' Cyprus Arc)
+geo zone=SoA
+# Coordinates type
+# coordinates=0 GEO coordinates
+# coordinates=1 UTM coordinates 
+coordinates=0
+# Mercator Zone
+mercator=18
