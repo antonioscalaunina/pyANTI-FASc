@@ -3,9 +3,10 @@ June 2024
 
 """
 
-
+###############################################################
 #Import libraries to be used
 import os
+import sys
 import glob
 import json
 import shutil
@@ -31,9 +32,31 @@ import cartopy.feature as cfeature
 import matplotlib.tri as tri
 
 
-import utils.mesh as mesh
-import utils.Rupture_areas_utils as rupture
-import utils.plot_utils as plotutils
+def find_main_dir():
+    current_dir = os.getcwd()
+    while True:
+        # Check if the current directory contains the 'bin' folder
+        if os.path.exists(os.path.join(current_dir, 'bin', 'utils')):
+            return current_dir
+        # Move one level up in the directory structure
+        new_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+        if new_dir == current_dir:
+            # We have reached the root directory and did not find 'main'
+            raise RuntimeError("Could not find 'main' directory, please run your script inside ANTIFASc")
+        current_dir = new_dir
+
+main_dir = find_main_dir()
+utils_dir= os.path.join(main_dir, 'bin', 'utils')
+sys.path.append(utils_dir)
+
+import mesh as mesh
+import Rupture_areas_utils as rupture
+import plot_utils as plotutils
+
+
+
+###############################################################
+
 
 
 class Slab:
@@ -46,6 +69,7 @@ class Slab:
         """
         Initialize the Slab object by reading configuration and scaling files, and the mesh.
         """
+        
         
         print('reading '+ config_file.split('/')[-1] + ' file')
         read_inputfile(self, config_file)
@@ -243,8 +267,8 @@ class Slab:
         self._check_attribute('Area_cells')
         
         #create output folders 
-        os.makedirs(f'../{self.namefolder}')
-        os.makedirs(f'../{self.namefolder_slip}')
+        os.makedirs(os.path.join(main_dir,self.namefolder))
+        os.makedirs(os.path.join(main_dir,self.namefolder_slip))
         write_output(self.Rupturing_areas, self.Magnitude, self.index_magnitude, self.SPDF_all, self.Name_scaling, self.Area_cells, self.namefolder)
    
 
@@ -399,18 +423,18 @@ class Slab:
         normalized_path = os.path.normpath(curr_path)
         curr_dir=os.path.basename(normalized_path)
 
-        if curr_dir == 'pyANTI-FASc':   #FIXED by ANTONIO SCALA 2024/07/17
+        #if curr_dir == 'ANTI-FASc':
 
-            if self.variable_mu==0:
-                print('Computing slip distributions for the homogeneous case')
-                run_homo(self)
-            elif self.variable_mu==1:
-                print('Computing slip distributions for the homogeneous and variable regiditiy cases ')
-                run_homo(self)
-                run_var(self)
+        if self.variable_mu==0:
+            print('Computing slip distributions for the homogeneous case')
+            run_homo(self)
+        elif self.variable_mu==1:
+            print('Computing slip distributions for the homogeneous and variable regiditiy cases ')
+            run_homo(self)
+            run_var(self)
 
-        else:
-            print('Please go to the main directory to run this method')
+        #else:
+           #print('Please go to the main directory to run this method')
 
 
     def plot_basemap(self, fig, subplots):
@@ -589,7 +613,7 @@ class Slab:
     def plot_slip_dist(self, magnitude, Name_scaling, N_area, ax,fig,var=False, colorbar=False ):
         """
         Plot the specified slip distribution(s) on the given axis.
-        
+         
         Parameters:
         magnitude (float): Magnitude value.
         Name_scaling (str): Name of the scaling relationship.
@@ -607,7 +631,7 @@ class Slab:
         mw_string = f"{magnitude:6.4f}".replace('.', '_', 1)
         #get path of slip distributions
         folder_in = os.getcwd()
-        folder_out = f"{folder_in}/output/{event_out}/{rigidity}/{mw_string}/{Name_scaling}/"
+        folder_out = f"{main_dir}/output/{event_out}/{rigidity}/{mw_string}/{Name_scaling}/"
 
         mag_indx,scaling_indx=self.get_indices_scalingrel(magnitude=magnitude, Name_scaling=Name_scaling)
         
@@ -617,8 +641,10 @@ class Slab:
             #sc_sl = ax.scatter(lon, lat, c='white',s=1)
             lon, lat, depth = self.get_nodes_coords()
             triang=self.get_elements()
+            lon_0=ax.projection.proj4_params['lon_0']
+            lon-=lon_0
 
-            ax=plotutils.set_extent(lon,lat,ax)
+            #ax=plotutils.set_extent(lon,lat,ax)
     
             #plot Slab mesh
             tpc = ax.tripcolor(lon,lat,triang,-depth/1000,shading='gouraud',alpha=0.1,cmap='viridis_r')
@@ -725,7 +751,7 @@ def read_inputfile(Slab, config_file):
     #Slab = Slab(zone_code, Merc_zone, application, shape, elem_size, Fact_rigidity)
     
     # Write to param_zone.dat file
-    with open('../param_zone.dat', 'w') as fid:
+    with open(os.path.join(main_dir,'param_zone.dat'), 'w') as fid:
         fid.write(f'geo zone={zone_code}\n')
         fid.write(f'mercator={Merc_zone}\n')
     
@@ -767,7 +793,7 @@ def read_inputfile(Slab, config_file):
         namefolder_slip = f'{namefolder}_slip_{zone_code}'
     
     # Write to name_folders_file.dat file
-    with open('../name_folders_file.dat', 'w') as fid:
+    with open(os.path.join(main_dir,'name_folders_file.dat'), 'w') as fid:
         fid.write(f'{namefolder}\n{namefolder_slip}\n{zone_code}\n')
         fid.write(f"{Param['Configure']['numb_stoch']}\n")
         fid.write(f"{Param['Configure']['variable_mu']}\n")
@@ -800,7 +826,7 @@ def read_scalingrel_file(Slab, scaling_file):
     Slab.Name_scaling=Name_scaling
     
     # Write to classes_scaling.dat file
-    with open('../config_files/Parameters/classes_scaling.dat', 'w') as fid:
+    with open(os.path.join(main_dir,'config_files','Parameters','classes_scaling.dat'), 'w') as fid:
         for name in Name_scaling:
             fid.write(f'{name}\n')
     
@@ -838,7 +864,7 @@ def read_scalingrel_file(Slab, scaling_file):
             
             # Load from file
             """This part here has to be checked"""
-            with open('../config_files/PTF_selection/' + Slab.Baryc_file) as fid:#which kind of file is this?
+            with open(os.path.join(main_dir,'config_files','PTF_selection',Slab.Baryc_file)) as fid:#which kind of file is this?
                 ScenarioProb = fid.read()
             Mag_ParPS = [x[1] for x in ScenarioProb['ParScenPS']]
             index_PS = [i for i, x in enumerate(Mag_ParPS)]
@@ -863,7 +889,7 @@ def read_scalingrel_file(Slab, scaling_file):
 ### read mesh, cell barycenters and boundary of seismogenic zone and rigidity yes/no ###
 def read_mesh(Slab):
     
-    name_filemesh = f"../config_files/Mesh/{Slab.zone_code}_mesh_15km.inp"
+    name_filemesh = os.path.join(main_dir,'config_files','Mesh',f'{Slab.zone_code}_mesh_15km.inp')
     with open(name_filemesh) as fid: #mesh file to be checked
         nodes, cells, _,_,_ = mesh.read_mesh_file(fid)
     
@@ -871,7 +897,7 @@ def read_mesh(Slab):
     hemisphere = mesh.get_hemisphere(nodes[:,1]) #get hemisphere for further computations
 
     if Slab.Sub_boundary_logic:
-        name_bnd = f"../config_files/Mesh/{Slab.zone_code}_boundary.txt"
+        name_bnd = os.path.join(main_dir,'config_files','Mesh',f"{Slab.zone_code}_boundary.txt")#f"../config_files/Mesh/{Slab.zone_code}_boundary.txt"
         bnd_mesh = np.genfromtxt(name_bnd, skip_header=1)
         bnd_mesh[bnd_mesh[:, 0] < 0, 0] += 360
     else:
@@ -913,7 +939,7 @@ def read_mesh(Slab):
     Slab.SPDF_all=SPDF_all
     
     
-    name_filemu = f"../config_files/Rigidity/mu_{Slab.zone_code}.dat"
+    name_filemu = os.path.join(main_dir,'config_files','Rigidity',f"mu_{Slab.zone_code}.dat")
     np.savetxt(name_filemu, mu_all, fmt="%.6f")
     
     
@@ -972,28 +998,29 @@ def write_output(rupturing_areas, magnitudes, index_magnitude, spdf_all, name_sc
 
 def generate_foldertree_slip(namefolder_slip, index_magnitude, Magnitude, Name_scaling):
     # Change to the parent directory
-    os.chdir('..')
+    #os.chdir('..')
     
     # Change to the specified folder
-    os.chdir(namefolder_slip)
+    #os.chdir(namefolder_slip)
     
     # Create main directories
-    os.makedirs('homogeneous_mu', exist_ok=True)
-    os.makedirs('variable_mu', exist_ok=True)
+
+    os.makedirs(os.path.join(main_dir,namefolder_slip,'homogeneous_mu'), exist_ok=True)
+    os.makedirs(os.path.join(main_dir,namefolder_slip,'variable_mu'), exist_ok=True)
     
     for i in index_magnitude:
         folder_magnitude = f"{Magnitude[i]:6.4f}".replace('.', '_', 1)
         
         # Create subdirectories for each magnitude
-        os.makedirs(f'homogeneous_mu/{folder_magnitude}', exist_ok=True)
-        os.makedirs(f'variable_mu/{folder_magnitude}', exist_ok=True)
+        os.makedirs(os.path.join(main_dir,namefolder_slip,'homogeneous_mu',folder_magnitude), exist_ok=True)
+        os.makedirs(os.path.join(main_dir,namefolder_slip,'variable_mu',folder_magnitude), exist_ok=True)
         
         for name in Name_scaling:
-            os.makedirs(f'homogeneous_mu/{folder_magnitude}/{name}', exist_ok=True)
-            os.makedirs(f'variable_mu/{folder_magnitude}/{name}', exist_ok=True)
+            os.makedirs(os.path.join(main_dir,namefolder_slip,'homogeneous_mu',folder_magnitude,name), exist_ok=True)
+            os.makedirs(os.path.join(main_dir,namefolder_slip,'variable_mu',folder_magnitude,name), exist_ok=True)
 
     # Change back to the previous directory
-    os.chdir('..')
+    #os.chdir('..')
 
 
 
@@ -1023,11 +1050,13 @@ def run_homo(slab):
     zone_code = slab.zone_code
     numb_stoch = slab.numb_stoch
     variable_mu = slab.variable_mu
+    rigidity = 'homogeneous_mu'
+
 
     # Generate a list of magnitudes
     magnitudes = slab.get_magnitudes()
     classes_scaling=slab.Name_scaling
-    folder_in = os.getcwd()
+    folder_in = main_dir #os.getcwd()
 
     # Main processing loops
     for j, mw in enumerate(magnitudes):
@@ -1036,31 +1065,30 @@ def run_homo(slab):
 
         # Loop over each scaling class
         for i, cl in enumerate(classes_scaling):
-           
-            rigidity = 'homogeneous_mu'
-
+            
+            folder_out =os.path.join(main_dir,event_out,rigidity,mw_string,cl)# f"{folder_in}/{event_out}/{rigidity}/{mw_string}/{cl}"
+            
+            folder = os.path.join(main_dir,event,mw_string,cl) #f"{folder_in}/{event}/{mw_string}/{cl}"
+            
+            matrix_string = os.path.join(main_dir,'config_files','Matrix_distances',f"{zone_code}_matrix_distance.bin")#f"{folder_in}/config_files/Matrix_distances/{zone_code}_matrix_distance.bin\n"
+            
             input_magnitude = f"magnitude={mw}\n"
-            with open('input_magnitude', 'w') as file:
+            with open(os.path.join(folder_out,'input_magnitude'), 'w') as file:
                 file.write(input_magnitude)
 
-            folder = f"{folder_in}/{event}/{mw_string}/{cl}"
-            matrix_string = f"{folder_in}/config_files/Matrix_distances/{zone_code}_matrix_distance.bin\n"
             
-            with open('matrix_string.txt', 'w') as file:
+            with open(os.path.join(folder_out,'matrix_string.txt'), 'w') as file:
                 file.write(matrix_string)
 
-            folder_out = f"{folder_in}/{event_out}/{rigidity}/{mw_string}/{cl}"
-            print(folder_out)
+            #print(folder_out)
 
-            #create_directory(folder_out)
-            print(os.getcwd())
             # Copy necessary files
-            shutil.copy('bin/k223d.x', folder_out)
-            shutil.copy('input_magnitude', folder_out)
-            shutil.copy('param_zone.dat', folder_out)
-            shutil.copy('matrix_string.txt', folder_out)
-            shutil.copy(f'config_files/Mesh/{zone_code}_mesh_15km.inp', folder_out)
-            shutil.copy('config_files/Parameters/param_homo.dat', f"{folder_out}/param.dat")
+            shutil.copy(os.path.join(main_dir,'bin','k223d.x'), folder_out)
+            #shutil.copy(os.path.join(main_dir,'input_magnitude'), folder_out)
+            shutil.copy(os.path.join(main_dir,'param_zone.dat'), folder_out)
+            #shutil.copy(os.path.join(main_dir,'matrix_string.txt'), folder_out)
+            shutil.copy(os.path.join(main_dir,'config_files','Mesh',f'{zone_code}_mesh_15km.inp'), folder_out)
+            shutil.copy(os.path.join(main_dir,'config_files','Parameters','param_homo.dat'), os.path.join(folder_out,'param.dat'))
         
             for quake_area_file in os.listdir(folder):
 
@@ -1069,7 +1097,7 @@ def run_homo(slab):
 
             quake_area_files = [f for f in os.listdir(folder_out) if f.startswith('QuakeArea')]
             num_scenario = len(quake_area_files)
-            with open('index_file.dat', 'a') as file:
+            with open(os.path.join(folder_out,'index_file.dat'), 'a') as file:
                 file.write(f"{num_scenario} {numb_stoch}\n")
 
             for l in range(num_scenario):
@@ -1092,31 +1120,33 @@ def run_homo(slab):
                         numb_gauss = 3
 
                     indexd = f"{eventid}_{string4file}"
-                    with open('index_file.dat', 'a') as file:
+                    with open(os.path.join(folder_out,'index_file.dat'), 'a') as file:
                         file.write(f"{indexd} {numb_gauss}\n")
 
-            shutil.move('index_file.dat', folder_out)
+            #shutil.move('index_file.dat', folder_out)
             os.chdir(folder_out)
+            path_ex=os.path.join(folder_out,'k223d.x')
             run_command('./k223d.x input=param.dat > output_file.txt')
+            #run_command(f'{path_ex} input=param.dat > output_file.txt')
             for file in quake_area_files:
-                os.remove(file)
+                os.remove(os.path.join(folder_out,file))
             for file in os.listdir(folder_out):
                 if file.startswith('mu_Slip_aux'):
-                    os.remove(file)
-            os.chdir(folder_in)
-
+                    os.remove(os.path.join(folder_out,file))
+            os.chdir(main_dir)
+    
     if variable_mu == 0:
-        create_directory('input')
-        create_directory('output')
-        shutil.move(event_out, 'output')
-        shutil.move(event, 'input')
+        create_directory(os.path.join(main_dir,'input'))
+        create_directory(os.path.join(main_dir,'output'))
+        shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
+        shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
         for file in [ 'input_magnitude']:
-            os.remove(file)
+            os.remove(os.path.join(main_dir,file))
 
-        for file in os.listdir(folder_in):
+        for file in os.listdir(main_dir):
             if file.endswith('.txt') or file.endswith('.dat'):
-                os.remove(file)
-
+                os.remove(os.path.join(main_dir,file))
+    
 
 def run_var(slab):
 
@@ -1127,10 +1157,12 @@ def run_var(slab):
     zone_code = slab.zone_code
     numb_stoch = slab.numb_stoch
     variable_mu = slab.variable_mu
+    rigidity = 'variable_mu'
 
     # Generate a list of magnitudes
     magnitudes = slab.get_magnitudes()
     classes_scaling=slab.Name_scaling
+    
     folder_in = os.getcwd()
 
     # Main processing loops
@@ -1140,29 +1172,29 @@ def run_var(slab):
 
         # Loop over each scaling class
         for i, cl in enumerate(classes_scaling):
-            rigidity = 'variable_mu'
 
-            with open('input_magnitude', 'w') as f:
+            folder = os.path.join(main_dir,event,mw_string,cl)#f"{folder_in}/{event}/{mw_string}/{cl}"
+            folder_seed = os.path.join(main_dir,event_out,'homogeneous_mu',mw_string,cl)#f"{folder_in}/{event_out}/homogeneous_mu/{mw_string}/{cl}"
+            folder_out = os.path.join(main_dir,event_out,rigidity,mw_string,cl)# f"{folder_in}/{event_out}/{rigidity}/{mw_string}/{cl}"
+
+            os.makedirs(folder_out, exist_ok=True)
+
+            with open(os.path.join(folder_out,'input_magnitude'), 'w') as f:
                 f.write(f"magnitude={mw}\n")
 
-            folder = f"{folder_in}/{event}/{mw_string}/{cl}"
-            matrix_string = f"{folder_in}/config_files/Matrix_distances/{zone_code}_matrix_distance.bin"
-            with open('matrix_string.txt', 'w') as f:
+            matrix_string = os.path.join(main_dir,'config_files','Matrix_distances',f"{zone_code}_matrix_distance.bin")#f"{main_dir}/config_files/Matrix_distances/{zone_code}_matrix_distance.bin"
+            with open(os.path.join(folder_out,'matrix_string.txt'), 'w') as f:
                 f.write(matrix_string + "\n")
 
-            folder_seed = f"{folder_in}/{event_out}/homogeneous_mu/{mw_string}/{cl}"
-            folder_out = f"{folder_in}/{event_out}/{rigidity}/{mw_string}/{cl}"
-            print(folder_out)
-    
-            os.makedirs(folder_out, exist_ok=True)
-    
-            shutil.copy('bin/k223d.x', folder_out)
-            shutil.copy('input_magnitude', folder_out)
-            shutil.copy('param_zone.dat', folder_out)
-            shutil.copy('matrix_string.txt', folder_out)
-            shutil.copy(f'config_files/Mesh/{zone_code}_mesh_15km.inp', folder_out)
-            shutil.copy('config_files/Parameters/param_var.dat', f"{folder_out}/param.dat")
-            shutil.copy(f"config_files/Rigidity/mu_{zone_code}.dat", folder_out)
+
+             # Copy necessary files
+            shutil.copy(os.path.join(main_dir,'bin','k223d.x'), folder_out)
+            #shutil.copy(os.path.join(main_dir,'input_magnitude'), folder_out)
+            shutil.copy(os.path.join(main_dir,'param_zone.dat'), folder_out)
+            #shutil.copy(os.path.join(main_dir,'matrix_string.txt'), folder_out)
+            shutil.copy(os.path.join(main_dir,'config_files','Mesh',f'{zone_code}_mesh_15km.inp'), folder_out)
+            shutil.copy(os.path.join(main_dir,'config_files','Parameters','param_var.dat'), os.path.join(folder_out,'param.dat'))
+            shutil.copy(os.path.join(main_dir,'config_files','Rigidity',f"mu_{zone_code}.dat"), folder_out)
 
             for quake_area_file in os.listdir(folder):
 
@@ -1173,7 +1205,7 @@ def run_var(slab):
             quake_area_files = [f for f in os.listdir(folder_out) if f.startswith('QuakeArea')]
             num_scenario = len(quake_area_files)
 
-            with open('index_file.dat', 'a') as index_file:
+            with open(os.path.join(folder_out,'index_file.dat'), 'a') as index_file:
                 index_file.write(f"{num_scenario} {numb_stoch}\n")
 
             for l in range(num_scenario):
@@ -1196,28 +1228,30 @@ def run_var(slab):
                             numb_gauss = 3
 
                         indexd = f"{eventid}_{string4file}"
-                        with open('index_file.dat', 'a') as file:
+                        with open(os.path.join(folder_out,'index_file.dat'), 'a') as file:
                             file.write(f"{indexd} {numb_gauss}\n")
 
-            shutil.move('index_file.dat', folder_out)
+            #shutil.move('index_file.dat', folder_out)
             os.chdir(folder_out)
             run_command('./k223d.x input=param.dat > output_file.txt')
             for file in quake_area_files:
-                os.remove(file)
+                os.remove(os.path.join(folder_out,file))
             for file in os.listdir(folder_out):
                 if file.startswith('mu_Slip_aux') or file.startswith('Slip_PDF'):
-                    os.remove(file)
-            os.chdir(folder_in)
+                    os.remove(os.path.join(folder_out,file))
+            os.chdir(main_dir)
+
 
 
     if variable_mu == 1:
-        create_directory('input')
-        create_directory('output')
-        shutil.move(event_out, 'output')
-        shutil.move(event, 'input')
+        create_directory(os.path.join(main_dir,'input'))
+        create_directory(os.path.join(main_dir,'output'))
+        shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
+        shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
         
         for file in [ 'input_magnitude']:
-            os.remove(file)
-        for file in os.listdir(folder_in):
+            os.remove(os.path.join(main_dir,file))
+        for file in os.listdir(main_dir):
             if file.endswith('.txt') or file.endswith('.dat'):
-                os.remove(file)
+                os.remove(os.path.join(main_dir,file))
+
