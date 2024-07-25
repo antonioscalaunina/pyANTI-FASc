@@ -429,7 +429,7 @@ class Slab:
             print('Computing slip distributions for the homogeneous case')
             run_homo(self)
         elif self.variable_mu==1:
-            print('Computing slip distributions for the homogeneous and variable regiditiy cases ')
+            print('Computing slip distributions for the homogeneous and variable rigidity cases ')
             run_homo(self)
             run_var(self)
 
