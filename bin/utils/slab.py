@@ -11,6 +11,7 @@ import glob
 import json
 import shutil
 import subprocess
+import platform
 import numpy as np
 from tqdm import tqdm
 import scipy
@@ -1126,7 +1127,12 @@ def run_homo(slab):
             #shutil.move('index_file.dat', folder_out)
             os.chdir(folder_out)
             path_ex=os.path.join(folder_out,'k223d.x')
-            run_command('./k223d.x input=param.dat > output_file.txt')
+            current_os = platform.system()
+            if current_os== 'Windows':
+                run_command('.\k223d.x input=param.dat > output_file.txt')
+            else:
+                run_command('./k223d.x input=param.dat > output_file.txt')
+            
             #run_command(f'{path_ex} input=param.dat > output_file.txt')
             for file in quake_area_files:
                 os.remove(os.path.join(folder_out,file))
@@ -1140,8 +1146,8 @@ def run_homo(slab):
         create_directory(os.path.join(main_dir,'output'))
         shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
         shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
-        for file in [ 'input_magnitude']:
-            os.remove(os.path.join(main_dir,file))
+        #for file in [ 'input_magnitude']:
+            #os.remove(os.path.join(main_dir,file))
 
         for file in os.listdir(main_dir):
             if file.endswith('.txt') or file.endswith('.dat'):
@@ -1233,7 +1239,12 @@ def run_var(slab):
 
             #shutil.move('index_file.dat', folder_out)
             os.chdir(folder_out)
-            run_command('./k223d.x input=param.dat > output_file.txt')
+            current_os = platform.system()
+            if current_os== 'Windows':
+                run_command('.\k223d.x input=param.dat > output_file.txt')
+            else:
+                run_command('./k223d.x input=param.dat > output_file.txt')
+
             for file in quake_area_files:
                 os.remove(os.path.join(folder_out,file))
             for file in os.listdir(folder_out):
@@ -1249,8 +1260,8 @@ def run_var(slab):
         shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
         shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
         
-        for file in [ 'input_magnitude']:
-            os.remove(os.path.join(main_dir,file))
+        #for file in [ 'input_magnitude']:
+            #os.remove(os.path.join(main_dir,file))
         for file in os.listdir(main_dir):
             if file.endswith('.txt') or file.endswith('.dat'):
                 os.remove(os.path.join(main_dir,file))
