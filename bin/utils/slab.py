@@ -1038,6 +1038,10 @@ def create_directory(path):
 
 def run_command(command):
     subprocess.run(command, shell=True)
+    
+def run_command_Win(command,output_file):
+    with open(output_file,'w') as outfile:
+        subprocess.run([command, "input=param.dat"],stdout=outfile,text=True)
 
 def copy_file(src, dst):
     if os.path.isfile(src):
@@ -1129,15 +1133,19 @@ def run_homo(slab):
             path_ex=os.path.join(folder_out,'k223d.x')
             current_os = platform.system()
             if current_os== 'Windows':
-                run_command('.\k223d.x input=param.dat > output_file.txt')
+                print(folder_out)
+                run_command_Win('k223d.x','output_file.log')
             else:
-                run_command('./k223d.x input=param.dat > output_file.txt')
+                print(folder_out)
+                run_command('./k223d.x input=param.dat > output_file.log')
             
             #run_command(f'{path_ex} input=param.dat > output_file.txt')
             for file in quake_area_files:
                 os.remove(os.path.join(folder_out,file))
             for file in os.listdir(folder_out):
-                if file.startswith('mu_Slip_aux'):
+                if file.startswith(('mu','Slip_PDF','Seed','in','param')):
+                    os.remove(os.path.join(folder_out,file))
+                if file.endswith(('txt','out','vtk','bin','inp','x')):
                     os.remove(os.path.join(folder_out,file))
             os.chdir(main_dir)
     
@@ -1241,14 +1249,18 @@ def run_var(slab):
             os.chdir(folder_out)
             current_os = platform.system()
             if current_os== 'Windows':
-                run_command('.\k223d.x input=param.dat > output_file.txt')
+                print(folder_out)
+                run_command_Win('k223d.x','output_file.log')
             else:
+                print(folder_out)
                 run_command('./k223d.x input=param.dat > output_file.txt')
 
             for file in quake_area_files:
                 os.remove(os.path.join(folder_out,file))
             for file in os.listdir(folder_out):
-                if file.startswith('mu_Slip_aux') or file.startswith('Slip_PDF'):
+                if file.startswith(('mu','Slip_PDF','Seed','in','param')):
+                    os.remove(os.path.join(folder_out,file))
+                if file.endswith(('txt','out','vtk','bin','inp','x')):
                     os.remove(os.path.join(folder_out,file))
             os.chdir(main_dir)
 
