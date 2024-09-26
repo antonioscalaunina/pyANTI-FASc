@@ -41,9 +41,11 @@ This module, based on the original software presented in Herrero & Murphy (2018,
 
 Below are the instructions for installing the software dependencies. Please refer to the examples in the main folder and to the wiki documentation **(BOTH UNDER CONSTRUCTION)** for further details regarding the code functionality, the configuration of input files and the database of precomputed mesh discretizations
 
+## Installation
 
+### Windows through conda GUI
 
-ACKNOWLEDGEMENTS
+## ACKNOWLEDGEMENTS
 
 A special thanks to Stefano Lorito, Fabrizio Romano, Manuela Volpe, Hafize Basak Bayraktar, Jacopo Selva, Gaetano Festa and Antonio Giovanni Iaccarino for participating at the different phases of conceiving, revising, developing and testing of the current version of the platform.
 
@@ -51,11 +53,11 @@ Thanks to Roberto Basili, Francesco Emanuele Maesano, Mara Monica Tiberti and Ga
 
 Thanks to Shane Murphy and Andre Herrero for their valuable contribution in developing and training to use the softwares composing the third module of the platform  
 
-## Installation
 
 
 
-BIBLIOGRAPHY
+
+## BIBLIOGRAPHY
 
 Basili R. et al. (2021), The Making of the NEAM Tsunami Hazard Model 2018 (NEAMTHM18), Frontiers in Earth Science, DOI: 10.3389/feart.2020.616594 
 
