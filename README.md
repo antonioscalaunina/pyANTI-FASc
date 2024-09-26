@@ -13,7 +13,7 @@ The three modules can be summarized as follows
 
 1- **Preprocess module** 
 
-    This module includes:
+This module includes:
     
    - A mesh generator that generates input mesh file from a nodes and faces discretization. A set of pre-computed discretization of the main subducting slabs worldwide is also provided (based on Slab 2.0 see available geometries at the web-page https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467) 
     
@@ -22,7 +22,7 @@ The three modules can be summarized as follows
 
 2 - **Rupture areas computation**:
     
-   This module computes a set of possible rupture geometry on the selected fault mesh. It has two different use mode:
+This module computes a set of possible rupture geometry on the selected fault mesh. It has two different use mode:
          
    - **Hazard**: it computes a large set of possible different rupture areas in all the prescribed magnitude bins to cover in a homogeneous way the whole provided meshed zone
          
@@ -31,7 +31,7 @@ The three modules can be summarized as follows
 
 3 - **k223d:** 
 
-    This module, based on the original software presented in Herrero & Murphy (2018, GJI) and available at *https://github.com/s-murfy/k223d* performs:
+This module, based on the original software presented in Herrero & Murphy (2018, GJI) and available at *https://github.com/s-murfy/k223d* performs:
 
    - A refined computation of inter-distance between nodes to be used in k-square slip distribution computation. It is based on the lateration algorithm presented in Herrero & Murphy (2018, GJI)
    
@@ -39,7 +39,7 @@ The three modules can be summarized as follows
   
 **IMPORTANT:** More details about the k223d module and its original sources can be found in the repository of ANTI-FASc at the following link *https://github.com/antonioscalaunina/ANTI-FASc/blob/main/src/k223d/README.md*. The use of this module is shown in the examples in the main folder.
 
-Below are the instructions for installing the software dependencies. Please refer to the examples in the main folder and to the wiki documentation **(both under construction)** for further details regarding the code functionality, the configuration of input files and the database of precomputed mesh discretizations
+Below are the instructions for installing the software dependencies. Please refer to the examples in the main folder and to the wiki documentation **(BOTH UNDER CONSTRUCTION)** for further details regarding the code functionality, the configuration of input files and the database of precomputed mesh discretizations
 
 
 
