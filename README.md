@@ -50,20 +50,72 @@ Below are the instructions for installing the software dependencies. Please refe
 
 ### 2.2 Windows through conda GUI
 
-If you want to run the code in a fully Windows environment, e.g. using a conda GUI, like Anaconda Navigator, you should follow these steps as outlined:
+ This installation is a bit more complicated than the one described for Linux and WSL environments but it will allow to run the code in a fully Windows environment, e.g. using a conda GUI, like Anaconda Navigator. To do that you should follow these steps as outlined in the next subsections.
 
-#### 2.2.1 Create a conda environment
+#### 2.2.1 Create the conda environment
 
 1 - Download the repository at the main page *https://github.com/antonioscalaunina/pyANTI-FASc/tree/main* or with the direct link *https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip* and unzip it.
 2 - Open a PowerShell, within the Conda GUI you are using, and within the main folder of the repository type the following command:
 
-    conda env create -f ANTIFASc_Win.yml
+    conda env create -f ANTIFASc_win64.yml
 
 this command will create the conda environment antifasc (installing Python 3.9.16) and will install all the needed libraries and dependencies within it. Then enter into the environment typing
 
     conda activate antifasc
 
 or searching for the environment antifasc through the menu *Environments* of the GUI.
+
+Alternatively, you can create the conda environment typing
+
+    conda create --name antifasc python=3.9
+    conda activate antifasc
+    pip install -r requirements.txt
+
+#### 2.2.2 Install the fortran compiler through MinGW
+
+The following steps will allow to download a fortran compiler for the Windows environment. This is necessary to compile the fortran module of the software.
+
+1 - At the webpage *https://sourceforge.net/projects/mingw/* download the MinGW - Minimalist GNU for Windows installer
+2 - Run the installer
+3 - If the MinGW Installation Manager automatically opens at the end of the installation, close it.
+4 - Search for the MinGW Installation Manager among the available apps (e.g. through the Windows menu) and run it
+5 - From the available menu select all the packages having **gcc-fortran** in the name
+6 - From the menu on the top select Installation > Apply changes
+7 - Wait for the end of the process installing the gfortran libraries and the needed libraries
+
+#### 2.2.3 Add the fortran compiler to the 
+
+1 - Enter in Advanced system settings from This Pc menu. On *"This PC"* menu right-click button select *Properties* and then *Advanced system settings* 
+2 - Within the pop-up window that appears select *Enviromental Variables* and on the next window double-click on *Path* in the *System variables* menu 
+3 - Select new and add the folder C:\MinGW (This should be the standard position where MinGW is automatically installed, but it could be elsewhere!)
+4 - Repeat the step 3 to add the folders C:\MinGW and C:\MinGW\lib\gcc\mingw32\6.3.0\ (this should be the installed version, but if you install a different version the name of the last folder will change accordingly)
+5 - Click OK to close all the windows and restart your computer to make this modifications effective
+
+#### 2.2.4 Compile the k223d module
+
+1 - After restarting first check if your fortran compiler is properly installed opening the Windows prompt and typing
+
+    gfortran --version
+
+2 - If it is installed and correctly configured you should see a message like this
+
+    GNU Fortran (MinGW.org GCC-6.3.0-1) 6.3.0
+    Copyright (C) 2016 Free Software Foundation, Inc.
+    This is free software; see the source for copying conditions.  There is NO
+    warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+3 - Enter in the main folder of pyANTI-FASc and then move into the *src\k223d* folder doing
+
+    cd src\k223d\
+
+4 - Compile the code and move the executable in the bin folder with the following commands
+
+    gfortran -c forparse.f90 utils.f90 lateration.f90 typedef_Win.f90 makepdf.f90 k223d.f90
+    gfortran -o k223d.x forparse.o utils.o lateration.o typedef_Win.o makepdf.o k223d.o
+    copy k223d.x  ..\..\bin
+
+If all these steps went fine, now you are ready to have fun with ANTI-FASc ;)
+
 
 
 ## 3 ACKNOWLEDGEMENTS
