@@ -50,6 +50,10 @@ Below are the instructions for installing the software dependencies. Please refe
 
 ### 2.2 Windows through conda GUI
 
+If you want to run the code in a fully Windows environment, e.g. using a conda GUI like Anaconda you should follow these steps as outlined:
+
+Download the repository at the main page *https://github.com/antonioscalaunina/pyANTI-FASc/tree/main* or with the direct link *https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip* and unzip it
+
 
 ## 3 ACKNOWLEDGEMENTS
 
