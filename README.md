@@ -55,6 +55,7 @@ Below are the instructions for installing the software dependencies. Please refe
 #### 2.2.1 Create the conda environment
 
 1 - Download the repository at the main page *https://github.com/antonioscalaunina/pyANTI-FASc/tree/main* or with the direct link *https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip* and unzip it.
+
 2 - Open a PowerShell, within the Conda GUI you are using, and within the main folder of the repository type the following command:
 
     conda env create -f ANTIFASc_win64.yml
