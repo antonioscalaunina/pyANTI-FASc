@@ -83,7 +83,7 @@ The following steps will allow to download a fortran compiler for the Windows en
 6 - From the menu on the top select Installation > Apply changes
 7 - Wait for the end of the process installing the gfortran libraries and the needed libraries
 
-#### 2.2.3 Add the fortran compiler to the 
+#### 2.2.3 Add the fortran compiler to the enviromental variables
 
 1 - Enter in Advanced system settings from This Pc menu. On *"This PC"* menu right-click button select *Properties* and then *Advanced system settings* 
 2 - Within the pop-up window that appears select *Enviromental Variables* and on the next window double-click on *Path* in the *System variables* menu 
