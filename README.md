@@ -1,4 +1,7 @@
 # pyANTI-FASc
+
+## 1. General description
+
 Python version of ANTI-FASc
 
 pyANTI-FASc, acronym for python Automatic Numerical Tsunami Initial conditions: on-the-Fly rupture Areas and earthquake Scenarios, is a software allowing the fast computation of large ensembles of slip distributions on complex non-planar fault interfaces (Herrero & Murphy 2018 GJI, Maesano et al. 2017, Sci. Rep.; Tonini et al. 2021, GJI) such as the subducting plates. These slip models can be promptly used as initial conditions for the computation of tsunami scenarios in the framework of both Seismic-Probabilistic Tsunami Harzard Assessment (see Scala et al. 2020 PAGEOPH - Basili et al. 2021 Frontiers) and for real-time Probabilisitic Tsunami Forecasting (see Selva et al. 2021 Nature). The newest release (version v1.0.0) is also available at the following DOI: *https://zenodo.org/doi/10.5281/zenodo.13614657* along with all the previous realeses. IMPORTANT: Please refer the repository and cite the DOI as indicated at the zenodo webpage, in your pubblications, if you use the software for your research studies
@@ -41,11 +44,14 @@ This module, based on the original software presented in Herrero & Murphy (2018,
 
 Below are the instructions for installing the software dependencies. Please refer to the examples in the main folder and to the wiki documentation **(BOTH UNDER CONSTRUCTION)** for further details regarding the code functionality, the configuration of input files and the database of precomputed mesh discretizations
 
-## Installation
+## 2 Installation
 
-### Windows through conda GUI
+### 2.1 Linux & Windows WSL
 
-## ACKNOWLEDGEMENTS
+### 2.2 Windows through conda GUI
+
+
+## 3 ACKNOWLEDGEMENTS
 
 A special thanks to Stefano Lorito, Fabrizio Romano, Manuela Volpe, Hafize Basak Bayraktar, Jacopo Selva, Gaetano Festa and Antonio Giovanni Iaccarino for participating at the different phases of conceiving, revising, developing and testing of the current version of the platform.
 
@@ -57,7 +63,7 @@ Thanks to Shane Murphy and Andre Herrero for their valuable contribution in deve
 
 
 
-## BIBLIOGRAPHY
+## 4 BIBLIOGRAPHY
 
 Basili R. et al. (2021), The Making of the NEAM Tsunami Hazard Model 2018 (NEAMTHM18), Frontiers in Earth Science, DOI: 10.3389/feart.2020.616594 
 
