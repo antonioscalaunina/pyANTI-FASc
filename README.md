@@ -11,14 +11,16 @@ A simple postprocessing tool is also provided to convert the output files in a s
 
 The three modules can be summarized as follows
 
-1- Preprocess module includes:
+1- **Preprocess module** 
+
+    This module includes:
     
    - A mesh generator that generates input mesh file from a nodes and faces discretization. A set of pre-computed discretization of the main subducting slabs worldwide is also provided (based on Slab 2.0 see available geometries at the web-page https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467) 
     
    - A preliminary computation of inter-distance between nodes to be used in the rupture areas computation
     
 
-2 - Rupture areas computation:
+2 - **Rupture areas computation**:
     
    This module computes a set of possible rupture geometry on the selected fault mesh. It has two different use mode:
          
@@ -27,15 +29,17 @@ The three modules can be summarized as follows
    - **PTF**: it computes all the scenarios “compatible” with estimation and uncertainty of magnitude and location for a given earthquake
 
 
-3 - **k223d:** k-square slip distributions to 3D fault planes (Herrero & Murphy 2018, GJI - *https://github.com/s-murfy/k223d*):
+3 - **k223d:** 
+
+    This module, based on the original software presented in Herrero & Murphy (2018, GJI) and available at *https://github.com/s-murfy/k223d* performs:
 
    - A refined computation of inter-distance between nodes to be used in k-square slip distribution computation. It is based on the lateration algorithm presented in Herrero & Murphy (2018, GJI)
    
-   - Computation of ensembles of stochastic k-square slip distributions for all the previously selected areas also accounting for other conditions (e.g. homogeneous or variable rigidity, surface slip amplification, variable stress-drop etc.)
+   - The computation of ensembles of stochastic k-square slip distributions for all the previously selected areas also accounting for other conditions (e.g. homogeneous or variable rigidity, surface slip amplification, variable stress-drop etc.)
   
 **IMPORTANT:** More details about the k223d module and its original sources can be found in the repository of ANTI-FASc at the following link *https://github.com/antonioscalaunina/ANTI-FASc/blob/main/src/k223d/README.md*. The use of this module is shown in the examples in the main folder.
 
-Below are the instructions for installing the software dependencies. Please refer to the examples and the wiki documentation for further details regarding the code functionality, the configuration of input files and the database of precomputed mesh discretizations
+Below are the instructions for installing the software dependencies. Please refer to the examples in the main folder and to the wiki documentation **(both under construction)** for further details regarding the code functionality, the configuration of input files and the database of precomputed mesh discretizations
 
 
 
