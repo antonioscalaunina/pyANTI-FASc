@@ -120,7 +120,7 @@ def plot_slip_map(geojson_file, map_file, hypo):
     
     folium.Marker(
             location=[hypo[1], hypo[0]],
-            popup="Hypocenter",
+            popup="Epicenter",
             icon=folium.Icon(icon='star', color='black', prefix='fa')
         ).add_to(m)
 
