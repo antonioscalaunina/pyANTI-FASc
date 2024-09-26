@@ -50,9 +50,20 @@ Below are the instructions for installing the software dependencies. Please refe
 
 ### 2.2 Windows through conda GUI
 
-If you want to run the code in a fully Windows environment, e.g. using a conda GUI like Anaconda you should follow these steps as outlined:
+If you want to run the code in a fully Windows environment, e.g. using a conda GUI, like Anaconda Navigator, you should follow these steps as outlined:
 
-Download the repository at the main page *https://github.com/antonioscalaunina/pyANTI-FASc/tree/main* or with the direct link *https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip* and unzip it
+#### 2.2.1 Create a conda environment
+
+1 - Download the repository at the main page *https://github.com/antonioscalaunina/pyANTI-FASc/tree/main* or with the direct link *https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip* and unzip it.
+2 - Open a PowerShell, within the Conda GUI you are using, and within the main folder of the repository type the following command:
+
+    conda env create -f ANTIFASc_Win.yml
+
+this command will create the conda environment antifasc (installing Python 3.9.16) and will install all the needed libraries and dependencies within it. Then enter into the environment typing
+
+    conda activate antifasc
+
+or searching for the environment antifasc through the menu *Environments* of the GUI.
 
 
 ## 3 ACKNOWLEDGEMENTS
