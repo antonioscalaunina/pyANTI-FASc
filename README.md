@@ -22,24 +22,22 @@ The three modules can be summarized as follows
     
    This module computes a set of possible rupture geometry on the selected fault mesh. It has two different use mode:
          
-   - Hazard: it computes a large set of possible different rupture areas in all the prescribed magnitude bins to cover in a homogeneous way the whole provided meshed zone
+   - **Hazard**: it computes a large set of possible different rupture areas in all the prescribed magnitude bins to cover in a homogeneous way the whole provided meshed zone
          
-   - PTF: it computes all the scenarios “compatible” with estimation and uncertainty of magnitude and location for a given earthquake
+   - **PTF**: it computes all the scenarios “compatible” with estimation and uncertainty of magnitude and location for a given earthquake
 
 
-3 - k223d k-square slip distributions to 3D fault planes (Herrero & Murphy 2018, GJI - *https://github.com/s-murfy/k223d*):
+3 - **k223d:** k-square slip distributions to 3D fault planes (Herrero & Murphy 2018, GJI - *https://github.com/s-murfy/k223d*):
 
    - A refined computation of inter-distance between nodes to be used in k-square slip distribution computation. It is based on the lateration algorithm presented in Herrero & Murphy (2018, GJI)
    
    - Computation of ensembles of stochastic k-square slip distributions for all the previously selected areas also accounting for other conditions (e.g. homogeneous or variable rigidity, surface slip amplification, variable stress-drop etc.)
   
-**More details about the k223d module and its original sources can be found in the file *src/k223d/README.md* (*https://github.com/antonioscalaunina/ANTI-FASc/blob/main/src/k223d/README.md*). The use of this module is shown in the examples in the main folder**.
+**IMPORTANT:** More details about the k223d module and its original sources can be found in the repository of ANTI-FASc at the following link *https://github.com/antonioscalaunina/ANTI-FASc/blob/main/src/k223d/README.md*. The use of this module is shown in the examples in the main folder.
+
+Below are the instructions for installing the software dependencies. Please refer to the examples and the wiki documentation for further details regarding the code functionality, the configuration of input files and the database of precomputed mesh discretizations
 
 
- More details in the examples.
-
-
-Along with the codes it has been provided a large dataset of precomputed meshes in the folder *utils/sz_slabs*. These meshes has been computed either from the geometrical modelling provided by the project Slab 2.0 (see available geometry at the web-page https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467) or from the modelling proposed by the Geoscience Australia (available at: *https://github.com/GeoscienceAustralia/ptha*). The Mediterranean slab models are the same used in the framework of TSUMAPS-NEAM project (see *http://www.tsumaps-neam.eu/*, see also Maesano et al. 2017, Basili et al. 2021)
 
 ACKNOWLEDGEMENTS
 
