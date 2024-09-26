@@ -58,7 +58,7 @@ def ascii_to_geojson(input_file, output_file):
     with open(output_file, 'w') as f:
         json.dump(geojson_data, f, indent=2)
 
-def plot_slip_map(geojson_file, map_file):
+def plot_slip_map(geojson_file, map_file, hypo):
     # Carica il file GeoJSON
     with open(geojson_file, 'r') as f:
         data = json.load(f)
@@ -117,6 +117,12 @@ def plot_slip_map(geojson_file, map_file):
     # Aggiungi la legenda della scala di colori alla mappa
     cmap.caption = 'Slip (m)'
     cmap.add_to(m)
+    
+    folium.Marker(
+            location=[hypo[1], hypo[0]],
+            popup="Hypocenter",
+            icon=folium.Icon(icon='star', color='black', prefix='fa')
+        ).add_to(m)
 
     # Salva la mappa in un file HTML
     m.save(map_file)
@@ -185,6 +191,6 @@ for i in range(len(file_arr)):
     geojson_output_file = (ascii_input_file[:-4]+'.json')  # Sostituisci con il nome del file GeoJSON che desideri creare
     map_file = (ascii_input_file[:-4]+'.html')	
     ascii_to_geojson(ascii_input_file, geojson_output_file)
-    plot_slip_map(geojson_output_file, map_file)
+    plot_slip_map(geojson_output_file, map_file, hypo)
 os.chdir(home)
 print("\n")
