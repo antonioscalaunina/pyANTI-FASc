@@ -96,7 +96,7 @@ The following steps will allow to download a fortran compiler for the Windows en
 
 2 - Within the pop-up window that appears select *Enviromental Variables* and on the next window double-click on *Path* in the *System variables* menu 
 
-3 - Select *new* and add the folder C:\MinGW (This should be the standard position where MinGW is automatically installed, but it could be elsewhere!)
+3 - Select *new* and add the folder C:\MinGW\bin (C:\ should be the standard position where MinGW is automatically installed, but it could be elsewhere!)
 
 4 - Repeat the step 3 to add the folders C:\MinGW and C:\MinGW\lib\gcc\mingw32\6.3.0\ (this should be the installed version, but if you install a different version the name of the last folder will change accordingly)
 
