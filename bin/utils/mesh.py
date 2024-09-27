@@ -469,7 +469,7 @@ def linear_interp(depth, PREM):
 
 
 
-def coupling_pdf_CaA_function(depth, up_l=-14.5, low_l=-40):
+def coupling_pdf_CaA_function(depth, up_l, low_l):
     '''
     Compute and assign coupling factor K to depths in array depth
     '''

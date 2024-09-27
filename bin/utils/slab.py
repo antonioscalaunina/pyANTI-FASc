@@ -736,6 +736,8 @@ def read_inputfile(Slab, config_file):
     Slab.hypo_baryc_dist=Param['Configure']['hypo_baryc_distance']
     Slab.min_bnd_dist=Param['Configure']['minimum_bnd_distance']
     Slab.Fact_Area=Param['Configure']['Fact_area_scaling']
+    Slab.K_SL=Param['Configure']['coupling_shallow_limit']
+    Slab.K_DL=Param['Configure']['coupling_deep_limit']
     Slab.Preprocess_logic = False
     Slab.Sub_boundary_logic = False
     Slab.Stress_drop_logic = False
@@ -934,7 +936,7 @@ def read_mesh(Slab):
             mu_all,_,_ = mesh.assign_rigidity_from_file(-1e-3 * barycenters_all[:, 2], Slab.Rigidity_file)
     
     #compute PDF for slip using coupling and rigidity
-    K_all = mesh.coupling_pdf_CaA_function(1e-3 * barycenters_all[:, 2]) #assign coupling
+    K_all = mesh.coupling_pdf_CaA_function(1e-3 * barycenters_all[:, 2],-Slab.K_SL,-Slab.K_DL) #assign coupling
     SPDF_all = K_all / mu_all
     SPDF_all = SPDF_all / np.sum(SPDF_all)
     Slab.SPDF_all=SPDF_all
