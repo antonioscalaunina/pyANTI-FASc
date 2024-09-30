@@ -1,6 +1,6 @@
 {"zone_name": "kurilsjapan", 
 	"Merc_zone": 54,
-    "acronym": "KjT",
+    "acronym": "KuJ",
 	"mesh_gen": 0,
     "slab_file": "kur_slab2_dep_02.24.18.xyz",
     "seismog_depth": 60,
@@ -9,7 +9,7 @@
     "element_size": 12.5e3,
        	
 "Event": {
-"Name": "Tohoku_test",
+"Name": "Tohoke_testK",
 "Hypo_LonLat" : [142.369, 38.322],
 "Magnitude" : 9.0
 },
@@ -18,6 +18,8 @@
 "shape": "Rectangle",
 "numb_stoch": 5,
 "variable_mu": 1,
+"coupling_shallow_limit":2.5,
+"coupling_deep_limit":40.0,
 "mesh_sub_boundary": 0,
 "preprocess": 1,
 "file_baryc": 0,
