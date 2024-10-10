@@ -58,7 +58,7 @@ Below are the instructions for installing the software dependencies. Please refe
 
 2 - Open a PowerShell, within the Conda GUI you are using, and within the main folder of the repository type the following command:
 
-    conda env create -f ANTIFASc_win64.yml
+    conda env create -f ANTIFASc.yml
 
 this command will create the conda environment antifasc (installing Python 3.9.16) and will install all the needed libraries and dependencies within it. Then enter into the environment typing
 
