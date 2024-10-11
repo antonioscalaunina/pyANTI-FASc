@@ -55,8 +55,9 @@ The most practical way to run the code in a Linux environment is to create a con
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
     chmod +x Miniconda3-latest-Linux-x86_64.sh
     ./Miniconda3-latest-Linux-x86_64.sh
+    conda update
 
-The first command will download the installer while the other ones are used to run the installer. During the installation the user will be asked to decide if the conda execution must be automatic every time a terminal is open. Such a choice is optional.
+The first command will download the installer while the other ones are used to run the installer and install conda to the latest version. During the installation the user will be asked to decide if the conda execution must be automatic every time a terminal is open. Such a choice is optional.
 
 Once miniconda is installed it will be sufficient to enter into the main folder and create the conda environement antifasc by typing:
 
@@ -172,7 +173,22 @@ The following steps will allow to download a fortran compiler for the Windows en
     gfortran -o k223d.x forparse.o utils.o lateration.o typedef_Win.o makepdf.o k223d.o
     copy k223d.x  ..\..\bin
 
-If all these steps went fine, now you are ready to have fun with ANTI-FASc (:wink)
+If all these steps went fine, now you are ready to have fun with ANTI-FASc (😉)
+
+### 2.3 Mac
+
+If you use a macOS you might create a terminal similar to the one that you can use on Linux through different package managers for macOS, which allow users to easily install and manage software packages from the command line of the Mac terminal. The two most popular package managers are Homebrew and MacPorts
+
+#### 2.3.1 ANTIFASc with Homebrew
+
+To firstly install Homebrew open the terminal and run the following command:
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    brew update
+
+Through brew you might install conda and 
+
+
 
 
 
