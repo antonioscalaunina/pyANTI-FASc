@@ -206,7 +206,7 @@ and verify the installation checking the version:
 
 See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the ANTIFASc installation
 
-#### 2.3.2 conda and gfortran with MacPorts
+#### 2.3.2 Conda and gfortran with MacPorts
 
 To firstly install MacPorts go the MacPorts [webpage](https://www.macports.org/install.php) and download the right version of installer for your OS, then launch the pkg and complete the installation following the instructions
 MacPorts requires Xcode and its Command Line Tools. You can install them via:
