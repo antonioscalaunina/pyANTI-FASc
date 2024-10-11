@@ -217,14 +217,14 @@ After installation you might update MacPorts with the command:
 
     sudo port selfupdate
 
-Through port you might install gfortran and conda (miniconda distribution) with the following commands:
+Through port you might install gfortran and verify the version with the following command:
 
-    brew install gcc
-    brew install --cask miniconda
+    sudo port install gcc12
+    gfortran-mp-12 --version
 
-you might verify the installed version of gfortran with the following command:
+This will install GCC 12, which includes gfortran. You may replace gcc12 with another version if necessary (e.g., gcc11, gcc10, etc.). In MacPorts, gfortran is typically suffixed with the GCC version, like gfortran-mp-12. We suggest to create an alias for easier usage. editing the ~/.bash_profile or ~/.bashrc adding the following line:
 
-    gfortran --version
+    alias gfortran='/usr/local/bin/gfortran-12'
 
 If it does not work it might be necessary to restart the terminal.
 After installation of miniconda follow the instructions to initialize conda (you may need to restart the shell):
