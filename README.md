@@ -83,7 +83,7 @@ Then for compiling:
     make
     cp k223d.x ../../bin
 
-If everything worked you are now ready to have fun with pyANTIFASc (;).
+If everything worked you are now ready to have fun with pyANTIFASc (;)).
 
 #### 2.1.2 Windows wsl
 
