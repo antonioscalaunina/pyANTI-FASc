@@ -179,14 +179,67 @@ If all these steps went fine, now you are ready to have fun with ANTI-FASc (😉
 
 If you use a macOS you might create a terminal similar to the one that you can use on Linux through different package managers for macOS, which allow users to easily install and manage software packages from the command line of the Mac terminal. The two most popular package managers are Homebrew and MacPorts
 
-#### 2.3.1 ANTIFASc with Homebrew
+#### 2.3.1 Conda and gfortran with Homebrew
 
 To firstly install Homebrew open the terminal and run the following command:
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew update
 
-Through brew you might install conda and 
+Through brew you might install gfortran and conda (miniconda distribution) with the following commands:
+
+    brew install gcc
+    brew install --cask miniconda
+
+you might verify the installed version of gfortran with the following command:
+
+    gfortran --version
+
+If it does not work it might be necessary to restart the terminal.
+After installation of miniconda follow the instructions to initialize conda (you may need to restart the shell):
+
+    conda init
+
+and verify the installation checking the version:
+
+    conda --version
+
+See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the installation
+
+#### 2.3.2 conda and gfortran with MacPorts
+
+To firstly install MacPorts go the MacPorts [webpage](https://www.macports.org/install.php) and download the right version of installer for your OS, then launch the pkg and complete the installation following the instructions
+MacPorts requires Xcode and its Command Line Tools. You can install them via:
+
+   xcode-select --install
+
+After installation you might update MacPorts with the command:
+
+    sudo port selfupdate
+
+Through port you might install gfortran and conda (miniconda distribution) with the following commands:
+
+    brew install gcc
+    brew install --cask miniconda
+
+you might verify the installed version of gfortran with the following command:
+
+    gfortran --version
+
+If it does not work it might be necessary to restart the terminal.
+After installation of miniconda follow the instructions to initialize conda (you may need to restart the shell):
+
+    conda init
+
+and verify the installation checking the version:
+
+    conda --version
+
+See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the installation
+
+#### 2.3.3 ANTIFASc on MAC terminal
+
+After these installations the steps are very similar to the linux ones: Enter into the main folder and create the conda environment:
 
 
 
