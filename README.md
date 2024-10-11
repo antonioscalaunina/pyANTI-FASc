@@ -87,7 +87,7 @@ If everything worked you are now ready to run pyANTIFASc.
 
 #### 2.1.2 Windows wsl
 
-If you use the wsl distribution on Windows to work in a virtual Ubuntu environment all the istructions to the [section 2.1.1](#general-description)
+If you use the wsl distribution on Windows to work in a virtual Ubuntu environment all the istructions to the [section 2.1.1](#211-linux-environment)
 
 
 
