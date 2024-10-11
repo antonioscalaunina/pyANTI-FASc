@@ -42,11 +42,60 @@ This module, based on the original software presented in Herrero & Murphy (2018,
   
 **IMPORTANT:** More details about the k223d module and its original sources can be found in the repository of ANTI-FASc at the following link *https://github.com/antonioscalaunina/ANTI-FASc/blob/main/src/k223d/README.md*. The use of this module is shown in the examples in the main folder.
 
-Below are the instructions for installing the software dependencies. Please refer to the examples in the main folder and to the wiki documentation **(BOTH UNDER CONSTRUCTION)** for further details regarding the code functionality, the configuration of input files and the database of precomputed mesh discretizations
+Below are the instructions for installing the software dependencies. Please refer to the examples in the main folder and to the wiki documentation **(BOTH UNDER CONSTRUCTION)** for further details regarding the code functionality, the configuration of the input files and the database of precomputed mesh discretizations
 
 ## 2 Installation
 
 ### 2.1 Linux & Windows WSL
+
+#### 2.1.1 Linux environment
+
+The most practical way to run the code in a Linux environment is to create a conda environment where all the necessary libraries and dependencies are available. If you do not have a conda distributions already installed you might install miniconda, a minimal distribution of conda, through the following commands
+
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    chmod +x Miniconda3-latest-Linux-x86_64.sh
+    ./Miniconda3-latest-Linux-x86_64.sh
+
+The first command will download the installer while the other ones are used to run the installer. During the installation the user will be asked to decide if the conda execution must be automatic every time a terminal is open. Such a choice is optional.
+
+Once miniconda is installed it will be sufficient to enter into the main folder and create the conda environement antifasc by typing:
+
+    cd pyANTIFASc
+    conda env create -f ANTIFASc.yml
+
+at the end of installation you may enter into the environment typing
+
+    conda activate antifasc
+
+Alternatively, you can create the conda environment by typing:
+
+    conda create --name antifasc python=3.9
+    conda activate antifasc
+    pip install -r requirements.txt
+
+To compile the software k223d that represents the final module of the software it is necessary to have gfortran installed. If you don't have it can be installed easily with the following command:
+
+    sudo apt-get install gfortran
+
+Then for compiling:
+
+    cd pyANTIFASc/src/k223d
+    make
+    cp k223d.x ../../bin
+
+If everything worked you are now ready to run pyANTIFASc.
+
+#### 2.1.2 Windows wsl
+
+If you use the wsl distribution on Windows to work in a virtual Ubuntu environment all the istructions to the [section 2.1.1](#### 2.1.1)
+
+
+
+
+
+
+    
+
 
 ### 2.2 Windows through conda GUI
 
@@ -66,7 +115,7 @@ this command will create the conda environment antifasc (installing Python 3.9.1
 
 or searching for the environment antifasc through the menu *Environments* of the GUI.
 
-Alternatively, you can create the conda environment typing
+Alternatively, you can create the conda environment by typing:
 
     conda create --name antifasc python=3.9
     conda activate antifasc
