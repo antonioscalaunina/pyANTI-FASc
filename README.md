@@ -204,7 +204,7 @@ and verify the installation checking the version:
 
     conda --version
 
-See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the installation
+See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the ANTIFASc installation
 
 #### 2.3.2 conda and gfortran with MacPorts
 
@@ -226,8 +226,14 @@ This will install GCC 12, which includes gfortran. You may replace gcc12 with an
 
     alias gfortran='/usr/local/bin/gfortran-12'
 
-If it does not work it might be necessary to restart the terminal.
-After installation of miniconda follow the instructions to initialize conda (you may need to restart the shell):
+Alternatively, you could modify the [makefile](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/src/k223d/makefile) on the line 4 replacing gfortran with gfortran-mp-12 (or the other installed version) 
+
+MacPorts does not have a direct package for conda, but you can download and install it manually. Download the right version at this [webpage](https://www.macports.org/install.php)
+Run the installer script:
+    
+    bash Miniconda3-latest-MacOSX-x86_64.sh
+
+After installation, follow the on-screen prompts and initialize conda
 
     conda init
 
@@ -235,14 +241,32 @@ and verify the installation checking the version:
 
     conda --version
 
-See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the installation
+See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the ANTIFASc installation
 
 #### 2.3.3 ANTIFASc on MAC terminal
 
-After these installations the steps are very similar to the linux ones: Enter into the main folder and create the conda environment:
+After the installations described in the previous sub-sections the steps are very similar to the linux ones. Enter into the main folder and create the conda environment:
 
+    cd pyANTIFASc
+    conda env create -f ANTIFASc.yml
 
+at the end of installation you may enter into the environment typing
 
+    conda activate antifasc
+
+Alternatively, you can create the conda environment by typing:
+
+    conda create --name antifasc python=3.9
+    conda activate antifasc
+    pip install -r requirements.txt
+
+Then compile k223d and copy the executable to the bin folder:
+
+    cd pyANTIFASc/src/k223d
+    make
+    cp k223d.x ../../bin
+
+If everything worked you are now ready to have fun with pyANTIFASc (😉).
 
 
 ## 3 ACKNOWLEDGEMENTS
