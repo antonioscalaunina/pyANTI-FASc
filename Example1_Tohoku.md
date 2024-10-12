@@ -11,6 +11,13 @@ pyANTI-FASc makes available an ensemble of predefined mesh discretizations for m
 ![Map of the subducting plate meshes available in the current version of pyANTI-FASc](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/map_of_slabs.png)
 *Figure 1 - Map of the subducting plate meshes available in the current version of pyANTI-FASc*
 
+
+# 2 - Input files
+
+## 2.1 input.json
+
+This file [input.json](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters/input.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder manages the main configuration parameters for the run of ANTI-FASc
+
     
 # 2 - Preprocess
 
