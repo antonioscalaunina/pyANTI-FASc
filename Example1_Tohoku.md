@@ -1,12 +1,12 @@
 # EXAMPLE 1 Tohoku earthquake
 
-In this brief guide, we a practical example for running ANTIFASc. 
+In this brief guide, we a practical example for running ANTI-FASc. 
 In this example we generate a set of scenarios based on location and magnitude of 2011, March the 11th, Tohoku earthquake with a magnitude Mw=9.1
 
 
 # 1 - Mesh
 
-
+pyANTI-FASc makes available an ensemble of predefined mesh discretizations for most of the subducting plates worldwide. These meshes 
 
     
 # 2 - Preprocess
