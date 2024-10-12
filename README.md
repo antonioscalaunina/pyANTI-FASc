@@ -84,7 +84,7 @@ Then for compiling:
     make
     cp k223d.x ../../bin
 
-If everything worked you are now ready to have fun with pyANTIFASc (😉).
+If everything worked you are now ready to have fun with pyANTIFASc (😉). Try and run the [Example1_Tohoku](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) to start!
 
 #### 2.1.2 Windows wsl
 
@@ -173,7 +173,7 @@ The following steps will allow to download a fortran compiler for the Windows en
     gfortran -o k223d.x forparse.o utils.o lateration.o typedef_Win.o makepdf.o k223d.o
     copy k223d.x  ..\..\bin
 
-If all these steps went fine, now you are ready to have fun with ANTI-FASc (😉)
+If all these steps went fine, now you are ready to have fun with ANTI-FASc (😉). Try and run the [Example1_Tohoku](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) to start!
 
 ### 2.3 Mac
 
@@ -266,7 +266,7 @@ Then compile k223d and copy the executable to the bin folder:
     make
     cp k223d.x ../../bin
 
-If everything worked you are now ready to have fun with pyANTIFASc (😉).
+If everything worked you are now ready to have fun with pyANTIFASc (😉). Try and run the [Example1_Tohoku](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) to start!
 
 
 ## 3 ACKNOWLEDGEMENTS
