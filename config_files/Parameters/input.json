@@ -18,7 +18,7 @@
 "shape": "Rectangle",
 "numb_stoch": 5,
 "variable_mu": 1,
-"coupling_shallow_limit":2.5,
+"coupling_shallow_limit":1.0,
 "coupling_deep_limit":40.0,
 "mesh_sub_boundary": 0,
 "preprocess": 1,
