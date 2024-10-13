@@ -64,7 +64,7 @@ The first command will download the installer while the other ones are used to r
 
 Once miniconda is installed it will be sufficient to enter into the main folder and create the conda environement antifasc by typing:
 
-    cd pyANTIFASc
+    cd pyANTI-FASc
     conda env create -f ANTIFASc.yml
 
 at the end of installation you may enter into the environment typing
