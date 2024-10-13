@@ -267,7 +267,7 @@ The Slip4HySea* files are in the standard format used as input by the software [
 	Number of files:  130
 	[##############################]  100%
 
- In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, two new files will be produced: one is the slip distribution in a standard geoJSON format (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00007_004.json)) and the other an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/blob/main/utils/Slip4HySea00007_004.html)
+ In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, two new files will be produced: one is the slip distribution in a standard geoJSON format (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00007_004.json)) and the other an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/main/utils/Slip4HySea00007_004.html)
  
  The same example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). Within the Jupyter Notebook some intermediate plots are used to better describe some of the steps of the process, such as the barycenter selection, and the rupture area computation.
 
