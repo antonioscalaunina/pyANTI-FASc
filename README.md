@@ -88,7 +88,7 @@ If everything worked you are now ready to have fun with pyANTIFASc (😉). Try a
 
 #### 2.1.2 Windows wsl
 
-If you use the wsl distribution on Windows to work in a virtual Ubuntu environment all the istructions to the [section 2.1.1](#211-linux-environment). 
+If you use the wsl distribution on Windows to work in a virtual Ubuntu environment you can use the guide fo installation presented in the [section 2.1.1](#211-linux-environment). 
 To install the wsl distributions you might follow the instructions at this [link](https://learn.microsoft.com/en-us/windows/wsl/install). The easiest way is to open the Windows PowerShell and digit
 
     wsl --install
