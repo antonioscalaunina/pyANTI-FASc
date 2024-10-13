@@ -18,11 +18,11 @@ pyANTI-FASc makes available an ensemble of predefined mesh discretizations for m
 
 This file [input.json](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters/input.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder manages the main configuration parameters for the run of ANTI-FASc. The file actually used for the run must be always named input.json. The default available file is set to run this example, but it can be easily modified to run other possible cases.
 
-Here below the important settings to be managed by the user are shown. Look carefully to the comments besides the parameters:
+Here below the important settings to be managed by the user are shown. Look carefully to the comments besides the parameters. Comments without parameters might be left unmodified. Their use and functionality will be fixed in next releases and better described in [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) currently under construction.
 
-	{"zone_name": "kurilsjapan", 
-	"Merc_zone": 54,
-    	"acronym": "KuJ",
+	{"zone_name": "kurilsjapan",      # Name of the precomputed mesh to be used. See the list [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/slabs_database) and use the Mesh Folder for the slab you want to select
+	"Merc_zone": 54,                  # Mercator zone for the selected slab. See the list [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/slabs_database) 
+    	"acronym": "KuJ",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggested acronym [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/slabs_database)
 	"mesh_gen": 0,
    	"slab_file": "kur_slab2_dep_02.24.18.xyz",
     	"seismog_depth": 60,
@@ -31,13 +31,13 @@ Here below the important settings to be managed by the user are shown. Look care
     	"element_size": 12.5e3,
        	
 	"Event": {
-	"Name": "Tohoku_test",
-	"Hypo_LonLat" : [142.369, 38.322],
-	"Magnitude" : 9.0
+	"Name": "Tohoku_test",                    # Name of the test. It is used to define the output folder name
+	"Hypo_LonLat" : [142.369, 38.322],        # Epicenter of the event
+	"Magnitude" : 9.0                         # Magnitude of the event
 	},
 	"Configure": {
-	"application": "PTF",
-	"shape": "Rectangle",
+	"application": "PTF",                     # This application restricts the computed scenarios to a range of magnitude and location around predefined values
+	"shape": "Rectangle",                     # This choice allows to compute scenarios with aspect ratio L/W preserved as prescribed by the selected scaling law. The other possible choice is "Circle". More details soon in the [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki)  currently under construction.
 	"numb_stoch": 5,
 	"variable_mu": 1,
 	"coupling_shallow_limit":2.5,
