@@ -2,6 +2,7 @@
 
 In this brief guide, a practical example for running ANTI-FASc is shown. 
 In this example, a set of slip distributions based on location and magnitude of 2011, March the 11th, Tohoku earthquake with a magnitude Mw=9.1, is generated.
+The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). Within the Jupyter Notebook some intermediate plots are shown to better outline some of the steps of the process, such as the barycenter selection, and the rupture area computation.
 
 
 # 1 - Mesh
@@ -270,7 +271,5 @@ The Slip4HySea* files are in the standard format used as input by the software [
  In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, two new files will be produced: one is the slip distribution in a standard geoJSON format (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00007_004.json)) while the other one is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00007_004.html)).
 
  
-The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). Within the Jupyter Notebook some intermediate plots are shown to better outline some of the steps of the process, such as the barycenter selection, and the rupture area computation.
-
 
    
