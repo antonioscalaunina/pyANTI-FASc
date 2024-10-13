@@ -7,7 +7,7 @@ Python version of ANTI-FASc
 pyANTI-FASc, acronym for python Automatic Numerical Tsunami Initial conditions: on-the-Fly rupture Areas and earthquake Scenarios, is a software allowing the fast computation of large ensembles of slip distributions on complex non-planar fault interfaces (Herrero & Murphy 2018 GJI, Maesano et al. 2017, Sci. Rep.; Tonini et al. 2021, GJI) such as the subducting plates. These slip models can be promptly used as initial conditions for the computation of tsunami scenarios in the framework of both Seismic-Probabilistic Tsunami Harzard Assessment (see Scala et al. 2020 PAGEOPH - Basili et al. 2021 Frontiers) and for real-time Probabilisitic Tsunami Forecasting (see Selva et al. 2021 Nature). The newest release (version v1.0.0) is also available at the following DOI: *https://zenodo.org/doi/10.5281/zenodo.13614657* along with all the previous realeses. IMPORTANT: Please refer the repository and cite the DOI as indicated at the zenodo webpage, in your pubblications, if you use the software for your research studies
 Antonio Scala, Manuel Mojica, & rissclab-tester. (2024). antonioscalaunina/pyANTI-FASc: pyANTIFASc_1.0.0 (v1.0.0). Zenodo. *https://doi.org/10.5281/zenodo.13614657*
 
-A wiki documentation (currently under construction) is available at the following link *https://github.com/antonioscalaunina/pyANTI-FASc/wiki*
+A wiki documentation (currently under construction) is available at this [link](https://github.com/antonioscalaunina/pyANTI-FASc/wiki)
 
 The software is composed by three modules managed by a single standalone python executable that runs the module sequentially, managing the transfer of the required files among the three modules
 A simple postprocessing tool is also provided to convert the output files in a standard georeference format and plot the slip distributions.
@@ -18,7 +18,7 @@ The three modules can be summarized as follows
 
 This module includes:
     
-   - A mesh generator that generates input mesh file from a nodes and faces discretization. A set of pre-computed discretization of the main subducting slabs worldwide is also provided (based on Slab 2.0 see available geometries at the web-page https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467) 
+   - A mesh generator that generates input mesh file from a nodes and faces discretization. A set of pre-computed discretization of the main subducting slabs worldwide is also provided (based on Slab 2.0 see available geometries at this [webpage](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467) 
     
    - A preliminary computation of inter-distance between nodes to be used in the rupture areas computation
     
