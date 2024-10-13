@@ -22,7 +22,7 @@ Here below the important settings to be managed by the user are shown. Look care
 
 	{"zone_name": "kurilsjapan",      # Name of the precomputed mesh to be used. See the slab database made available within the repository and use the Mesh Folder for the slab you want to select
 	"Merc_zone": 54,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
-    	"acronym": "KuJ",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database 
+        "acronym": "KuJ",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database 
 
 The list of the slab database can be found [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/slabs_database) 
        	
@@ -33,25 +33,19 @@ The list of the slab database can be found [here](https://github.com/antonioscal
 	},
 	"Configure": {
 	"application": "PTF",                     # This application restricts the computed scenarios to a range of magnitude and location around predefined values
-	"shape": "Rectangle",                     # This choice allows to compute scenarios with aspect ratio L/W preserved as prescribed by the selected scaling law. The other possible choice is "Circle". More details soon in the [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki)  currently under construction.
-	"numb_stoch": 5,
-	"variable_mu": 1,
-	"coupling_shallow_limit":2.5,
-	"coupling_deep_limit":40.0,
-	"mesh_sub_boundary": 0,
-	"preprocess": 1,
-	"file_baryc": 0,
-	"file_baryc_name": "ScenarioProb_nsig2_Mw83_2015_0916_illapel_World.mat",
-	"Magnitude_lb": 0.15,
+	"shape": "Rectangle",                     # This choice allows to compute scenarios with aspect ratio L/W preserved as prescribed by the selected scaling law. The other possible choice is "Circle". More details soon in the Wiki Documentation
+	"numb_stoch": 5,                          # Number of stochastic slip for each rupture areas
+	"variable_mu": 1,                         # 1 means that also the distributions with variable rigidity will be computed. 0 for computing only the case with homogeneous rigidity
+	"coupling_shallow_limit":2.5,             # Shallow limit for the area where the seismic coupling is expected to decrease
+	"coupling_deep_limit":40.0,		  # Deep limit for the area where the seismic coupling is expected to decrease
+
+
+ 
+	"Magnitude_lb": 0.15,                    # Magnitude in a range [Mw-0.15 Mw+0.15] will be accounted, used only for "application": "PTF"
 	"Magnitude_ub": 0.15,
-	"minimum_bnd_distance": 0.25,
-	"minimum_interdistance": 0.1,
-	"hypo_baryc_distance": 1.0,
-	"Fact_area_scaling": 1,
-	"Rigidity_file_logic": 0,
-	"Rigidity_file": "Rigidity_variation.txt",
-	"Stress_drop_var": 0,
-	"Fact_rigidity": 0.5
+        "hypo_baryc_distance": 1.0,             # Rupture barycenters at less than 1 Length form hypocenter will be used to define areas and slip distributions, used only for "application": PTF. The Lengthis inferred from scaling law for each Magnitude bin.
+	"minimum_bnd_distance": 0.25,           # This option (as well as the next one) is used to limit the number of rupture areas dependending on Magnitude (and Rupture areas extent). During the selection of rupture area barycenter, with this choice, the nodes closer than 0.25 times the Width to the mesh edge are discarded.
+	"minimum_interdistance": 0.1,           # With this choices, the selected rupture barycenters are distant from each other more than 0.1 times the Length. This will avoid to have very similar rupture areas and reduce the number of scenarios at largest magnitude bins (see Scala et al. 2020) 
 	}
 	}
 
