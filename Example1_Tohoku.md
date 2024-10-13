@@ -1,7 +1,7 @@
 # EXAMPLE 1 Tohoku earthquake
 
-In this brief guide, we a practical example for running ANTI-FASc. 
-In this example we generate a set of scenarios based on location and magnitude of 2011, March the 11th, Tohoku earthquake with a magnitude Mw=9.1
+In this brief guide, a practical example for running ANTI-FASc is shown. 
+In this example, a set of slip distributions based on location and magnitude of 2011, March the 11th, Tohoku earthquake with a magnitude Mw=9.1, is generated.
 
 
 # 1 - Mesh
@@ -87,6 +87,189 @@ The magnitude bins and the rupture geometries (according to the selected scaling
     }
     }
 
+# 3 Run pyANTI-FASc
+
+Once the mesh is selected and the other configuration paramters are set through the input files, the whole process can be launched simply running the following command:
+
+	python antifasc_main.py
+
+ The output on the screen will allow the user to follow the different steps of the running and that everything is working. Below some details.
+
+ The software reads the input files and let the user know that the selected mesh discretization (nodes and cells) has been found. The mesh is then written in an inp format. 
+
+ 	reading input.json file
+	reading scaling_relationship.json file
+	Great! You already have nodes and cells, I'm just writing
+
+ Subsequently, the software starts the barycenter selection according to the selected application. As you can see in the example, only magnitude bins around the real magnitude of the event is used accordingly to the selected application (PTF). The output on the screen confirms that the two selected scaling laws have been used
+
+	Barycenter selection
+	Magnitude bin # 15 - Mw=8.8846
+	Magnitude bin # 16 - Mw=8.9588
+	Magnitude bin # 17 - Mw=9.0260
+	Magnitude bin # 18 - Mw=9.0869
+	Magnitude bin # 19 - Mw=9.1419
+	Barycenter selection (PTF)
+	Magnitude bin # 15 - Mw=8.8846
+	Magnitude bin # 16 - Mw=8.9588
+	Magnitude bin # 17 - Mw=9.0260
+	Magnitude bin # 18 - Mw=9.0869
+	Magnitude bin # 19 - Mw=9.1419
+	Mw: [8.8846 8.9588 9.026  9.0869 9.1419]
+	Scaling names: ['Murotani', 'Strasser']
+
+After that, the rupture areas computation starts, for each bin of magnitude and each scaling law. For each of these classes the output on the screen indicates how many rupture areas have been computed. Finally the rupture areas are written in temporary output files that will be then  used as input for the slip distribution defintions
+	
+ 	Rupturing area computation
+	Magnitude bin # 15 - Mw=8.8846
+	Magnitude bin # 16 - Mw=8.9588
+	Magnitude bin # 17 - Mw=9.0260
+	Magnitude bin # 18 - Mw=9.0869
+	Magnitude bin # 19 - Mw=9.1419
+	Rupturing areas computed!
+	Mw=8.8846, Name scaling: Murotani, N=36, N_all=36
+	Mw=8.8846, Name scaling: Strasser, N=40, N_all=40
+	Mw=8.9588, Name scaling: Murotani, N=31, N_all=31
+	Mw=8.9588, Name scaling: Strasser, N=36, N_all=36
+	Mw=9.026, Name scaling: Murotani, N=26, N_all=26
+	Mw=9.026, Name scaling: Strasser, N=33, N_all=33
+	Mw=9.0869, Name scaling: Murotani, N=23, N_all=23
+	Mw=9.0869, Name scaling: Strasser, N=29, N_all=29
+	Mw=9.1419, Name scaling: Murotani, N=16, N_all=16
+	Mw=9.1419, Name scaling: Strasser, N=25, N_all=25
+	Writing Output
+	Magnitude bin # 15 - Mw=8.8846
+	Magnitude bin # 16 - Mw=8.9588
+	Magnitude bin # 17 - Mw=9.0260
+	Magnitude bin # 18 - Mw=9.0869
+	Magnitude bin # 19 - Mw=9.1419
+
+ The slip distributions will be then computed and the screen output lets the user know within each class the software is working
+
+ 	Computing slip distributions for the homogeneous and variable rigidity cases
+	
+ 	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_8846/Murotani
+ 	starting ...
+ 	Number of scenarios is         180
+	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_8846/Strasser
+ 	starting ...
+ 	Number of scenarios is         200
+	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Murotani
+ 	starting ...
+ 	Number of scenarios is         155
+	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Strasser
+ 	starting ...
+ 	Number of scenarios is         180
+	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Murotani
+ 	starting ...
+ 	Number of scenarios is         130
+	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Strasser
+ 	starting ...
+ 	Number of scenarios is         165
+	.......
+
+ It is worth to highlight that the number of scenarios, that is the number of slip distributions is always 5 times the number of selected areas as set in the input configuration file.
+
+ When the process is over, The output will be finally organized as shown in the following tree:
+
+ 	output
+	├── Tohoku_test_M90_E14237_N3832_slip_KuJ
+	│   ├── homogeneous_mu
+	│   │   ├── 8_8846
+	│   │   │   ├── Murotani
+	│   │   │   │   ├── Slip4HySea00004_001.dat
+	│   │   │   │   ├── Slip4HySea00004_002.dat
+	│   │   │   │   ├── Slip4HySea00004_003.dat
+	│   │   │   │   ├── Slip4HySea00004_004.dat
+	│   │   │   │   ├── Slip4HySea00004_005.dat
+	│   │   │   │   ├── Slip4HySea00007_001.dat
+	│   │   │   │   ├── Slip4HySea00007_002.dat
+	│   │   │   │   ├── Slip4HySea00007_003.dat
+	│   │   │   │   ├── Slip4HySea00007_004.dat
+	│   │   │   │   ├── Slip4HySea00007_005.dat
+	│   │   │   │   ├── Slip4HySea00008_001.dat
+	│   │   │   │   ├── Slip4HySea00008_002.dat
+	│   │   │   │   ├── Slip4HySea00008_003.dat
+	│   │   │   │   ├── Slip4HySea00008_004.dat
+	│   │   │   │   ├── Slip4HySea00008_005.dat
+	│   │   │   │   ├── Slip4HySea00023_001.dat
+	│   │   │   │   ├── Slip4HySea00023_002.dat
+	│   │   │   │   ├── Slip4HySea00023_003.dat
+	│   │   │   │   ├── Slip4HySea00023_004.dat
+	│   │   │   │   ├── Slip4HySea00023_005.dat
+	│   │   │   │   ├── Slip4HySea00027_001.dat
+	│   │   │   │   ├── Slip4HySea00027_002.dat
+	│   │   │   │   ├── Slip4HySea00027_003.dat
+	│   │   │   │   ├── Slip4HySea00027_004.dat
+	│   │   │   │   ├── Slip4HySea00027_005.dat
+ 	.............................................
+
+The Slip4HySea* files are in the standard format used as input by the software [Tsunami-HySea](https://edanya.uma.es/hysea/):
+
+	 LON1     LAT1    DEPTH1(km)      LON2    LAT2    DEPTH2(km)      LON3    LAT3    DEPTH3(km)      RAKE    SLIP(m)
+	  142.209106   36.309288    7.494581  142.289078   36.401661    7.454205  142.143066   36.442127   10.402809   90.000000    7.256678
+	  142.209106   36.309288    7.494581  142.336136   36.256641    5.620936  142.289078   36.401661    7.454205   90.000000    7.095560
+	  142.289078   36.401661    7.454205  142.223038   36.534504   10.362430  142.143066   36.442127   10.402809   90.000000    6.840256
+	  142.209106   36.309288    7.494581  142.143066   36.442127   10.402809  142.074631   36.344494   10.356820   90.000000    7.429152
+	  142.209106   36.309288    7.494581  142.275635   36.170479    5.620936  142.336136   36.256641    5.620936   90.000000    6.319403
+	  142.336136   36.256641    5.620936  142.416107   36.349018    5.580560  142.289078   36.401661    7.454205   90.000000    6.555849
+	  142.369064   36.494038    7.413829  142.223038   36.534504   10.362430  142.289078   36.401661    7.454205   90.000000    6.771578
+	  142.223038   36.534504   10.362430  142.077026   36.574970   13.311030  142.143066   36.442127   10.402809   90.000000    5.898129
+	  142.074631   36.344494   10.356820  142.143066   36.442127   10.402809  142.008591   36.477337   13.265040   90.000000    6.484488
+	  142.209106   36.309288    7.494581  142.074631   36.344494   10.356820  142.143524   36.212208    7.409739   90.000000    7.508512
+	  142.209106   36.309288    7.494581  142.143524   36.212208    7.409739  142.275635   36.170479    5.620936   90.000000    6.776600
+	  142.275635   36.170479    5.620936  142.402664   36.117832    3.747290  142.336136   36.256641    5.620936   90.000000    5.396324
+	  142.463165   36.203999    3.747290  142.416107   36.349018    5.580560  142.336136   36.256641    5.620936   90.000000    6.399800
+	  142.416107   36.349018    5.580560  142.369064   36.494038    7.413829  142.289078   36.401661    7.454205   90.000000    6.580969
+	  142.369064   36.494038    7.413829  142.303024   36.626881   10.322050  142.223038   36.534504   10.362430   90.000000    6.556834
+   .........................................................................................................................................
+
+## 4 Post-process
+
+ The slip distribution can be easily plotted by simple personal scripts. In the folder [utils](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils) there is the script [plot_slip_distribution.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/plot_slip_distribution.py). It is launched with the following command:
+ 
+	python plot_slip_distribution.py
+
+ This script will ask which class the user wants to plot as shown in the example below:
+
+ 	Current folder is '../output/'
+
+	There is only one event directory
+
+	../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/
+	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/'
+
+	Choose your rigidity distribution directory between:
+	1. homogeneous_mu/
+	2. variable_mu/
+	Insert a number between 1 and 2:
+
+	2
+	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/'
+
+	Choose your magnitude directory between:
+	1. 8_8846/
+	2. 8_9588/
+	3. 9_0260/
+	4. 9_0869/
+	5. 9_1419/
+	Insert a number between 1 and 5:
+	
+	3
+	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/'
+	
+	Choose your scaling law directory between:
+	1. Murotani/
+	2. Strasser/
+	Insert a number between 1 and 2:
+	
+	1
+	Number of files:  130
+	[##############################]  100%
+
+ In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, two new files will be produced: one is the slip distribution in a standard geoJSON format (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00007_004.json)) and the other an interactive maps in HTML format (example [here]([docs/mappa.html](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00007_004.html))
+ 
+ The same example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). Within the Jupyter Notebook some intermediate plots are used to better describe some of the steps of the process, such as the barycenter selection, and the rupture area computation.
 
 ######### UNDER CONSTRUCTION   ###############
 
