@@ -995,7 +995,8 @@ def write_output(rupturing_areas, magnitudes, index_magnitude, spdf_all, name_sc
             
             os.chdir('..')
         os.chdir('..')
-        os.rename(folder_magnitude, os.path.join('..', namefolder,folder_magnitude))
+        shutil.move(folder_magnitude, os.path.join('..', namefolder, folder_magnitude))
+        #os.rename(folder_magnitude, os.path.join('..', namefolder,folder_magnitude))
 
 
 
