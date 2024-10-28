@@ -121,52 +121,61 @@ Once the mesh is selected and the other configuration parameters are set through
 After that, the rupture areas computation is performed, for each bin of magnitude and each scaling law. For each of these classes, the output on the screen indicates how many rupture areas have been computed. Finally the rupture areas are written in temporary output files that will be then  used as input for the slip distribution computation
 	
  	Rupturing area computation
-	Magnitude bin # 15 - Mw=8.8846
 	Magnitude bin # 16 - Mw=8.9588
 	Magnitude bin # 17 - Mw=9.0260
 	Magnitude bin # 18 - Mw=9.0869
-	Magnitude bin # 19 - Mw=9.1419
 	Rupturing areas computed!
-	Mw=8.8846, Name scaling: Murotani, N=36, N_all=36
-	Mw=8.8846, Name scaling: Strasser, N=40, N_all=40
-	Mw=8.9588, Name scaling: Murotani, N=31, N_all=31
-	Mw=8.9588, Name scaling: Strasser, N=36, N_all=36
-	Mw=9.026, Name scaling: Murotani, N=26, N_all=26
-	Mw=9.026, Name scaling: Strasser, N=33, N_all=33
-	Mw=9.0869, Name scaling: Murotani, N=23, N_all=23
-	Mw=9.0869, Name scaling: Strasser, N=29, N_all=29
-	Mw=9.1419, Name scaling: Murotani, N=16, N_all=16
-	Mw=9.1419, Name scaling: Strasser, N=25, N_all=25
+	Mw=8.9588, Name scaling: Murotani, N=10, N_all=10
+	Mw=8.9588, Name scaling: Strasser, N=11, N_all=11
+	Mw=9.026, Name scaling: Murotani, N=7, N_all=7
+	Mw=9.026, Name scaling: Strasser, N=10, N_all=10
+	Mw=9.0869, Name scaling: Murotani, N=7, N_all=7
+	Mw=9.0869, Name scaling: Strasser, N=7, N_all=7
 	Writing Output
-	Magnitude bin # 15 - Mw=8.8846
 	Magnitude bin # 16 - Mw=8.9588
 	Magnitude bin # 17 - Mw=9.0260
 	Magnitude bin # 18 - Mw=9.0869
-	Magnitude bin # 19 - Mw=9.1419
 
  The slip distributions is then finally computed and the screen standard output lets the user know within each class the software is working
 
  	Computing slip distributions for the homogeneous and variable rigidity cases
 	
- 	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_8846/Murotani
- 	starting ...
- 	Number of scenarios is         180
-	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_8846/Strasser
- 	starting ...
- 	Number of scenarios is         200
-	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Murotani
- 	starting ...
- 	Number of scenarios is         155
-	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Strasser
- 	starting ...
- 	Number of scenarios is         180
-	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Murotani
- 	starting ...
- 	Number of scenarios is         130
-	/home/scala/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Strasser
- 	starting ...
- 	Number of scenarios is         165
-	.......
+ 	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Murotani
+	 starting ...
+	 Number of scenarios is          50
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Strasser
+	 starting ...
+	 Number of scenarios is          55
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Murotani
+	 starting ...
+	 Number of scenarios is          35
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Strasser
+	 starting ...
+	 Number of scenarios is          50
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0869/Murotani
+	 starting ...
+	 Number of scenarios is          35
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0869/Strasser
+	 starting ...
+	 Number of scenarios is          35
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/8_9588/Murotani
+	 starting ...
+	 Number of scenarios is          50
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/8_9588/Strasser
+	 starting ...
+	 Number of scenarios is          55
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/Murotani
+	 starting ...
+	 Number of scenarios is          35
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/Strasser
+	 starting ...
+	 Number of scenarios is          50
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0869/Murotani
+	 starting ...
+	 Number of scenarios is          35
+	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0869/Strasser
+	 starting ...
+	 Number of scenarios is          35
 
  It is worth to highlight that the number of scenarios, that is the number of slip distributions is always 5 times the number of selected areas as set in the **input.json** configuration file.
 
@@ -175,7 +184,7 @@ After that, the rupture areas computation is performed, for each bin of magnitud
  	output
 	├── Tohoku_test_M90_E14237_N3832_slip_KuJ
 	│   ├── homogeneous_mu
-	│   │   ├── 8_8846
+	│   │   ├── 8_9588
 	│   │   │   ├── Murotani
 	│   │   │   │   ├── Slip4HySea00004_001.dat
 	│   │   │   │   ├── Slip4HySea00004_002.dat
@@ -235,27 +244,25 @@ The Slip4HySea* files are in the standard format used as input by the software [
  	Current folder is '../output/'
 
 	There is only one event directory
-
+	
 	../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/
 	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/'
-
+	
 	Choose your rigidity distribution directory between:
 	1. homogeneous_mu/
 	2. variable_mu/
 	Insert a number between 1 and 2:
-
+	
 	2
 	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/'
-
-	Choose your magnitude directory between:
-	1. 8_8846/
-	2. 8_9588/
-	3. 9_0260/
-	4. 9_0869/
-	5. 9_1419/
-	Insert a number between 1 and 5:
 	
-	3
+	Choose your magnitude directory between:
+	1. 8_9588/
+	2. 9_0260/
+	3. 9_0869/
+	Insert a number between 1 and 3:
+	
+	2
 	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/'
 	
 	Choose your scaling law directory between:
@@ -263,8 +270,8 @@ The Slip4HySea* files are in the standard format used as input by the software [
 	2. Strasser/
 	Insert a number between 1 and 2:
 	
-	1
-	Number of files:  130
+	2
+	Number of files:  50
 	[##############################]  100%
 
  In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, two new files will be produced: one is the slip distribution in a standard geoJSON format (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00007_004.json)) while the other one is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00007_004.html)).
