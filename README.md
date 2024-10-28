@@ -21,7 +21,7 @@ The three modules can be summarized as follows
 
 This module includes:
     
-   - A mesh generator that generates input mesh file from a nodes and faces discretization. A set of pre-computed discretization of the main subducting slabs worldwide is also provided. These mesh discretizations are based on Slab 2.0. A plot of the available meshed subducting plates can be found [here](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467). These meshes are composed by triangular elements having sides in a range between 10 and 15 km.  
+   - A mesh generator that generates input mesh file from a nodes and faces discretization. A set of pre-computed discretization of the main subducting slabs worldwide is also provided. These mesh discretizations are based on [Slab 2.0](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467). These meshes are composed by triangular elements having sides in a range between 10 and 15 km.  The available modelled slabs, released with this version of the software is shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/map_of_slabs.png)
     
 
 2 - **Rupture areas computation**:
