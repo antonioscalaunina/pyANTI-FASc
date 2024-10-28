@@ -19,9 +19,9 @@ The three modules can be summarized as follows
 
 1- **Preprocess module** 
 
-This module includes:
-    
-   - A mesh generator that generates input mesh file from a nodes and faces discretization. A set of pre-computed discretization of the main subducting slabs worldwide is also provided. These mesh discretizations are based on [Slab 2.0](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467). These meshes are composed by triangular elements having sides in a range between 10 and 15 km.  The available modelled slabs, released with this version of the software is shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/map_of_slabs.png)
+This module includes a mesh generator that generates input mesh file from a nodes and faces discretization. A set of pre-computed discretization of the main subducting slabs worldwide is also provided. These mesh discretizations are based on [Slab 2.0](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467). These meshes are composed by triangular elements having sides in a range between 10 and 15 km.  The available modelled slabs, released with this version of the software is shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/map_of_slabs.png).
+
+On the selected meshes some preliminary processes are performed during the execution of this module, like the computation of the area of the elements, the definition of element-to-element connection and a preliminary estimation of the interdistance between the mesh nodes
     
 
 2 - **Rupture areas computation**:
@@ -31,6 +31,8 @@ This module computes a set of possible rupture geometry on the selected fault me
    - **Hazard**: it computes a large set of possible different rupture areas in all the prescribed magnitude bins to cover in a homogeneous way the whole provided meshed zone
          
    - **PTF**: it computes all the scenarios “compatible” with estimation and uncertainty of magnitude and location for a given earthquake
+
+The application selection, as well as the setting of the other parameters will be shown in more details in the proposed example and in the wiki documentation (currently under construction)
 
 
 3 - **k223d:** 
@@ -60,22 +62,22 @@ The most practical way to run the code in a Linux environment is to create a con
 
 The first command will download the installer while the other ones are used to run the installer and install conda to the latest version. During the installation the user will be asked to decide if the conda execution must be automatic every time a terminal is open. Such a choice is optional.
 
-Once miniconda is installed it will be sufficient to enter into the main folder and create the conda environement antifasc by typing:
-
+Once Miniconda is installed, simply navigate to the main folder and create the Conda environment antifasc by entering the following commands:
+    
     cd pyANTI-FASc
     conda env create -f ANTIFASc.yml
 
-at the end of installation you may enter into the environment typing
+at the end of installation you may enter into the environment typing the command:
 
     conda activate antifasc
 
-Alternatively, you can create the conda environment by typing:
+Alternatively, you can create the conda environment by using the following commands:
 
     conda create --name antifasc python=3.9
     conda activate antifasc
     pip install -r requirements.txt
 
-To compile the software k223d that represents the final module of the software it is necessary to have gfortran installed. If you don't have it can be installed easily with the following command:
+To compile the fortran software k223d that represents the final module of the software it is necessary to have *gfortran* installed. If you don't have it can be installed easily with the following command:
 
     sudo apt-get install gfortran
 
@@ -89,33 +91,33 @@ If everything worked you are now ready to have fun with pyANTIFASc (😉). Try a
 
 #### 2.1.2 Windows wsl
 
-If you use the wsl distribution on Windows to work in a virtual Ubuntu environment you can use the guide fo installation presented in the [section 2.1.1](#211-linux-environment). 
-To install the wsl distributions you might follow the instructions at this [link](https://learn.microsoft.com/en-us/windows/wsl/install). The easiest way is to open the Windows PowerShell and digit
+If you use the wsl distribution on Windows to work in a virtual Ubuntu environment you can use the same guide for installation just presented in the [section 2.1.1](#211-linux-environment). 
+To install the wsl distributions you might follow the instructions at this [link](https://learn.microsoft.com/en-us/windows/wsl/install). The easiest way is to open the Windows PowerShell and digit:
 
     wsl --install
 
-This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux. Once the wsl is installed all the instructions for Linux distributions are also valid
+This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux. Once the wsl is installed all the instructions for [Linux distributions](#211-linux-environment) can be used
 
 
 ### 2.2 Windows through conda GUI
 
- This installation is a bit more complicated than the one described for Linux and WSL environments but it will allow to run the code in a fully Windows environment, e.g. using a conda GUI, like Anaconda Navigator. To do that you should follow these steps as outlined in the next subsections.
+ This installation is a bit more complicated than the one described for Linux and WSL environments but it will allow to run the code in a fully Windows environment, e.g. using a conda GUI, like Anaconda Navigator. To do that you should follow the steps outlined in the next subsections.
 
 #### 2.2.1 Create the conda environment
 
-1 - Download the repository at the main page *https://github.com/antonioscalaunina/pyANTI-FASc/tree/main* or with the direct link *https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip* and unzip it.
+1 - Download the repository at the main page [https://github.com/antonioscalaunina/pyANTI-FASc/tree/main](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main) or with the direct link [https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip](https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip) and unzip it.
 
 2 - Open a PowerShell, within the Conda GUI you are using, and within the main folder of the repository type the following command:
 
     conda env create -f ANTIFASc.yml
 
-this command will create the conda environment antifasc (installing Python 3.9.16) and will install all the needed libraries and dependencies within it. Then enter into the environment typing
+this command creates the conda environment *antifasc* (installing Python 3.9.16 within it) and installs all the needed libraries and dependencies within it. Then enter into the environment by typing:
 
     conda activate antifasc
 
-or searching for the environment antifasc through the menu *Environments* of the GUI.
+or searching for the environment antifasc through the menu *Environments* of the Conda GUI.
 
-Alternatively, you can create the conda environment by typing:
+Alternatively, you can create the conda environment by typing the following commands in Conda GUI PowerShell:
 
     conda create --name antifasc python=3.9
     conda activate antifasc
@@ -125,7 +127,7 @@ Alternatively, you can create the conda environment by typing:
 
 The following steps will allow to download a fortran compiler for the Windows environment. This is necessary to compile the fortran module of the software.
 
-1 - At the webpage *https://sourceforge.net/projects/mingw/* download the MinGW - Minimalist GNU for Windows installer
+1 - At the webpage [https://sourceforge.net/projects/mingw/]([https://sourceforge.net/projects/mingw/]) download the MinGW - Minimalist GNU for Windows installer
 
 2 - Run the installer
 
