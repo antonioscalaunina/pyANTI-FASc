@@ -274,7 +274,7 @@ The Slip4HySea* files are in the standard format used as input by the software [
 	Number of files:  50
 	[##############################]  100%
 
- In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, two new files will be produced: one is the slip distribution in a standard geoJSON format (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00007_004.json)) while the other one is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00007_004.html)).
+ In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, two new files will be produced: one is the slip distribution in a standard geoJSON format (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00004_002.json)) while the other one is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00004_002.html)).
 
  
 
