@@ -101,7 +101,7 @@ This command will enable the features necessary to run WSL and install the Ubunt
 
 ### 2.2 Windows through conda GUI
 
- This installation is a bit more complicated than the one described for Linux and WSL environments but it will allow to run the code in a fully Windows environment, e.g. using a conda GUI, like Anaconda Navigator. To do that you should follow the steps outlined in the next subsections.
+ This installation is a bit more complicated than the one described for Linux and WSL environments but it will allow to run the code in a fully Windows environment, e.g. using a conda GUI, like Anaconda Navigator. This also allows to run the code through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). To do that you should follow the steps outlined in the next subsections.
 
 #### 2.2.1 Create the conda environment
 
@@ -133,7 +133,7 @@ The following steps will allow to download a fortran compiler for the Windows en
 
 3 - If the MinGW Installation Manager automatically opens at the end of the installation, close it.
 
-4 - Search for the MinGW Installation Manager among the available apps (e.g. through the Windows menu) and run it
+4 - Search for the MinGW Installation Manager among the available apps (e.g. through the Windows menu) and run it.
 
 5 - From the available menu select all the packages having **gcc-fortran** in the name
 
@@ -143,34 +143,34 @@ The following steps will allow to download a fortran compiler for the Windows en
 
 #### 2.2.3 Add the fortran compiler to the enviromental variables
 
-1 - Enter in Advanced system settings from This Pc menu. On *"This PC"* menu right-click button select *Properties* and then *Advanced system settings* 
+1 - Enter in Advanced system settings from This Pc menu: on *"This PC"* menu right-click button select *Properties* and then *Advanced system settings* 
 
 2 - Within the pop-up window that appears select *Enviromental Variables* and on the next window double-click on *Path* in the *System variables* menu 
 
-3 - Select *new* and add the folder C:\MinGW\bin (C:\ should be the standard position where MinGW is automatically installed, but it could be elsewhere!)
+3 - Select *new* and add the folder C:\MinGW\bin (**WARNING**: C:\ should be the standard position where MinGW is automatically installed, but it could be elsewhere!)
 
-4 - Repeat the step 3 to add the folders C:\MinGW and C:\MinGW\lib\gcc\mingw32\6.3.0\ (this should be the installed version, but if you install a different version the name of the last folder will change accordingly)
+4 - Repeat the step 3 to add the folders C:\MinGW and C:\MinGW\lib\gcc\mingw32\6.3.0\ (**WARNING**: 6.3.0 should be the installed version. However if you install a different version, the name of the last folder will change accordingly)
 
-5 - Click OK to close all the windows and restart your computer to make this modifications effective
+5 - Click OK to close all the windows and restart your computer to make this modifications effective.
 
 #### 2.2.4 Compile the k223d module
 
-1 - After restarting, first check if your fortran compiler is properly installed opening the Windows prompt and typing
+1 - After restarting, first check if your fortran compiler is properly installed opening the Windows prompt and typing:
 
     gfortran --version
 
-2 - If it is installed and correctly configured you should see a message like this
+2 - If it is installed and correctly configured you should see a message like this:
 
     GNU Fortran (MinGW.org GCC-6.3.0-1) 6.3.0
     Copyright (C) 2016 Free Software Foundation, Inc.
     This is free software; see the source for copying conditions.  There is NO
     warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-3 - Enter in the main folder of pyANTI-FASc and then move into the *src\k223d* folder doing
+3 - Enter in the main folder of pyANTI-FASc and then move into the *src\k223d* folder:
 
     cd src\k223d\
 
-4 - Compile the code and move the executable in the bin folder with the following commands
+4 - Compile the code and move the executable in the bin folder with the following commands:
 
     gfortran -c forparse.f90 utils.f90 lateration.f90 typedef_Win.f90 makepdf.f90 k223d.f90
     gfortran -o k223d.x forparse.o utils.o lateration.o typedef_Win.o makepdf.o k223d.o
@@ -189,7 +189,7 @@ To firstly install Homebrew open the terminal and run the following command:
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     brew update
 
-Through brew you might install gfortran and conda (miniconda distribution) with the following commands:
+Through brew, you might install gfortran and conda (miniconda distribution) with the following commands:
 
     brew install gcc
     brew install --cask miniconda
@@ -211,7 +211,8 @@ See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the ANTIFASc 
 
 #### 2.3.2 Conda and gfortran with MacPorts
 
-To firstly install MacPorts go the MacPorts [webpage](https://www.macports.org/install.php) and download the right version of installer for your OS, then launch the pkg and complete the installation following the instructions
+To firstly install MacPorts go the MacPorts [webpage](https://www.macports.org/install.php) and download the right version of installer for your OS. Then launch the *.pkg* and complete the installation following the instructions
+
 MacPorts requires Xcode and its Command Line Tools. You can install them via:
 
    xcode-select --install
@@ -248,12 +249,12 @@ See now section [2.3.3](#233-antifasc-on-mac-terminal) to complete the ANTIFASc 
 
 #### 2.3.3 ANTIFASc on MAC terminal
 
-After the installations described in the previous sub-sections the steps are very similar to the linux ones. Enter into the main folder and create the conda environment:
+After the installations described in the previous sub-sections the steps are very similar to the ones for linux. Enter into the main folder and create the conda environment:
 
     cd pyANTIFASc
     conda env create -f ANTIFASc.yml
 
-at the end of installation you may enter into the environment typing
+at the end of installation you may enter into the environment by typing:
 
     conda activate antifasc
 
@@ -271,6 +272,11 @@ Then compile k223d and copy the executable to the bin folder:
 
 If everything worked you are now ready to have fun with pyANTIFASc (😉). Try and run the [Example1_Tohoku](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) to start!
 
+### 2.4 Run the Jupyter Notebook
+
+Regardless of the operating system, the software can always be run through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). For example, you can install an IDE like [Visual Studio Code](https://code.visualstudio.com/download)  to run the Jupyter Notebook on Ubuntu, macOS, or Windows. 
+**IMPORTANT**: To ensure everything works correctly, it's essential to compile the Fortran code *k223d* using the appropriate compiler for your operating system, as outlined in the previous sections.
+
 
 ## 3 ACKNOWLEDGEMENTS
 
@@ -279,9 +285,6 @@ A special thanks to Stefano Lorito, Fabrizio Romano, Manuela Volpe, Hafize Basak
 Thanks to Roberto Basili, Francesco Emanuele Maesano, Mara Monica Tiberti and Gareth Davies for their precious contribution in providing detailed geometrical models for some of the slabs included in the database distributed along with this platform.
 
 Thanks to Shane Murphy and Andre Herrero for their valuable contribution in developing and training to use the softwares composing the third module of the platform  
-
-
-
 
 
 ## 4 BIBLIOGRAPHY
