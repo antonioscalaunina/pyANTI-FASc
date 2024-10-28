@@ -137,8 +137,8 @@ class Slab:
         
         for l, i in enumerate(self.index_magnitude):
 
-            if self.application == 'PTF':
-                print(f'Magnitude bin # {i} - Mw={self.Magnitude[i]:.4f}')
+            #if self.application == 'PTF':
+            print(f'Magnitude bin # {i} - Mw={self.Magnitude[i]:.4f}')
         
             for j in range(self.N_scaling):
                  if len(index_active[i][j])==0 or self.int_dist * self.LengthSL[i, j] < 0.5 * self.elem_size / 1e3:
