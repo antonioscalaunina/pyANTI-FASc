@@ -33,7 +33,7 @@ distance=0
 # pdf_variable
 # pdf variable=0 no rigidity variation - only stochastic Gaussian PDF
 # pdf variable=1 rigidity variation - Gaussian PDF to be combined with SPDF
-pdf variable=1
+pdf variable=0
 # seed pre-assigned
 # seed stochastic=0 seed for the stochastic has to be extracted (homogeneous case)
 # seed stochastic=1 seed for the stochastic is already in the seed_file (variable case)
