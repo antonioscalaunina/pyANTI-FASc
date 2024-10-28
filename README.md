@@ -127,7 +127,7 @@ Alternatively, you can create the conda environment by typing the following comm
 
 The following steps will allow to download a fortran compiler for the Windows environment. This is necessary to compile the fortran module of the software.
 
-1 - At the webpage [https://sourceforge.net/projects/mingw/]([https://sourceforge.net/projects/mingw/]) download the MinGW - Minimalist GNU for Windows installer
+1 - At the webpage [https://sourceforge.net/projects/mingw/](https://sourceforge.net/projects/mingw/) download the MinGW - Minimalist GNU for Windows installer
 
 2 - Run the installer
 
