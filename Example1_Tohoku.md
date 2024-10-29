@@ -44,7 +44,7 @@ The list of the slab in the database can be found [here](https://github.com/anto
  
 	"Magnitude_lb": 0.1,                    # Magnitude in a range [Mw-0.10 Mw+0.10] will be accounted, used only for "application": "PTF"
 	"Magnitude_ub": 0.1,
-        "hypo_baryc_distance": 1.0,             # Rupture barycenters at less than 1 Length form hypocenter will be used to define areas and slip distributions, used only for "application": PTF. The Lengthis inferred from scaling law for each Magnitude bin.
+        "hypo_baryc_distance": 1.0,             # Rupture barycenters at less than 1 Length form hypocenter will be used to define areas and slip distributions, used only for "application": PTF. The Length is inferred from scaling law for each Magnitude bin.
 	"minimum_bnd_distance": 0.25,           # This option (as well as the next one) is used to limit the number of rupture areas dependending on Magnitude (and Rupture areas extent). During the selection of rupture area barycenter, with this choice, the nodes closer than 0.25 times the Width to the mesh edge are discarded.
 	"minimum_interdistance": 0.1,           # With this choices, the distance between the selected rupture barycenters will be more than 0.1 times the Length. This will avoid to have very similar rupture areas and reduce the number of scenarios at largest magnitude bins (see Scala et al. 2020) 
 	}
