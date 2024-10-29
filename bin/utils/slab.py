@@ -548,7 +548,7 @@ class Slab:
             #plot barycenters
             _,s=plotutils.get_marker_size(self,ax,fig)
             #ax.plot(lon,lat,'ko',markersize=s,label='Barycenters')
-            ax.scatter(lon,lat,marker='o', color='black', edgecolor=None, s=s)
+            ax.scatter(lon,lat,marker='o', color='black', edgecolor=None, s=10*s)
         
         if self.application=='PTF':
             sh=s*300
@@ -688,7 +688,7 @@ class Slab:
 
         if self.application=='PTF':
             lon_0=ax.projection.proj4_params['lon_0']
-            ax.scatter(self.hypo_GEO[0]-lon_0,self.hypo_GEO[1], marker='*', color='yellow', edgecolor='black', s=s)
+            ax.scatter(self.hypo_GEO[0]-lon_0,self.hypo_GEO[1], marker='*', color='yellow', edgecolor='black', s=2*s)
         else:
             print('The application is Hazard, no hypocenter is specified')
         
