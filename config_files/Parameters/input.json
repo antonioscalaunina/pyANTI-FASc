@@ -16,7 +16,7 @@
 "Configure": {
 "application": "PTF",
 "shape": "Rectangle",
-"numb_stoch": 5,
+"numb_stoch": 2,
 "variable_mu": 1,
 "coupling_shallow_limit":1.0,
 "coupling_deep_limit":55.0,
