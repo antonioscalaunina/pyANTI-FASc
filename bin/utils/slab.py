@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import platform
 import numpy as np
+import random
 from tqdm import tqdm
 import scipy
 from scipy.linalg import lstsq
@@ -1120,12 +1121,8 @@ def run_homo(slab):
                     else:
                         string4file = str(i)
 
-                    if i <= 2:
-                        numb_gauss = 1
-                    elif 2 < i <= 4:
-                        numb_gauss = 2
-                    else:
-                        numb_gauss = 3
+                    numb_gauss=numb_gauss = random.randint(1, 3)
+
 
                     indexd = f"{eventid}_{string4file}"
                     with open(os.path.join(folder_out,'index_file.dat'), 'a') as file:
@@ -1237,12 +1234,7 @@ def run_var(slab):
                         else:
                             string4file = str(i)
 
-                        if i <= 2:
-                            numb_gauss = 1
-                        elif 2 < i <= 4:
-                            numb_gauss = 2
-                        else:
-                            numb_gauss = 3
+                        numb_gauss = random.randint(1, 3)
 
                         indexd = f"{eventid}_{string4file}"
                         with open(os.path.join(folder_out,'index_file.dat'), 'a') as file:
