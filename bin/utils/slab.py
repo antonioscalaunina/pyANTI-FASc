@@ -1041,7 +1041,7 @@ def create_directory(path):
         os.makedirs(path)
 
 def run_command(command):
-    subprocess.run(command, shell=True)
+    subprocess.run(f"{command} input=param.dat > output_file.log",shell=True)
     
 def run_command_Win(command,output_file):
     with open(output_file,'w') as outfile:
@@ -1092,7 +1092,7 @@ def run_homo(slab):
             #print(folder_out)
 
             # Copy necessary files
-            shutil.copy(os.path.join(main_dir,'bin','k223d.x'), folder_out)
+            #shutil.copy(os.path.join(main_dir,'bin','k223d.x'), folder_out) #commented by Antonio
             #shutil.copy(os.path.join(main_dir,'input_magnitude'), folder_out)
             shutil.copy(os.path.join(main_dir,'param_zone.dat'), folder_out)
             #shutil.copy(os.path.join(main_dir,'matrix_string.txt'), folder_out)
@@ -1134,10 +1134,10 @@ def run_homo(slab):
             current_os = platform.system()
             if current_os== 'Windows':
                 print(folder_out)
-                run_command_Win('k223d.x','output_file.log')
+                run_command_Win('k223d.exe','output_file.log')
             else:
                 print(folder_out)
-                run_command('./k223d.x input=param.dat > output_file.log')
+                run_command('k223d.x')
             
             #run_command(f'{path_ex} input=param.dat > output_file.txt')
             for file in quake_area_files:
@@ -1202,7 +1202,7 @@ def run_var(slab):
 
 
              # Copy necessary files
-            shutil.copy(os.path.join(main_dir,'bin','k223d.x'), folder_out)
+            #shutil.copy(os.path.join(main_dir,'bin','k223d.x'), folder_out) #commented by Antonio
             #shutil.copy(os.path.join(main_dir,'input_magnitude'), folder_out)
             shutil.copy(os.path.join(main_dir,'param_zone.dat'), folder_out)
             #shutil.copy(os.path.join(main_dir,'matrix_string.txt'), folder_out)
@@ -1245,10 +1245,10 @@ def run_var(slab):
             current_os = platform.system()
             if current_os== 'Windows':
                 print(folder_out)
-                run_command_Win('k223d.x','output_file.log')
+                run_command_Win('k223d.exe','output_file.log')
             else:
                 print(folder_out)
-                run_command('./k223d.x input=param.dat > output_file.txt')
+                run_command('k223d.x')
 
             for file in quake_area_files:
                 os.remove(os.path.join(folder_out,file))
