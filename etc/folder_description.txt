@@ -1,0 +1,1 @@
+Folder containing script to be run at the activation of the environment
