@@ -907,7 +907,7 @@ def read_mesh(Slab):
     else:
         nodes_plus = nodes.copy()
         nodes_plus[nodes[:, 0] < 0, 0] += 360
-        hull = alphashape.alphashape(nodes[:,[0,1]],alpha=0.3)
+        hull = alphashape.alphashape(nodes[:,[0,1]],alpha=0.75)
         boundary_points = np.array(hull.exterior.coords)  # Exclude the repeated last point
         #boundary_set = set(map(tuple, boundary_points))
         #bnd = [i for i, point in enumerate(nodes[:,[0,1]]) if tuple(point) in boundary_set]
