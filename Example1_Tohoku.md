@@ -276,6 +276,9 @@ The Slip4HySea* files are in the standard format used as input by the software [
 
  In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, two new files will be produced: one is the slip distribution in a standard geoJSON format (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00004_002.json)) while the other one is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00004_002.html)).
 
+As already outlined in the [README](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md), this example can be run through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). For example, you can install an IDE like [Visual Studio Code](https://code.visualstudio.com/download)  to run the Jupyter Notebook on Ubuntu, macOS, or Windows. 
+**IMPORTANT**: To ensure everything works correctly, it's essential to compile the Fortran code *k223d* using the appropriate compiler for your operating system, as outlined in the README.
+
  
 
    
