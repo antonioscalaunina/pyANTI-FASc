@@ -10,7 +10,6 @@ IMPORTANT: Please refer the repository and cite the DOI as indicated at the zeno
 
 Antonio Scala, Manuel Mojica, & rissclab-tester. (2024). antonioscalaunina/pyANTI-FASc: pyANTIFASc_1.0.0 (v1.0.0). Zenodo. *https://doi.org/10.5281/zenodo.13614657*
 
-![image](https://github.com/user-attachments/assets/696357ec-fd3f-4564-ba56-eaed81320cc9)
 
 A wiki documentation (currently under construction) will be soon available at this [link](https://github.com/antonioscalaunina/pyANTI-FASc/wiki)
 
