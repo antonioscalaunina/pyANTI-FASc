@@ -207,7 +207,7 @@ Alternatively, you can create the conda environment by typing the following comm
     cd pyANTI-FASc\bin\
     copy k223d.exe C:\Users\username\anaconda3\envs\antifasc\Scripts
 
-for other OS, the standalone *k223d.x*must be copied in the folder *bin*
+for other OS, the standalone *k223d.x* must be copied in the folder *bin*
 
     cd pyANTI-FASc/bin/
     copy k223d.x ~/anaconda3/envs/antifasc/bin
