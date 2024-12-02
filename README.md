@@ -107,9 +107,12 @@ This command will enable the features necessary to run WSL and install the Ubunt
 2 - Open a PowerShell, as shown in the image below 
 ![Anaconda Image](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Anaconda_image.png)
 
-3 - Within the Conda GUI you are using, and within the main folder of the repository type the following command:
+3 - Within the Conda GUI you are using, and within the main folder of the repository type the following commands as also shown in the figure:
 
+    cd pyANTI-FASc
     conda env create -f ANTIFASc.yml
+
+![Conda Image](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/conda_activate.jpg)
 
 this command creates the conda environment *antifasc* (installing Python 3.9.16 within it) and installs all the needed libraries and dependencies within it. Then enter into the environment by typing:
 
