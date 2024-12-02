@@ -78,7 +78,13 @@ Alternatively, you can create the conda environment by using the following comma
     conda activate antifasc
     pip install -r requirements.txt
 
-To compile the fortran software k223d that represents the final module of the software it is necessary to have *gfortran* installed. If you don't have it can be installed easily with the following command:
+Once the environment has been created and activated the fortran executable *k223d.x* available in the folder [pyANTI-FASc/bin](https://github.com/antonioscalaunina/pyANTI-FASc/bin/) must be copied among the executable scripts of the environment. It might be necessary to give the execution permission through the following commands:
+
+    cd ~/pyANTI-FASc/bin
+    cp k223d.x ~/miniconda3/envs/antifasc/bin/
+    chmod +x ~/miniconda3/envs/antifasc/bin/
+    
+Please note that if you are using a different conda distribution the folder of the environment might have a different name
 
     sudo apt-get install gfortran
 
