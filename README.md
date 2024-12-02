@@ -83,7 +83,7 @@ Alternatively, you can create the conda environment by using the following comma
     conda activate antifasc
     pip install -r requirements.txt
 
-Once the environment has been created and activated the fortran executable *k223d.x* available in the folder [pyANTI-FASc/bin](https://github.com/antonioscalaunina/pyANTI-FASc/bin/) must be copied among the executable scripts of the environment. It might be necessary to give the execution permission through the following commands:
+Once the environment has been created and activated the fortran executable *k223d.x* available in the folder [pyANTI-FASc/bin](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/bin) must be copied among the executable scripts of the environment. It might be necessary to give the execution permission through the following commands:
 
     cd ~/pyANTI-FASc/bin
     cp k223d.x ~/miniconda3/envs/antifasc/bin/
