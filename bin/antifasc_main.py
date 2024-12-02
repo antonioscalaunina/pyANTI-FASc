@@ -7,6 +7,8 @@
 #import libraries to use
 import time
 start_time = time.time()
+import warnings
+warnings.filterwarnings("ignore")
 
 import utils.slab as slab
 import matplotlib.pyplot as plt
