@@ -84,16 +84,6 @@ Once the environment has been created and activated the fortran executable *k223
     cp k223d.x ~/miniconda3/envs/antifasc/bin/
     chmod +x ~/miniconda3/envs/antifasc/bin/
     
-Please note that if you are using a different conda distribution the folder of the environment might have a different name
-
-    sudo apt-get install gfortran
-
-Then for compiling:
-
-    cd pyANTIFASc/src/k223d
-    make
-    cp k223d.x ../../bin
-
 If everything worked you are now ready to have fun with pyANTIFASc (😉). Try and run the [Example1_Tohoku](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) to start!
 
 #### 2.1.2 Windows wsl
