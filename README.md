@@ -82,7 +82,7 @@ Once the environment has been created and activated the fortran executable *k223
 
     cd ~/pyANTI-FASc/bin
     cp k223d.x ~/miniconda3/envs/antifasc/bin/
-    chmod +x ~/miniconda3/envs/antifasc/bin/
+    chmod +x ~/miniconda3/envs/antifasc/bin/k223d.x
     
 If everything worked you are now ready to have fun with pyANTIFASc (😉). Try and run the [Example1_Tohoku](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) to start!
 
@@ -104,7 +104,10 @@ This command will enable the features necessary to run WSL and install the Ubunt
 
 1 - Download the repository at the main page [https://github.com/antonioscalaunina/pyANTI-FASc/tree/main](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main) or with the direct link [https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip](https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip) and unzip it.
 
-2 - Open a PowerShell, within the Conda GUI you are using, and within the main folder of the repository type the following command:
+2 - Open a PowerShell, as shown in the image below 
+![Anaconda Image](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Anaconda_image.png)
+
+3 - Within the Conda GUI you are using, and within the main folder of the repository type the following command:
 
     conda env create -f ANTIFASc.yml
 
