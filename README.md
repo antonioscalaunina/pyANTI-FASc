@@ -176,7 +176,7 @@ If everything worked you are now ready to have fun with pyANTIFASc (😉). Try a
 
 1 - Download the repository at the main page [https://github.com/antonioscalaunina/pyANTI-FASc/tree/main](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main) or with the direct link [https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip](https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip) and unzip it.
 
-2 - Open a PowerShell, as shown in the image below 
+2 - Open the conda GUI and within that launch PowerShell, as shown in the image below: 
 ![Anaconda Image](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Anaconda_image.png)
 
 3 - Within the Conda GUI you are using, and within the main folder of the repository type the following commands as also shown in the figure:
