@@ -95,7 +95,7 @@ If everything worked you are now ready to have fun with pyANTIFASc (😉). Try a
 
 If you use a macOS you might create a terminal similar to the one that you can use on Linux through different package managers for macOS, which allow users to easily install and manage software packages from the command line of the Mac terminal. The two most popular package managers are Homebrew and MacPorts
 
-#### 2.2.1 Conda and gfortran with Homebrew
+#### 2.2.1 Conda with Homebrew
 
 To firstly install Homebrew open the terminal and run the following command:
 
@@ -116,7 +116,7 @@ and verify the installation checking the version:
 
 See now section [2.2.3](#223-antifasc-on-mac-terminal) to complete the ANTIFASc installation
 
-#### 2.2.2 Conda and gfortran with MacPorts
+#### 2.2.2 Conda with MacPorts
 
 To firstly install MacPorts go the MacPorts [webpage](https://www.macports.org/install.php) and download the right version of installer for your OS. Then launch the *.pkg* and complete the installation following the instructions
 
