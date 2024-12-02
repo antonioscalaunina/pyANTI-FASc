@@ -112,7 +112,7 @@ This command will enable the features necessary to run WSL and install the Ubunt
     cd pyANTI-FASc
     conda env create -f ANTIFASc.yml
 
-![Conda Image](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/conda_activate.jpg)
+![Conda Image](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/conda_activate.JPG)
 
 this command creates the conda environment *antifasc* (installing Python 3.9.16 within it) and installs all the needed libraries and dependencies within it. Then enter into the environment by typing:
 
