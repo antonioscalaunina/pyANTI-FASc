@@ -54,7 +54,7 @@ If you want to run the software using the wsl distribution on Windows you can in
 
     wsl --install
 
-This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux. Once the wsl is installed all the instructions for [Linux distributions](#211-linux-environment) can be used. This will give access to an Ubuntu terminal having most of the Linux functionalities. You might follow the instructions proposed in the following subsection.
+This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux. Once the wsl is installed all the instructions for [Linux distributions](#21-linux-environment) can be used. This will give access to an Ubuntu terminal having most of the Linux functionalities. You might follow the instructions proposed in the following subsection.
 
 
 ### 2.1 Linux environment
