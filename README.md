@@ -96,9 +96,9 @@ To install the wsl distributions you might follow the instructions at this [link
 This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux. Once the wsl is installed all the instructions for [Linux distributions](#211-linux-environment) can be used
 
 
-### 2.2 Windows through conda GUI
+### 2.2 Run ANTI-FASc through a conda GUI
 
- This installation is a bit more complicated than the one described for Linux and WSL environments but it will allow to run the code in a fully Windows environment, e.g. using a conda GUI, like Anaconda Navigator. This also allows to run the code through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). To do that you should follow the steps outlined in the next subsections.
+ The following steps will drive you through the installation needed to run the code using a conda GUI, like e.g. Anaconda Navigator. This also allows to easily run the code through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). To do that you should follow the steps outlined in the next subsections.
 
 #### 2.2.1 Create the conda environment
 
