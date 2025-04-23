@@ -18,6 +18,7 @@ from tqdm import tqdm
 import scipy
 from scipy.linalg import lstsq
 from scipy.spatial import Delaunay
+from scipy.spatial import ConvexHull
 from scipy.io import loadmat
 import cartopy.crs as ccrs
 
@@ -78,7 +79,10 @@ class Slab:
         print('reading '+ scaling_file.split('/')[-1] + ' file')
         read_scalingrel_file(self, scaling_file)
 
-        if self.Preprocess_logic:
+        if self.mesh_gen == 0:
+            mesh.faces_nodes_2_mesh_file(config_file)
+        elif self.mesh_gen == 1:
+            mesh.geojson2mesh(config_file)
             mesh.faces_nodes_2_mesh_file(config_file)
 
         print('reading mesh')
@@ -113,15 +117,19 @@ class Slab:
         """
         
         #Compute distances between barycenters and the slab boundary
-        p0, distanceJB=rupture.compute_distance2fault2D(self.bnd_mesh.copy(),self.barycenters_all.copy(),self.Sub_boundary_logic,self.Merc_zone,self.hemisphere)
+        if self.isboundary:
+            p0, distanceJB=rupture.compute_distance2fault2D(self.bnd_mesh.copy(),self.barycenters_all.copy(),self.Sub_boundary_logic,self.Merc_zone,self.hemisphere)
         # Initialize index_active as a list of lists
         index_active = [[None for _ in range(self.N_scaling)] for _ in range(len(self.Magnitude))]
         # Fill index_active with indices of barycenters separated enough from the boundary
         for i in range(len(self.Magnitude)):
             for j in range(self.N_scaling):  # 1 Murotani - 2 Strasser
-                index_active[i][j] = np.where(distanceJB > self.min_bnd_dist * self.WidthSL[i, j])[0]
+                if self.isboundary:
+                    index_active[i][j] = np.where(distanceJB > self.min_bnd_dist * self.WidthSL[i, j])[0]
+                else:
+                    index_active[i][j] = np.arange(len(self.barycenters_all.copy()))
         self.index_active = index_active
-
+        
 
     
     def select_barycenter2(self):
@@ -189,6 +197,7 @@ class Slab:
             barycenter = ind_aux
         
         self.barycenter = barycenter
+        #print(self.barycenter)
         self.ind_aux=ind_aux
 
    
@@ -220,6 +229,7 @@ class Slab:
             #self.Matrix_distance=Matrix_distance
         #else:
         self.Matrix_distance=mesh.matrix_distance_nolat2(self.nodes,self.zone_code)
+        #print(self.Matrix_distance)
     
 
 
@@ -230,6 +240,9 @@ class Slab:
         self._check_attribute('Matrix_distance')
         Area_tot, Area_cells=mesh.compute_area(self.cells,self.Matrix_distance)
         self.Area_cells=Area_cells*1e-6
+        #print(self.Area_cells)
+        #print(np.sum(self.Area_cells))
+    
 
 
 
@@ -721,6 +734,7 @@ def read_inputfile(Slab, config_file):
     
     zone_code = Param['acronym'] #Slab
     Merc_zone = Param['Merc_zone'] #Mercator projection zone
+    mesh_gen = Param['mesh_gen'] #Should mesh be generated?
     application = Param['Configure']['application'] #Hazard: All magnitude bins - all barycenters, PTF: Magnitude and location around estimated ones
     shape = Param['Configure']['shape'] #Rectangle: rectangular shape, Circle: circular shape
     elem_size = Param['element_size'] 
@@ -732,6 +746,7 @@ def read_inputfile(Slab, config_file):
     Slab.shape = shape
     Slab.elem_size = elem_size
     Slab.Fact_rigidity = Fact_rigidity
+    Slab.mesh_gen = mesh_gen
 
     Slab.int_dist=Param['Configure']['minimum_interdistance']
     Slab.hypo_baryc_dist=Param['Configure']['hypo_baryc_distance']
@@ -896,10 +911,11 @@ def read_mesh(Slab):
     name_filemesh = os.path.join(main_dir,'config_files','Mesh',f'{Slab.zone_code}_mesh_15km.inp')
     with open(name_filemesh) as fid: #mesh file to be checked
         nodes, cells, _,_,_ = mesh.read_mesh_file(fid)
+
     
     barycenters_all = mesh.find_barycenters(nodes, cells) #compute barycenter coordinates of each cell 
     hemisphere = mesh.get_hemisphere(nodes[:,1]) #get hemisphere for further computations
-
+    Slab.isboundary = True
     if Slab.Sub_boundary_logic:
         name_bnd = os.path.join(main_dir,'config_files','Mesh',f"{Slab.zone_code}_boundary.txt")#f"../config_files/Mesh/{Slab.zone_code}_boundary.txt"
         bnd_mesh = np.genfromtxt(name_bnd, skip_header=1)
@@ -908,12 +924,14 @@ def read_mesh(Slab):
         nodes_plus = nodes.copy()
         nodes_plus[nodes[:, 0] < 0, 0] += 360
         hull = alphashape.alphashape(nodes[:,[0,1]],alpha=0.75)
-        boundary_points = np.array(hull.exterior.coords)  # Exclude the repeated last point
-        #boundary_set = set(map(tuple, boundary_points))
-        #bnd = [i for i, point in enumerate(nodes[:,[0,1]]) if tuple(point) in boundary_set]
-        #bnd_mesh = nodes[bnd]
-        nodes_dict = {tuple(node[:2]): node[2] for node in nodes}
-        bnd_mesh = np.array([list(point) + [nodes_dict[tuple(point)]] for point in boundary_points])
+        if isinstance(hull,Polygon):
+            boundary_points = np.array(hull.exterior.coords)  # Exclude the repeated last point
+            nodes_dict = {tuple(node[:2]): node[2] for node in nodes}
+            bnd_mesh = np.array([list(point) + [nodes_dict[tuple(point)]] for point in boundary_points])
+        else:
+            Slab.isboundary = False
+            print('WARNING: Too irregular mesh to find boundary: distance from boundary will not be taken into account!')
+        
     
     
     if Slab.Stress_drop_logic:
@@ -947,8 +965,9 @@ def read_mesh(Slab):
     np.savetxt(name_filemu, mu_all, fmt="%.6f")
     
     
-    #add other attributes to the Slab instance  
-    Slab.bnd_mesh=bnd_mesh
+    #add other attributes to the Slab instance
+    if Slab.isboundary:  
+        Slab.bnd_mesh=bnd_mesh
     Slab.nodes=nodes
     Slab.cells=cells
     Slab.barycenters_all=barycenters_all
@@ -1154,8 +1173,8 @@ def run_homo(slab):
         create_directory(os.path.join(main_dir,'output'))
         shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
         shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
-        #for file in [ 'input_magnitude']:
-            #os.remove(os.path.join(main_dir,file))
+        for file in [ 'input_magnitude']:
+            os.remove(os.path.join(main_dir,file))
 
         for file in os.listdir(main_dir):
             if file.endswith('.txt') or file.endswith('.dat'):
