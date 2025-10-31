@@ -33,7 +33,7 @@ This allows you to run Docker commands without sudo.
 git clone https://github.com/antonioscalaunina/pyANTI-FASc.git
 cd pyANTI-FASc
 ```
-If you are using Windows Power shell you have to be sure that git is installed. Otherwise you can download the zipped code [here](https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip)
+If you are using Windows PowerShell you have to be sure that git is installed. Otherwise you can download the zipped code [here](https://github.com/antonioscalaunina/pyANTI-FASc/archive/refs/heads/main.zip)
 
 ## 3️⃣ Build the Docker image
 
