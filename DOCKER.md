@@ -9,11 +9,11 @@ This guide provides all instructions to install Docker Desktop (or Docker on Lin
 ### Windows + WSL
 1. Download Docker Desktop: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)  
 2. During installation, **enable WSL2 integration** (if you want to run it on WSL2 distribution on Windows) 
-3. Launch Docker Desktop and ensure it is running
+3. Launch Docker Desktop and ensure **it is running**.
 
 ### Mac
 1. Download Docker Desktop: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)  
-2. Install and launch Docker Desktop
+2. Install and **launch Docker Desktop**
 
 ### Linux (Ubuntu)
 ```bash
@@ -62,7 +62,13 @@ docker run -it --rm -p 8888:8888 -v ${PWD}:/app pyantifasc-jupyter
 docker run -it --rm -p 8888:8888 -v $(pwd):/app pyantifasc-jupyter
 ```
 
-Make sure you are in the main folder of the software.
+Make sure you are in the main folder of the software. After building the Docker image, you can always run it again without rebuilding, as long as Docker Desktop is running.
+
+In this case, you may verify that the image is available with the command:
+
+```
+docker images
+```
 
 ## 5️⃣ Access the Jupyter Notebook
 The terminal will show a URL with a token, for example:
