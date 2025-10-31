@@ -81,7 +81,9 @@ Copy the URL including the token into your browser to access the notebook.
 
 The token ensures a secure connection and is required unless disabled.
 
-All repository files will be accessible and editable from the Notebook.
+All repository files will be accessible and editable from the Notebook. 
+
+**The Jupyter interface opens at the root of the repository, so to start working you need to navigate into the `bin` folder and open `antifasc_main.ipynb`**
 
 Any generated outputs (GeoJSON, PDFs, reports) will be immediately available in your local folder, without manual copying.
 
