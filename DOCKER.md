@@ -8,7 +8,7 @@ This guide provides all instructions to install Docker Desktop (or Docker on Lin
 
 ### Windows + WSL
 1. Download Docker Desktop: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)  
-2. During installation, **enable WSL2 integration** (if you want to run it on WSL2 distribution on Windows) 
+2. Run the installer. During installation, **enable WSL2 integration** (if you want to run it on WSL2 distribution on Windows) 
 3. Launch Docker Desktop and ensure **it is running**.
 
 ### Mac
