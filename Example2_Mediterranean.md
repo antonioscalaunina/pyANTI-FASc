@@ -17,8 +17,8 @@ If you use this service, please cite: [https://doi.org/10.13127/efsm20/meshes](h
 Figure 1 shows a screenshot of some of the meshed faults available within the EFSM20 database.
 
 
-![Map of the subducting plate meshes available in the current version of pyANTI-FASc](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/map_of_slabs.png)
-*Figure 1 - Map of the subducting plate meshes available in the current version of pyANTI-FASc*
+![Screenshot of EFSM mesh database imported within QGis]([https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/map_of_slabs.png](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis.jpg))
+*Figure 1 - Screenshot of EFSM mesh database imported within QGis*
 
 
 # 2 - Input files
