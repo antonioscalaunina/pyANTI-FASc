@@ -17,7 +17,7 @@ If you use this service, please cite: [https://doi.org/10.13127/efsm20/meshes](h
 Figure 1 shows a screenshot of some of the meshed faults available within the EFSM20 database.
 
 
-![Screenshot of EFSM mesh database imported within QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis.jpg))](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis.jpg))
+![Screenshot of EFSM mesh database imported within QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis.jpg)
 *Figure 1 - Screenshot of EFSM mesh database imported within QGis*
 
 
