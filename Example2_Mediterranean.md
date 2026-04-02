@@ -29,19 +29,14 @@ This file [input_Sicily.json](https://github.com/antonioscalaunina/pyANTI-FASc/t
 
 Here below the important settings to be managed by the user are shown. **Look carefully to the comments besides the parameters**. The parameters not shown in this example might be left unmodified. Their use and functionality will be fixed in next releases and better described in [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) currently under construction.
 
-	{"zone_name": "ITCF00G",      # Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as shown [here]
-	"Merc_zone": 54,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
-        "acronym": "KuJ",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database. 
+	{"zone_name": "ITCF00G",      # Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as within the `utils/sz_slabs/' folder as shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json)
+	"Merc_zone": 33,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
+        "acronym": "ITC",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database. 
 
-The list of the slab in the database can be found [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/slabs_database) 
+We propose a run in "Hazard" mode (see below). All the possible slip distributions with optimized number of rupture areas decreasing with magnitude. The section event can be hence left unmodified
        	
-	"Event": {
-	"Name": "Tohoku_test",                    # Name of the test. It is used to define the output folder name
-	"Hypo_LonLat" : [142.369, 38.322],        # Epicenter of the event
-	"Magnitude" : 9.0                         # Magnitude of the event
-	},
 	"Configure": {
-	"application": "PTF",                     # This application restricts the computed scenarios to a range of magnitude and location around predefined values
+	"application": "Hazard",                     # This application restricts the computed scenarios to a range of magnitude and location around predefined values
 	"shape": "Rectangle",                     # This choice allows to compute scenarios with aspect ratio L/W preserved as prescribed by the selected scaling law. The other possible choice is "Circle". More details soon in the Wiki Documentation
 	"numb_stoch": 5,                          # Number of stochastic slip for each rupture areas
 	"variable_mu": 1,                         # 1 means that also the distributions with variable rigidity will be computed. 0 for computing only the case with homogeneous rigidity
@@ -50,11 +45,9 @@ The list of the slab in the database can be found [here](https://github.com/anto
 
 
  
-	"Magnitude_lb": 0.1,                    # Magnitude in a range [Mw-0.10 Mw+0.10] will be accounted, used only for "application": "PTF"
-	"Magnitude_ub": 0.1,
-        "hypo_baryc_distance": 1.0,             # Rupture barycenters at less than 1 Length form hypocenter will be used to define areas and slip distributions, used only for "application": PTF. The Length is inferred from scaling law for each Magnitude bin.
-	"minimum_bnd_distance": 0.25,           # This option (as well as the next one) is used to limit the number of rupture areas dependending on Magnitude (and Rupture areas extent). During the selection of rupture area barycenter, with this choice, the nodes closer than 0.25 times the Width to the mesh edge are discarded.
-	"minimum_interdistance": 0.1,           # With this choices, the distance between the selected rupture barycenters will be more than 0.1 times the Length. This will avoid to have very similar rupture areas and reduce the number of scenarios at largest magnitude bins (see Scala et al. 2020) 
+	
+	"minimum_bnd_distance": 0.1,           # This option (as well as the next one) is used to limit the number of rupture areas dependending on Magnitude (and Rupture areas extent). During the selection of rupture area barycenter, with this choice, the nodes closer than 0.25 times the Width to the mesh edge are discarded.
+	"minimum_interdistance": 0.2,           # With this choices, the distance between the selected rupture barycenters will be more than 0.1 times the Length. This will avoid to have very similar rupture areas and reduce the number of scenarios at largest magnitude bins (see Scala et al. 2020) 
 	}
 	}
 
