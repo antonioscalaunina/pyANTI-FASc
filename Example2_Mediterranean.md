@@ -317,35 +317,35 @@ After that, the rupture areas computation is performed (a waiting bar informs th
 	│   │       ├── Slip4HySea00030_000.dat
 	│   │       ├── Slip4HySea00031_000.dat
 	.............................................
-    └── 7_5000
-        └── WellsCopp1994_Normal
-            ├── output_file.log
-            ├── Slip4HySea00005_001.dat
-            ├── Slip4HySea00005_001.json
-            ├── Slip4HySea00005_002.dat
-            ├── Slip4HySea00005_002.json
-            ├── Slip4HySea00005_003.dat
-            ├── Slip4HySea00005_003.json
-            ├── Slip4HySea00005_004.dat
-            ├── Slip4HySea00005_004.json
-            ├── Slip4HySea00005_005.dat
-            ├── Slip4HySea00005_005.json
-            ├── Slip4HySea00007_001.dat
-            ├── Slip4HySea00007_001.json
-            ├── Slip4HySea00007_002.dat
-            ├── Slip4HySea00007_002.json
-            ├── Slip4HySea00007_003.dat
-            ├── Slip4HySea00007_003.json
-            ├── Slip4HySea00007_004.dat
-            ├── Slip4HySea00007_004.json
-            ├── Slip4HySea00007_005.dat
-            ├── Slip4HySea00007_005.json
-            ├── Slip4HySea00011_001.dat
-            ├── Slip4HySea00011_001.json
-            ├── Slip4HySea00011_002.dat
-            ├── Slip4HySea00011_002.json
-            ├── Slip4HySea00011_003.dat
-            ├── Slip4HySea00011_003.json	
+	    └── 7_5000
+	        └── WellsCopp1994_Normal
+	            ├── output_file.log
+	            ├── Slip4HySea00005_001.dat
+	            ├── Slip4HySea00005_001.json
+	            ├── Slip4HySea00005_002.dat
+	            ├── Slip4HySea00005_002.json
+	            ├── Slip4HySea00005_003.dat
+	            ├── Slip4HySea00005_003.json
+	            ├── Slip4HySea00005_004.dat
+	            ├── Slip4HySea00005_004.json
+	            ├── Slip4HySea00005_005.dat
+	            ├── Slip4HySea00005_005.json
+	            ├── Slip4HySea00007_001.dat
+	            ├── Slip4HySea00007_001.json
+	            ├── Slip4HySea00007_002.dat
+	            ├── Slip4HySea00007_002.json
+	            ├── Slip4HySea00007_003.dat
+	            ├── Slip4HySea00007_003.json
+	            ├── Slip4HySea00007_004.dat
+	            ├── Slip4HySea00007_004.json
+	            ├── Slip4HySea00007_005.dat
+	            ├── Slip4HySea00007_005.json
+	            ├── Slip4HySea00011_001.dat
+	            ├── Slip4HySea00011_001.json
+	            ├── Slip4HySea00011_002.dat
+	            ├── Slip4HySea00011_002.json
+	            ├── Slip4HySea00011_003.dat
+	            ├── Slip4HySea00011_003.json	
 	
 For smaller magnitudes not enough cells are defined to build stochastic slip distributions and homogeneous (or modulated by rigidity) slip distributions are computed with file names `Slip4HySeaXXXXX_000.dat`. Those files are in the standard format used as input by the software [Tsunami-HySea](https://edanya.uma.es/hysea/) which is one of the most widely used tsunami simulators within the community. For larger magnitude also geojson files are computed and the second index indicated the numbering of stochastic distributions for each rupture area. Here below an example for one of the `Slip4HySeaXXXXX_00Y.dat` file
 
@@ -474,7 +474,7 @@ A single scaling law is defined:
 
 
 
-Within the selected folder, for each Slip4Hysea*.dat file, a new file will be produced that is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00136_005.html)). Download it and open within a browser to visualize the interactive map
+Within the selected folder, for each Slip4Hysea*.dat file, a new file will be produced that is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00136_005.html)). 
 
 As already outlined in the [README](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md), this example can be run through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). For example, you can install an IDE like [Visual Studio Code](https://code.visualstudio.com/download)  to run the Jupyter Notebook on Ubuntu, macOS, or Windows. 
 **IMPORTANT**: To ensure everything works correctly, it's essential to properly install all the needed components as outlined in the README.
