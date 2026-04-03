@@ -1,4 +1,4 @@
-# EXAMPLE 1 Simulation in the Mediterranean (still incomplete)
+# EXAMPLE 1 Simulation in the Mediterranean
 ## from EFSM20 services
 
 In this brief guide, a practical example to run a pyANTI-FASc application is shown. 
