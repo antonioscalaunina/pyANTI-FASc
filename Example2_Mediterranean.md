@@ -2,6 +2,7 @@
 
 In this brief guide, a practical example to run a pyANTI-FASc application is shown. 
 In this example, a set of slip distributions simulating an earthquake offshore Sicily, southern Italy, is generated.
+
 👉 The final output consists of thousands of stochastic slip distributions ready for tsunami simulations.
 
 The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main_Ex2.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb). 
