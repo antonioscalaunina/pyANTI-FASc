@@ -8,7 +8,6 @@ The test-case shown in this example is also run through the Jupyter Notebook [an
 
 This example demonstrates how to generate stochastic slip distributions for an offshore Sicily fault system using EFSM20 mesh data and the Hazard application mode.
 
-***DISCLAIMER:***
 > ⚠️ **Performance note**  
 > This notebook includes intermediate plots to illustrate key steps (e.g., barycenter selection and rupture area computation), but it is significantly slower than running the equivalent Python script [antifasc_main.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.py).
 
@@ -43,7 +42,7 @@ Here below the important settings to be managed by the user are shown. **Look ca
 	"mesh_gen": 1,           
 	"rake": -90,
 
-If the "mesh_gen" option is set to 1, a GeoJSON file containing the mesh is expected.
+If the `mesh_gen` option is set to 1, a GeoJSON file containing the mesh is expected.
 
 The file name must be consistent with the "zone_name" (e.g., zone_name_mesh.json) and it should be located in `utils/sz_slabs` (see [example](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json in the repository)).
 
@@ -352,7 +351,7 @@ After that, the rupture areas computation is performed (a waiting bar informs th
 	            ├── Slip4HySea00011_003.dat
 	            ├── Slip4HySea00011_003.json	
 	
-For smaller magnitudes not enough cells are defined to build stochastic slip distributions and homogeneous (or modulated by rigidity) slip distributions are computed with file names `Slip4HySeaXXXXX_000.dat`. Those files are in the standard format used as input by the software [Tsunami-HySea](https://edanya.uma.es/hysea/) which is one of the most widely used tsunami simulators within the community. For larger magnitude also geojson files are computed and the second index indicated the numbering of stochastic distributions for each rupture area. Here below an example for one of the `Slip4HySeaXXXXX_00Y.dat` file
+For smaller magnitudes not enough cells are defined to build stochastic slip distributions and homogeneous (or modulated by rigidity) slip distributions are computed with file names `Slip4HySeaXXXXX_000.dat`. Those files are in the standard format used as input by the software [Tsunami-HySea](https://edanya.uma.es/hysea/) which is one of the most widely used tsunami simulators within the community. For larger magnitude also GeoJSON files are computed and the second index indicated the numbering of stochastic distributions for each rupture area. Here below an example for one of the `Slip4HySeaXXXXX_00Y.dat` file
 
 	  LON1     LAT1    DEPTH1(km)      LON2    LAT2    DEPTH2(km)      LON3    LAT3    DEPTH3(km)      RAKE    SLIP(m)
 	   12.869199   38.554981    8.857142   12.812249   38.546745    8.857142   12.850728   38.512363   11.142860  -90.000000    9.104819
@@ -382,7 +381,7 @@ For smaller magnitudes not enough cells are defined to build stochastic slip dis
 
 ## 4 Post-process
 
- The slip distributions can be easily plotted by simple personal scripts. The geojson files can be uploaded to Qgis (see Figure 2) or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/)) 
+ The slip distributions can be easily plotted by simple personal scripts. The GeoJSON files can be uploaded to Qgis (see Figure 2) or to whatever webservice using the GeoJSON standard (e.g. [kepler.gl/](https://kepler.gl/)) 
 
 ![Screenshot of a slip distributions imported to QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis2.jpg)
 *Figure 2 - Screenshot of a slip distributions imported to QGis* 
