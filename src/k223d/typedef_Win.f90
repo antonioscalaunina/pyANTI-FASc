@@ -522,7 +522,7 @@ do i = 1,3
        read(13,*) str
 enddo
 ! read element to vertices and ! build a matrix for the HySea inputs
-rake=90.
+! rake=90.
 do i = 1,amesh%Ncells
        read(13,*) id,amesh%cell(i,1),amesh%cell(i,2),amesh%cell(i,3)
        amesh%HySea(i,1)=amesh%lon(amesh%cell(i,1))
@@ -534,8 +534,20 @@ do i = 1,amesh%Ncells
        amesh%HySea(i,7)=amesh%lon(amesh%cell(i,3))
        amesh%HySea(i,8)=amesh%lat(amesh%cell(i,3))
        amesh%HySea(i,9)=-amesh%pz(amesh%cell(i,3))/1000
-       amesh%HySea(i,10)=rake
+!       amesh%HySea(i,10)=rake
 enddo
+do i = 1,4
+       read(13,*) str
+enddo
+str = adjustl(str)
+if (str(1:8) .eq. "*INITIAL") then
+        do i = 1,amesh%Ncells
+                read(13,*) id,rake
+                amesh%HySea(i,10)=rake
+        enddo
+else
+    amesh%HySea(:,10)=90.
+endif
 print*,id,amesh%cell(amesh%Ncells,1),amesh%cell(amesh%Ncells,2),amesh%cell(amesh%Ncells,3)
 close(13)
 

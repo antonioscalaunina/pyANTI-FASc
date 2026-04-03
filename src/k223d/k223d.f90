@@ -13,7 +13,7 @@ implicit none
   integer :: merc_zone, ii
   real :: dx,mu,rmax,rmin,sd, slip_aux ! moment,mag,
 
-  character (len=20) :: fnamef, string_aux
+  character (len=30) :: fnamef, string_aux, geojson_file
   character (len=3) :: geo_zone
   character*200 :: index_local
   real :: nuc_ptx,nuc_pty,nuc_ptz  !nucleation location (x,y,z)
@@ -265,10 +265,36 @@ amesh%slip = slipout
   file_out=trim(file_out)
   open(15,file=file_out,form='formatted')
   write(15,*) "LON1     LAT1    DEPTH1(km)      LON2    LAT2    DEPTH2(km)      LON3    LAT3    DEPTH3(km)      RAKE    SLIP(m)"
+  geojson_file = 'Slip4HySea' // trim(amesh%index_string(ii)) // '.json'
+geojson_file = trim(geojson_file)
+open(16, file=geojson_file, form='formatted')
+write(16,*) '{'
+write(16,*) '  "type": "FeatureCollection",'
+write(16,*) '  "features": ['
   do i=1,amesh%QuakeElemNo
      write(15,"(11F12.6)") (amesh%HySea(amesh%QuakeElem(i),j), j=1,10), amesh%slip(amesh%QuakeElem(i))
+     write(16,'(A)') '    { "type": "Feature",'
+     write(16,'(A)') '      "properties": {'
+     write(16,'(A,F8.2,A,F10.6,A)') '"rake": ',amesh%HySea(amesh%QuakeElem(i),10), ', "slip": ', &
+             amesh%slip(amesh%QuakeElem(i)), ' },'
+     write(16,'(A)') '      "geometry": {'
+     write(16,'(A)') '      "type": "Polygon",'
+     write(16,'(A)') '      "coordinates": [ ['
+     write(16,'("[",F10.6,",",F10.6,"," F10.6,"],")') (amesh%HySea(amesh%QuakeElem(i),j), j=1,3)
+     write(16,'("[",F10.6,",",F10.6,"," F10.6,"],")') (amesh%HySea(amesh%QuakeElem(i),j), j=4,6)
+     write(16,'("[",F10.6,",",F10.6,"," F10.6,"],")') (amesh%HySea(amesh%QuakeElem(i),j), j=7,9)
+     write(16,'("[",F10.6,",",F10.6,"," F10.6,"]")') (amesh%HySea(amesh%QuakeElem(i),j), j=1,3) ! to close the polygon
+     write(16,'(A)') ']]}'
+      if (i /= amesh%QuakeElemNo) then
+        write(16,'(A)') '    },'
+      else
+        write(16,'(A)') '    }'
+      endif
   enddo
- close(15) 
+ close(15)
+ write(16,*) '  ]'
+ write(16,*) '}'
+ close(16) 
 deallocate(amesh%slip,slipout,pdf,amesh%QuakeElem,amesh%QuakeNodes,amesh%QuakeBorder_elem,amesh%QuakeBorder_Nodes)
 deallocate(gausspar%vertexcenter,gausspar%sizeandhigh)
 enddo
