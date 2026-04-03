@@ -2,6 +2,8 @@
 
 In this brief guide, a practical example to run a pyANTI-FASc application is shown. 
 In this example, a set of slip distributions simulating an earthquake offshore Sicily, southern Italy, is generated.
+👉 The final output consists of thousands of stochastic slip distributions ready for tsunami simulations.
+
 The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main_Ex2.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb). 
 
 ## Goal of this example
@@ -96,7 +98,7 @@ The file actually used for the run must be always named **scaling_relationship.j
 	}
 	}
 
-> **Number of area and length values must be "number_bins" * "number" (of Scaling law)** 
+>  ⚠️ **Number of area and length values must be "number_bins" * "number" (of Scaling law)** 
 
 # 3 Run pyANTI-FASc
 
