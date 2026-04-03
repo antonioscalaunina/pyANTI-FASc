@@ -27,13 +27,15 @@ Figure 1 shows a screenshot of some of the meshed faults available within the EF
 
 This file [input_Sicily.json](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters/input_Sicily.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder manages the main configuration parameters to run pyANTI-FASc. The file actually used for the run must be always named **input.json**. The default available file is set to run the Tohoku example, but it is sufficient to copy this `input_Sicily.json` into `input.json` to run this example
 
-Here below the important settings to be managed by the user are shown. **Look carefully to the comments besides the parameters**. The parameters not shown in this example might be left unmodified. Their use and functionality will be fixed in next releases and better described in [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) currently under construction.
+Here below the important settings to be managed by the user are shown. **Look carefully to the comments besides and below the parameters**. The parameters not shown in this example might be left unmodified. Their use and functionality will be fixed in next releases and better described in [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) currently under construction.
 
 	{"zone_name": "ITCF00G",      # Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as within the `utils/sz_slabs/' folder as shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json)
 	"Merc_zone": 33,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
     "acronym": "ITC",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database.
+	
 	"mesh_gen": 1,           
 	"rake": -90,
+	
 	# The "mesh_gen" option set to 1 means that a geojson file containing the mesh with name consistent with the "zone_name" (zone_name_mesh.json) is expected 
 	# to be found in the utils/sz_slabs (see file [ITCF00G_mesh.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json))
     # If geojson file is not found or an incorrect name is provided, the run will be stopped and the following error message will inform the user 
