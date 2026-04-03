@@ -17,8 +17,8 @@ If you use this service, please cite: [https://doi.org/10.13127/efsm20/meshes](h
 Figure 1 shows a screenshot of some of the meshed faults available within the EFSM20 database.
 
 
-![Screenshot of EFSM mesh database imported within QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis.jpg)
-*Figure 1 - Screenshot of EFSM mesh database imported within QGis*
+![Screenshot of EFSM mesh database imported to QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis.jpg)
+*Figure 1 - Screenshot of EFSM mesh database imported to QGis*
 
 
 # 2 - Input files
@@ -377,7 +377,12 @@ For smaller magnitudes not enough cells are defined to build stochastic slip dis
 
 ## 4 Post-process
 
- The slip distributions can be easily plotted by simple personal scripts. while the geojson files can be uploaded to Qgis or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/) In the folder [utils](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils) there is the script [plot_slip_distribution.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/plot_slip_distribution.py). It might be run (still in the *antifasc* Conda environment) with the following command:
+ The slip distributions can be easily plotted by simple personal scripts. while the geojson files can be uploaded to Qgis (see Figure 2) or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/) 
+
+![Screenshot of a slip distributions imported to QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis2.jpg)
+*Figure 2 - Screenshot of a slip distributions imported to QGis* 
+ 
+ Beyond that, in the folder [utils](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils) there is the script [plot_slip_distribution.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/plot_slip_distribution.py). It might be run (still in the *antifasc* Conda environment) with the following command:
  
 	python plot_slip_distribution.py
 
