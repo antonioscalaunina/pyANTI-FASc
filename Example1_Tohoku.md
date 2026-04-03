@@ -249,7 +249,7 @@ The Slip4HySea* files are in the standard format used as input by the software [
 For each Slip4Hysea*.dat file, a geojson file, containing the same distributions is also produced. (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00004_002.json))
 
 
-## 4 Post-process
+## Post-process
 
  The slip distributions can be easily plotted by simple personal scripts. The geojson files can be uploaded to Qgis or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/)) 
  
