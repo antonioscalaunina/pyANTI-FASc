@@ -71,11 +71,20 @@ We propose a run in "Hazard" mode (see below). All the possible slip distributio
 
  ## 2.2 scaling_relationship.json
 
- The magnitude bins and the rupture geometries (defined by the selected scaling laws) for this application are set in the input file [scaling_relationship_WC.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/config_files/Parameters/scaling_relationship_WC.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder. In this file the [Wells & Coppersmith 1994](https://doi.org/10.1785/BSSA0840040974)
-The file actually used for the run must be always named **scaling_relationship.json**. The default available file is set to run this example, for which we use a selection similar to the one proposed in the framework of the project TSUMAPS-NEAM (see Basili et al. 2021) using the Strasser et al. (2010) and the Murotani et al.(2013) scaling relationships. However, it can be easily modified to run the software with different magnitude binnings and scaling laws. In the example below the structure of this file, **look carefully at the comments beside to properly set the values**:
+ The magnitude bins and the rupture geometries (defined by the selected scaling laws) for this application are set in the input file [scaling_relationship_WC.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/config_files/Parameters/scaling_relationship_WC.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder. In this file, the [Wells & Coppersmith 1994](https://doi.org/10.1785/BSSA0840040974) scaling relationship for normal faulting is implemented.
+The file actually used for the run must be always named **scaling_relationship.json**. The default available file is set to run the [Tohoku example](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md), but it is sufficient to copy this `scaling_relationship_WC.json` into `scaling_relathionship.json` to run this example**look carefully at the comments beside to properly set the values**:
 
     { 
     "Magnitude_bins": {                                     # Within this section the number of magnitude bins and the magnitude bins are defined
-    "number_bins" : 32, 
+    "number_bins" : 21, 
+	"Magnitude": [5.5,5.6,5.7,5.8,5.9,6.0,6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9,7.0,7.1,7.2,7.3,7.4,7.5]
+	},
+
+	"Scaling_law": { "number": 1,      # Here we declare the number of different scaling laws used in the code 
+	"name" : ["WC1994_Normal"],        # Names of scaling laws (must be consistent with the set number in the parameter "Scaling_law"
+	"Area":  [43.6516,   52.7230,   63.6796,   76.9130,   92.8966,  112.2018,  135.5189,  163.6817,  197.6970,  238.7811,  288.4032,  348.3373,  420.7266,  508.1594,  	613.7620,  741.3102,  895.3648, 1081.4340, 1306.1709, 1577.6113, 1905.4607],  #Values of the area. They must be "number_bins" * "number" (of Scaling law). 
+	"Length": [7.4131,    8.3176,    9.3325,   10.4713,   11.7490,   13.1826,   14.7911,   16.5959,   18.6209,   20.8930,   23.4423,   26.3027,   29.5121,   33.1131,   37.1535,   41.6869,   46.7735,   52.4807,   58.8844,   66.0693,   74.1310] #Values of the length. They must be "number_bins" * "number" (of Scaling law).
+	}
+	}
 
 
