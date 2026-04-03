@@ -39,7 +39,7 @@ Here below the important settings to be managed by the user are shown. **Look ca
 	# If the "mesh_gen" option is set to 1, a GeoJSON file containing the mesh is expected.
 	# The file name must be consistent with the "zone_name" (e.g., zone_name_mesh.json),
 	# and it should be located in utils/sz_slabs 
-	# (see example: [ITCF00G_mesh.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json) in the repository).
+	# (see example:https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json in the repository.
 	# If the GeoJSON file is not found or the name is incorrect, the run will stop and
 	# the following error message will be shown to the user:
 	# ERROR: Mesh in GeoJSON format does not exist! Please check the options in input.json and the zone/file names.
