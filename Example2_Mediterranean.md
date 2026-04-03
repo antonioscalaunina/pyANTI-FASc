@@ -188,47 +188,94 @@ After that, the rupture areas computation is performed (a waiting bar informs th
 	Magnitude bin # 19 - Mw=7.4000
 	Magnitude bin # 20 - Mw=7.5000
 
- The slip distributions is then finally computed and the screen standard output lets the user know within each class the software is working
+ The slip distributions is then finally computed and the screen standard output lets the user know within each class the software is working. The last line informs the user about the overall running time
 
  	Computing slip distributions for the homogeneous and variable rigidity cases
-	
- 	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Murotani
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/homogeneous_mu/5_5000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          50
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Strasser
+	 Number of scenarios is        3715
+	 scenario #          250
+	 scenario #          500
+	 scenario #          750
+	 scenario #         1000
+	 scenario #         1250
+	 scenario #         1500
+	 scenario #         1750
+	 scenario #         2000
+	 scenario #         2250
+	 scenario #         2500
+	 scenario #         2750
+	 scenario #         3000
+	 scenario #         3250
+	 scenario #         3500
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/homogeneous_mu/5_6000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          55
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Murotani
+	 Number of scenarios is        3715
+	 scenario #          250
+	 scenario #          500
+	 scenario #          750
+	 scenario #         1000
+	 scenario #         1250
+	 scenario #         1500
+	 scenario #         1750
+	 scenario #         2000
+	 scenario #         2250
+	 scenario #         2500
+	 scenario #         2750
+	 scenario #         3000
+	 scenario #         3250
+	 scenario #         3500
+	 /home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/homogeneous_mu/5_7000/WellsCopp1994_Normal
+	..........................................................................................ù
+	 scenario #          250
+	 scenario #          500
+	 scenario #          750
+	 scenario #         1000
+	 scenario #         1250
+	 scenario #         1500
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/6_6000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Strasser
+	 Number of scenarios is         995
+	 scenario #          250
+	 scenario #          500
+	 scenario #          750
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/6_7000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          50
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0869/Murotani
+	 Number of scenarios is         745
+	 scenario #          250
+	 scenario #          500
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/6_8000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0869/Strasser
+	 Number of scenarios is         640
+	 scenario #          250
+	 scenario #          500
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/6_9000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/8_9588/Murotani
+	 Number of scenarios is         500
+	 scenario #          250
+	 scenario #          500
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_0000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          50
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/8_9588/Strasser
+	 Number of scenarios is         410
+	 scenario #          250
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_1000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          55
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/Murotani
+	 Number of scenarios is         345
+	 scenario #          250
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_2000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/Strasser
+	 Number of scenarios is         270
+	 scenario #          250
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_3000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          50
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0869/Murotani
+	 Number of scenarios is         220
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_4000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0869/Strasser
+	 Number of scenarios is         185
+	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_5000/WellsCopp1994_Normal
 	 starting ...
-	 Number of scenarios is          35
-
+	 Number of scenarios is         160
+	316.18324065208435
  It is worth to highlight that the number of scenarios, that is the number of slip distributions is always 5 times the number of selected areas as set in the **input.json** configuration file.
 
  When the process is over, The output will be finally organized as shown in the following tree:
@@ -264,6 +311,7 @@ After that, the rupture areas computation is performed (a waiting bar informs th
 	│   │   │   │   ├── Slip4HySea00027_004.dat
 	│   │   │   │   ├── Slip4HySea00027_005.dat
  	.............................................
+	
 
 The Slip4HySea* files are in the standard format used as input by the software [Tsunami-HySea](https://edanya.uma.es/hysea/) which is one of the most widely used tsunami simulators within the community.
 
