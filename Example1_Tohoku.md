@@ -4,6 +4,8 @@ In this brief guide, a practical example to run a pyANTI-FASc application is sho
 In this example, a set of slip distributions based on location and magnitude of 2011, March the 11th, Tohoku earthquake with a magnitude Mw=9.0, is generated.
 The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). Within the Jupyter Notebook some intermediate plots are shown to better describe some of the steps of the process like the barycenter selection and the rupture area computation.
 
+***DISCLAIMER***: This Jupyter Notebook is intended to help users understand how the code works, as it includes intermediate plots illustrating key steps such as barycenter selection and rupture area computation. However, it significantly increases the overall runtime compared to running the equivalent Python script antifasc_main.py.
+
 
 # 1 - Mesh
 
