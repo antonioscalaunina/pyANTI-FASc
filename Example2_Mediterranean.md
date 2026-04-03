@@ -31,8 +31,13 @@ Here below the important settings to be managed by the user are shown. **Look ca
 
 	{"zone_name": "ITCF00G",      # Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as within the `utils/sz_slabs/' folder as shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json)
 	"Merc_zone": 33,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
-        "acronym": "ITC",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database. 
-
+    "acronym": "ITC",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database.
+	"mesh_gen": 1,           # This option set to 1 means that a geojson file containing the mesh with name consistent with the "zone_name" (zone_name_mesh.json) is expected to be found in the utils/sz_slabs (see file [ITCF00G_mesh.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json))
+    # If geojson file is not found or an incorrect name is provided, the run will be stopped and the following error message will inform the user 
+	# ERROR: Mesh in GeoJSON format does not exist! Please check option in input.json and zone/file names
+	"rake": -90,             # This option allows the user to set a value for the rake. If not provided a standard rake=90° is assigned to the whole mesh.
+	# This field might alternatively contain the path to a csv file where the field rake is assigned, in such a case a number of rake angle consistent with the cell number of the mesh must be given. If not a standard rake=90° is assigned to the whole mesh
+	
 We propose a run in "Hazard" mode (see below). All the possible slip distributions (with an optimized number of rupture areas decreasing with magnitude) is computed. The section event can be hence left unmodified
        	
 	"Configure": {
@@ -53,4 +58,12 @@ We propose a run in "Hazard" mode (see below). All the possible slip distributio
 
 
  ## 2.2 scaling_relationship.json
+
+ The magnitude bins and the rupture geometries (defined by the selected scaling laws) are set in the input file [scaling_relationship.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/config_files/Parameters/scaling_relationship.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder. 
+The file actually used for the run must be always named **scaling_relationship.json**. The default available file is set to run this example, for which we use a selection similar to the one proposed in the framework of the project TSUMAPS-NEAM (see Basili et al. 2021) using the Strasser et al. (2010) and the Murotani et al.(2013) scaling relationships. However, it can be easily modified to run the software with different magnitude binnings and scaling laws. In the example below the structure of this file, **look carefully at the comments beside to properly set the values**:
+
+    { 
+    "Magnitude_bins": {                                     # Within this section the number of magnitude bins and the magnitude bins are defined
+    "number_bins" : 32, 
+
 
