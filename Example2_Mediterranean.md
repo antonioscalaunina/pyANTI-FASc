@@ -385,7 +385,7 @@ For smaller magnitudes not enough cells are defined to build stochastic slip dis
 	   12.755468   38.537846    8.857142   12.750983   38.577427    6.571429   12.694775   38.568462    6.571429  -90.000000   10.362476
    .........................................................................................................................................
 
-## 4 Post-process
+## Post-process
 
  The slip distributions can be easily plotted by simple personal scripts. The GeoJSON files can be uploaded to Qgis (see Figure 2) or to whatever webservice using the GeoJSON standard (e.g. [kepler.gl/](https://kepler.gl/)) 
 
