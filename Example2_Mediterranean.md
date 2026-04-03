@@ -482,9 +482,10 @@ A single scaling law is defined:
 
 
 
-Within the selected folder, for each Slip4Hysea*.dat file, a new file will be produced that is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00136_005.html)). 
+Within the selected folder, for each `Slip4Hysea*.dat` file, a new file will be produced that is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00136_005.html)). 
 
-As already outlined in the [README](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md), this example can be run through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). For example, you can install an IDE like [Visual Studio Code](https://code.visualstudio.com/download)  to run the Jupyter Notebook on Ubuntu, macOS, or Windows. 
+As already outlined in the [README](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) and at the beginning of this `.md` guide, this example can be run through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb). For example, you can install an IDE like [Visual Studio Code](https://code.visualstudio.com/download)  to run the Jupyter Notebook on Ubuntu, macOS, or Windows. 
+
 **IMPORTANT**: To ensure everything works correctly, it's essential to properly install all the needed components as outlined in the README.
 
 
