@@ -35,15 +35,20 @@ Here below the important settings to be managed by the user are shown. **Look ca
 	
 	"mesh_gen": 1,           
 	"rake": -90,
-	
-	# The "mesh_gen" option set to 1 means that a geojson file containing the mesh with name consistent with the "zone_name" (zone_name_mesh.json) is expected 
-	# to be found in the utils/sz_slabs (see file [ITCF00G_mesh.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json))
-    # If geojson file is not found or an incorrect name is provided, the run will be stopped and the following error message will inform the user 
-	# ERROR: Mesh in GeoJSON format does not exist! Please check option in input.json and zone/file names
-	
-	# The "rake" option allows the user to set a value for the rake. If not provided a standard rake=90° is assigned to the whole mesh.
-	# This field might alternatively contain the path to a csv file where the field rake is assigned, in such a case a number of rake angle consistent with the cell number 
-	# of the mesh must be given. If not a standard rake=90° is assigned to the whole mesh
+
+	# If the "mesh_gen" option is set to 1, a GeoJSON file containing the mesh is expected.
+	# The file name must be consistent with the "zone_name" (e.g., zone_name_mesh.json),
+	# and it should be located in utils/sz_slabs 
+	# (see example: [ITCF00G_mesh.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json) in the repository).
+	# If the GeoJSON file is not found or the name is incorrect, the run will stop and
+	# the following error message will be shown to the user:
+	# ERROR: Mesh in GeoJSON format does not exist! Please check the options in input.json and the zone/file names.
+
+	# The "rake" option allows the user to specify a rake value.
+	# If not provided, a default value of rake = 90° is assigned to the entire mesh.
+	# Alternatively, this field can contain the path to a CSV file where rake values are defined.
+	# In this case, the number of rake values must match the number of mesh cells (and defined in the same order).
+	# If this condition is not met, the default rake = 90° will be assigned to the entire mesh.
 	
 We propose a run in "Hazard" mode (see below). All the possible slip distributions (with an optimized number of rupture areas decreasing with magnitude) is computed. The section event can be hence left unmodified
        	
