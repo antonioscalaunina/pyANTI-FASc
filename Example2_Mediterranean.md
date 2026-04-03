@@ -82,13 +82,14 @@ The file actually used for the run must be always named **scaling_relationship.j
 
 	"Scaling_law": { "number": 1,      # Here we declare the number of different scaling laws used in the code 
 	"name" : ["WC1994_Normal"],        # Names of scaling laws (must be consistent with the set number in the parameter "Scaling_law"
+	
 	"Area":  [43.6516,   52.7230,   63.6796,   76.9130,   92.8966,  112.2018,  135.5189,  163.6817,  
 	197.6970,  238.7811,  288.4032,  348.3373,  420.7266,  508.1594,  	613.7620,  741.3102,  
-	895.3648, 1081.4340, 1306.1709, 1577.6113, 1905.4607],  #Values of the area. They must be "number_bins" * "number" (of Scaling law). 
+	895.3648, 1081.4340, 1306.1709, 1577.6113, 1905.4607],  
 	"Length": [7.4131,    8.3176,    9.3325,   10.4713,   11.7490,   13.1826,   14.7911,   16.5959,  
 	18.6209,   20.8930,   23.4423,   26.3027,   29.5121,   33.1131,   37.1535,   41.6869,   46.7735,  
-	52.4807,   58.8844,   66.0693,   74.1310] #Values of the length. They must be "number_bins" * "number" (of Scaling law).
+	52.4807,   58.8844,   66.0693,   74.1310] 
 	}
 	}
-
+	# Number of area and length values must be "number_bins" * "number" (of Scaling law). 
 
