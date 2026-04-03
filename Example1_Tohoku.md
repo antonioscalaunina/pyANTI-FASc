@@ -1,15 +1,21 @@
 # EXAMPLE 1 Tohoku earthquake
 
 In this brief guide, a practical example to run a pyANTI-FASc application is shown. 
-In this example, a set of slip distributions based on location and magnitude of 2011, March the 11th, Tohoku earthquake with a magnitude Mw=9.0, is generated.
-The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). Within the Jupyter Notebook some intermediate plots are shown to better describe some of the steps of the process like the barycenter selection and the rupture area computation.
 
-***DISCLAIMER***: This Jupyter Notebook is intended to help users understand how the code works, as it includes intermediate plots illustrating key steps such as barycenter selection and rupture area computation. However, it significantly increases the overall runtime compared to running the equivalent Python script antifasc_main.py.
+## Goal of this example
 
+This example demonstrates how to generate stochastic slip distributions consistent with  2011, March the 11th, Mw 9.0 Tohoku earthquake.
+
+👉 The final output consists of thousands of stochastic slip distributions ready for tsunami simulations.
+
+The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). 
+
+> ⚠️ **Performance note**  
+> This notebook includes intermediate plots to illustrate key steps (e.g., barycenter selection and rupture area computation), but it is significantly slower than running the equivalent Python script [antifasc_main.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.py).
 
 # 1 - Mesh
 
-pyANTI-FASc makes available an ensemble of predefined mesh discretizations for the seismogenic portion of most subducting plates worldwide. These meshes have been defined starting from the geometry defined in the framework of the project Slab 2.0 and available at this [webpage](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467). They are discretized using a pretty homogeneous minimum nodes inter-distance size ranging from about 10 to 15 km. All the available meshes can be found [here](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils/sz_slabs) and the Figure 1 shows them on the map.
+pyANTI-FASc provides an ensemble of predefined mesh discretizations representing the seismogenic portions of most subducting plates worldwide. These meshes are derived from geometries defined within the Slab 2.0 project and are available at this [webpage](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467). They are discretized using a relatively uniform node spacing, with a minimum inter-node distance ranging from approximately 10 to 15 km. All available meshes can be found [here](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils/sz_slabs) while Figure 1 provides a global overview of their distribution..
 
 ![Map of the subducting plate meshes available in the current version of pyANTI-FASc](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/map_of_slabs.png)
 *Figure 1 - Map of the subducting plate meshes available in the current version of pyANTI-FASc*
@@ -19,9 +25,11 @@ pyANTI-FASc makes available an ensemble of predefined mesh discretizations for t
 
 ## 2.1 input.json
 
-This file [input.json](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters/input.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder manages the main configuration parameters to run pyANTI-FASc. The file actually used for the run must be always named **input.json**. The default available file is set to run this example, but it can be easily modified to run other possible cases.
+This file [input.json](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters/input.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder, defines the main configuration parameters required to run pyANTI-FASc. The file used for execution must always be named `input.json`.
 
-Here below the important settings to be managed by the user are shown. **Look carefully to the comments besides the parameters**. The parameters not shown in this example might be left unmodified. Their use and functionality will be fixed in next releases and better described in [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) currently under construction.
+The default configuration is set to run this example, but it can be easily modified to support other use cases.
+
+The key parameters that users may need to adjust are listed below. **Please refer carefully to the comments provided alongside each parameter**. Parameters not shown in this example can be left unchanged. Their functionality will be further refined in future releases and documented in the [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) which is currently under development.
 
 	{"zone_name": "kurilsjapan",      # Name of the precomputed mesh to be used. See the slab database made available within the repository and use the Mesh Folder for the slab you want to select
 	"Merc_zone": 54,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
