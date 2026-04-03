@@ -36,7 +36,7 @@ Figure 1 shows a screenshot of some of the meshed faults available within the EF
 
 This file [input_Sicily.json](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters/input_Sicily.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder, defines the main configuration parameters required to run pyANTI-FASc. The file used for execution must always be named `input.json`.
 
-The default configuration is set to run this example, but it can be easily modified to support other use cases.
+The presented configuration is set to run this example, but it can be easily modified to support other use cases.
 
 The key parameters that users may need to adjust are listed below. **Please refer carefully to the comments provided alongside each parameter**. Parameters not shown in this example can be left unchanged. Their functionality will be further refined in future releases and documented in the [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) which is currently under development.
 
