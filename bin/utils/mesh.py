@@ -6,6 +6,7 @@ File to handle mesh files and compute mesh and mesh' elements attributes
 
 #Import libraries to be used
 import json
+import csv
 import os
 import time
 import numpy as np
@@ -60,59 +61,66 @@ def fprintf(fid, format_str, *args):
 ###----------------------------------------------------------###
 # Function to extract nodes and create a unique list of nodes
 def extract_nodes_and_cells(geojson_data):
-    
+
     print("Great! I really love to create mesh files from GeoJSON format\n")
-    
+
     nodes = []
     cells = []
-    nodes_dict = {}  # Dictionary to store unique nodes (id_vertex)
-    
-    # Iterate over each feature in the geojson file
-    for feature in geojson_data['features']:
-        # Extract the vertices of the triangle and convert IDs to integers
-        vertex1_id = int(feature['properties']['idvertex1'])  # Convert to int to remove leading zeros
-        vertex1 = (vertex1_id, feature['properties']['lat1'], feature['properties']['lon1'], feature['properties']['depth1'])
-        
-        vertex2_id = int(feature['properties']['idvertex2'])  # Convert to int to remove leading zeros
-        vertex2 = (vertex2_id, feature['properties']['lat2'], feature['properties']['lon2'], feature['properties']['depth2'])
-        
-        vertex3_id = int(feature['properties']['idvertex3'])  # Convert to int to remove leading zeros
-        vertex3 = (vertex3_id, feature['properties']['lat3'], feature['properties']['lon3'], feature['properties']['depth3'])
 
-        # Add the vertices to the dictionary if they are not already present
-        for vertex in [vertex1, vertex2, vertex3]:
-            id_vertex = vertex[0]
-            if id_vertex not in nodes_dict:
-                # Use the vertex ID directly from the JSON file
-                nodes_dict[id_vertex] = {
-                    'idx': id_vertex,  # Store the original ID
-                    'lat': vertex[1],
-                    'lon': vertex[2],
-                    'depth': vertex[3]
-                }
-        
-        # Create the cell with the original vertex IDs from the JSON file
-        cell = [len(cells) + 1, vertex1_id, vertex2_id, vertex3_id]  # Cell number and vertex IDs
+    coords_to_id = {}   # (lat, lon, depth) -> node_id
+    nodes_dict = {}     # node_id -> node
+    next_node_id = 1
+
+    def get_vertex(feature, lat_key, lon_key, depth_key):
+        nonlocal next_node_id
+
+        lat = feature['properties'][lat_key]
+        lon = feature['properties'][lon_key]
+        depth = feature['properties'][depth_key]
+
+        coords = (
+            round(lat, 8),
+            round(lon, 8),
+            round(depth, 6)
+        )
+
+        if coords in coords_to_id:
+            return coords_to_id[coords]
+
+        node_id = next_node_id
+        next_node_id += 1
+
+        coords_to_id[coords] = node_id
+
+        nodes_dict[node_id] = {
+            'idx': node_id,
+            'lat': lat,
+            'lon': lon,
+            'depth': depth
+        }
+
+        return node_id
+
+    for feature in geojson_data['features']:
+
+        v1 = get_vertex(feature, 'lat1', 'lon1', 'depth1')
+        v2 = get_vertex(feature, 'lat2', 'lon2', 'depth2')
+        v3 = get_vertex(feature, 'lat3', 'lon3', 'depth3')
+
+        # evita triangoli degeneri
+        if len({v1, v2, v3}) < 3:
+            print("⚠️ Degenerate triangle skipped")
+            continue
+
+        cell = [len(cells) + 1, v1, v2, v3]
         cells.append(cell)
 
-    # Convert the nodes dictionary to a list
     nodes = list(nodes_dict.values())
-    
-    # Sort nodes by their original ID (numerically) to ensure correct output order
     nodes.sort(key=lambda n: n['idx'])
-
-    # Create a mapping from original ID to new index
-    id_to_index = {node['idx']: idx + 1 for idx, node in enumerate(nodes)}
-
-    # Update cells to use the new indices
-    for cell in cells:
-        cell[1] = id_to_index[cell[1]]  # Update vertex1 index
-        cell[2] = id_to_index[cell[2]]  # Update vertex2 index
-        cell[3] = id_to_index[cell[3]]  # Update vertex3 index
 
     return nodes, cells
 
-
+###------------------------------------------------------------###
 def geojson2mesh(config_file):
     
     with open(config_file) as fid:
@@ -179,13 +187,64 @@ def faces_nodes_2_mesh_file(config_file):
     
     slab_acronym = Param['acronym'] #Slab
     slab_name = Param['zone_name'] #Slab
+    nodes, cells= read_nodes_cells(slab_name)
+    n_cells = len(cells)
+
+    # Modification to allow user to define rake either by a single value or through a file (2026/04/01)
+    # If either value is not valid, or file is not found, or no rake is defined standard Rake=90° is used 
+    
+    if "rake" in Param:
+        rake_file = Param["rake"]
+        if isinstance(rake_file,str):
+            try:
+                # Open the CSV file
+                with open(rake_file, newline='', encoding="utf-8") as f:
+                    reader = csv.reader(f)
+                    original_headers = next(reader)
+
+                    # Normalize headers: lowercase and strip spaces
+                    headers = [h.strip().lower() for h in original_headers]
+
+                    # Create DictReader with normalized headers
+                    f.seek(0)
+                    dict_reader = csv.DictReader(f, fieldnames=headers)
+                    next(dict_reader)  # skip the original header row
+
+                    # Store all values from the 'rake' column into Slab.rakes
+                    rakes = [row['rake'] for row in dict_reader]
+
+            except FileNotFoundError:
+                    # Warn if the file is missing
+                    print(
+                        f"Rake file '{rake_file}' not found: check path and filename. A standard rake=90° will be used",
+                    )
+        elif isinstance(rake_file,(int,float)):
+            if  -180 <= rake_file <= 180:
+                rakes = [float(rake_file)] * n_cells
+            else:
+                print(
+                    f"Invalid rake value ({rake_source}). Must be between -180 and 180. "
+                    "A standard rake=90° will be used"
+                )
+
+        else:
+            print(
+                f"Unsupported rake input type ({type(rake_file)}). "
+                "A standard rake=90° will be used"
+            )
+    else:
+        print("Rake not defined: a standard rake=90° will be used")
+
+# END OF MODIFICATION FOR RAKE!
+
 
     string1=scipy.io.loadmat('../utils/string1.mat')['string1'][0]
     string1[1][0] = f'cubit({os.getcwd()}):{datetime.now().strftime("%Y-%m-%d")}:'
     string2=scipy.io.loadmat('../utils/string2.mat')['string2'][0]
     string3=scipy.io.loadmat('../utils/string3.mat')['string3'][0]
     
-    nodes, cells= read_nodes_cells(slab_name)
+
+
     namefile = f"../config_files/Mesh/{slab_acronym}_mesh_15km.inp"
 
     with open(namefile, 'w') as fid:
@@ -200,9 +259,38 @@ def faces_nodes_2_mesh_file(config_file):
 
         for cell in cells:
             fprintf(fid, '%d, %8d, %8d, %8d\n', *cell)
+        
+        #If a rake is defined the mesh will contain this info (2026/04/01)
 
-        for line in string3:
-            fid.write(line[0] + '\n')
+        if 'rakes' in locals():
+            if len(rakes) == len(cells):
+                # 1. write first two lines of string3
+                for line in string3[:2]:
+                    fid.write(line[0] + '\n')
+
+                # 2. write RAKE field header
+                fid.write("** FIELD VARIABLE 1 = RAKE (degrees)\n")
+                fid.write("*INITIAL CONDITIONS, TYPE=FIELD, VARIABLE=1\n")
+
+                # 3. write each rake value with its index (1-based)
+                for idx, rake_val in enumerate(rakes, start=1):
+                    fid.write(f"{idx}, {rake_val}\n")
+
+                # 4. write the remaining lines of string3
+                for line in string3[2:]:
+                    fid.write(line[0] + '\n')
+
+            else:
+                # rake exists but dimensions mismatch
+                print("Warning: RAKE and cells dimensions do not match. Using standard rake=90°. Writing string3")
+                for line in string3:
+                    fid.write(line[0] + '\n')
+
+        else:
+            # rake not defined at all
+            for line in string3:
+                fid.write(line[0] + '\n')
+
 
     #compute distance mstrix
     #matrix_distance=matrix_distance_nolat2(nodes[:,1:4])
@@ -319,6 +407,7 @@ def compute_connectivity(EToV):
     # Insert matches
     EToE.T.flat[matchL[:, 1] - 1] = matchR[:, 2]
     EToF.T.flat[matchL[:, 1] - 1] = matchR[:, 3]
+
 
     return EToE, EToF
 
@@ -442,6 +531,7 @@ def compute_area(cells,matrix_distance):
         Area_cells[i] = np.sqrt(s * (s - a) * (s - b) * (s - c))
     
     Area_tot=np.sum(Area_cells)
+    #print(Area_tot,Area_cells)
     return Area_tot, Area_cells
 
 

@@ -150,7 +150,7 @@ class Slab:
             print(f'Magnitude bin # {i} - Mw={self.Magnitude[i]:.4f}')
         
             for j in range(self.N_scaling):
-                 if len(index_active[i][j])==0 or self.int_dist * self.LengthSL[i, j] < 0.5 * self.elem_size / 1e3:
+                 if len(index_active[i][j])==0 or self.int_dist * self.LengthSL[i, j] < 1.5 * self.int_dist * self.elem_size / 1e3:
                     barycenter[l][j] = index_active[i][j] 
                  else:
                     barycenter[l][j] = []
