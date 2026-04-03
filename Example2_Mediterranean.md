@@ -72,7 +72,7 @@ We propose a run in "Hazard" mode (see below). All the possible slip distributio
  ## 2.2 scaling_relationship.json
 
  The magnitude bins and the rupture geometries (defined by the selected scaling laws) for this application are set in the input file [scaling_relationship_WC.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/config_files/Parameters/scaling_relationship_WC.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder. In this file, the [Wells & Coppersmith 1994](https://doi.org/10.1785/BSSA0840040974) scaling relationship for normal faulting is implemented.
-The file actually used for the run must be always named **scaling_relationship.json**. The default available file is set to run the [Tohoku example](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md), but it is sufficient to copy this `scaling_relationship_WC.json` into `scaling_relathionship.json` to run this example**look carefully at the comments beside and below to properly set the values**:
+The file actually used for the run must be always named **scaling_relationship.json**. The default available file is set to run the [Tohoku example](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md), but it is sufficient to copy this `scaling_relationship_WC.json` into `scaling_relathionship.json` to run this example **look carefully at the comments beside and below to properly set the values**:
 
     { 
     "Magnitude_bins": {                                     # Within this section the number of magnitude bins and the magnitude bins are defined
@@ -276,7 +276,7 @@ After that, the rupture areas computation is performed (a waiting bar informs th
 	 starting ...
 	 Number of scenarios is         160
 	316.18324065208435
- It is worth to highlight that the number of scenarios, that is the number of slip distributions is always 5 times the number of selected areas as set in the **input.json** configuration file.
+ It is worth to highlight that the number of scenarios, that is the number of slip distributions is always 5 times the number of selected areas as set in the `input.json` configuration file.
 
  When the process is over, The output will be finally organized as shown in the following tree:
 
