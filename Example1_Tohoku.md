@@ -24,7 +24,9 @@ Here below the important settings to be managed by the user are shown. **Look ca
 	{"zone_name": "kurilsjapan",      # Name of the precomputed mesh to be used. See the slab database made available within the repository and use the Mesh Folder for the slab you want to select
 	"Merc_zone": 54,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
     "acronym": "KuJ",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database.
-	"mesh_gen": 0,            # This means that the mesh is already in the database in the folder `utils/sz_slabs`. If not, the run will be stopped and the error message will inform the user that the meshing files were not found: `ERROR: Nodes file not in the sz database. Please check the name of slab or ensure your data is in the correct folder`
+	"mesh_gen": 0,            # This means that the mesh is already in the database in the folder *utils/sz_slabs*. 
+	 If not, the run will be stopped and the error message will inform the user that the meshing files were not found: 
+	`ERROR: Nodes file not in the sz database. Please check the name of slab or ensure your data is in the correct folder`
 
 The list of the slab in the database can be found [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/slabs_database) 
        	
