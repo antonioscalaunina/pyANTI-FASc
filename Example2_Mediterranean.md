@@ -1,12 +1,16 @@
-# EXAMPLE 1 Simulation in the Mediterranean
-## from EFSM20 services
+# Example 2 – Mediterranean Simulation (EFSM20)
 
 In this brief guide, a practical example to run a pyANTI-FASc application is shown. 
 In this example, a set of slip distributions simulating an earthquake offshore Sicily, southern Italy, is generated.
 The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main_Ex2.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb). 
 
+## Goal of this example
+
+This example demonstrates how to generate stochastic slip distributions for an offshore Sicily fault system using EFSM20 mesh data and the Hazard application mode.
+
 ***DISCLAIMER:***
-This Jupyter Notebook is intended to help users understand how the code works, as it includes intermediate plots illustrating key steps such as barycenter selection and rupture area computation. However, it significantly increases the overall runtime compared to running the equivalent Python script [antifasc_main.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.py).
+> ⚠️ **Performance note**  
+> This notebook includes intermediate plots to illustrate key steps (e.g., barycenter selection and rupture area computation), but it is significantly slower than running the equivalent Python script [antifasc_main.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.py).
 
 
 # 1 - Mesh
@@ -32,9 +36,9 @@ This file [input_Sicily.json](https://github.com/antonioscalaunina/pyANTI-FASc/t
 
 Here below the important settings to be managed by the user are shown. **Look carefully to the comments besides and below the parameters**. The parameters not shown in this example might be left unmodified. Their use and functionality will be fixed in next releases and better described in [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) currently under construction.
 
-	{"zone_name": "ITCF00G",      # Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as within the `utils/sz_slabs/' folder as shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json)
-	"Merc_zone": 33,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
-    "acronym": "ITC",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database.
+	{"zone_name": "ITCF00G",     → Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as within the `utils/sz_slabs/' folder as shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json)
+	"Merc_zone": 33,             → Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
+    "acronym": "ITC",		     → 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database.
 	
 	"mesh_gen": 1,           
 	"rake": -90,
@@ -56,18 +60,18 @@ Here below the important settings to be managed by the user are shown. **Look ca
 We propose a run in "Hazard" mode (see below). All the possible slip distributions (with an optimized number of rupture areas decreasing with magnitude) is computed. The section event can be hence left unmodified
        	
 	"Configure": {
-	"application": "Hazard",                     # This application restricts the computed scenarios to a range of magnitude and location around predefined values
-	"shape": "Rectangle",                     # This choice allows to compute scenarios with aspect ratio L/W preserved as prescribed by the selected scaling law. The other possible choice is "Circle". More details soon in the Wiki Documentation
-	"numb_stoch": 5,                          # Number of stochastic slip for each rupture areas
-	"variable_mu": 1,                         # 1 means that also the distributions with variable rigidity will be computed. 0 for computing only the case with homogeneous rigidity
-	"coupling_shallow_limit":1.0,             # Shallow limit for the area where the seismic coupling is expected to decrease
-	"coupling_deep_limit":55.0,		  # Deep limit for the area where the seismic coupling is expected to decrease
+	"application": "Hazard",                  → This application restricts the computed scenarios to a range of magnitude and location around predefined values
+	"shape": "Rectangle",                     → This choice allows to compute scenarios with aspect ratio L/W preserved as prescribed by the selected scaling law. The other possible choice is "Circle". More details soon in the Wiki Documentation
+	"numb_stoch": 5,                          → Number of stochastic slip for each rupture areas
+	"variable_mu": 1,                         → 1 means that also the distributions with variable rigidity will be computed. 0 for computing only the case with homogeneous rigidity
+	"coupling_shallow_limit":1.0,             → Shallow limit for the area where the seismic coupling is expected to decrease
+	"coupling_deep_limit":55.0,		          → Deep limit for the area where the seismic coupling is expected to decrease
 
 
  
 	
-	"minimum_bnd_distance": 0.1,           # This option (as well as the next one) is used to limit the number of rupture areas dependending on Magnitude (and Rupture areas extent). During the selection of rupture area barycenter, with this choice, the nodes closer than 0.25 times the Width to the mesh edge are discarded.
-	"minimum_interdistance": 0.2,           # With this choices, the distance between the selected rupture barycenters will be more than 0.1 times the Length. This will avoid to have very similar rupture areas and reduce the number of scenarios at largest magnitude bins (see Scala et al. 2020) 
+	"minimum_bnd_distance": 0.1,            → This option (as well as the next one) is used to limit the number of rupture areas dependending on Magnitude (and Rupture areas extent). During the selection of rupture area barycenter, with this choice, the nodes closer than 0.25 times the Width to the mesh edge are discarded.
+	"minimum_interdistance": 0.2,           → With this choices, the distance between the selected rupture barycenters will be more than 0.1 times the Length. This will avoid to have very similar rupture areas and reduce the number of scenarios at largest magnitude bins (see Scala et al. 2020) 
 	}
 	}
 
@@ -78,13 +82,13 @@ We propose a run in "Hazard" mode (see below). All the possible slip distributio
 The file actually used for the run must be always named **scaling_relationship.json**. The default available file is set to run the [Tohoku example](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md), but it is sufficient to copy this `scaling_relationship_WC.json` into `scaling_relathionship.json` to run this example **look carefully at the comments beside and below to properly set the values**:
 
     { 
-    "Magnitude_bins": {                                     # Within this section the number of magnitude bins and the magnitude bins are defined
+    "Magnitude_bins": {                                      →Within this section the number of magnitude bins and the magnitude bins are defined
     "number_bins" : 21, 
 	"Magnitude": [5.5,5.6,5.7,5.8,5.9,6.0,6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9,7.0,7.1,7.2,7.3,7.4,7.5]
 	},
 
-	"Scaling_law": { "number": 1,      # Here we declare the number of different scaling laws used in the code 
-	"name" : ["WellsCopp1994_Normal"],        # Names of scaling laws (must be consistent with the set number in the parameter "Scaling_law"
+	"Scaling_law": { "number": 1,             → Here we declare the number of different scaling laws used in the code 
+	"name" : ["WellsCopp1994_Normal"],        → Names of scaling laws (must be consistent with the set number in the parameter "Scaling_law"
 	
 	"Area":  [43.6516,   52.7230,   63.6796,   76.9130,   92.8966,  112.2018,  135.5189,  163.6817,  
 	197.6970,  238.7811,  288.4032,  348.3373,  420.7266,  508.1594,  	613.7620,  741.3102,  
