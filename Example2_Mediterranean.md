@@ -377,7 +377,7 @@ For smaller magnitudes not enough cells are defined to build stochastic slip dis
 
 ## 4 Post-process
 
- The slip distributions can be easily plotted by simple personal scripts. while the geojson files can be uploaded to Qgis (see Figure 2) or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/) 
+ The slip distributions can be easily plotted by simple personal scripts. The geojson files can be uploaded to Qgis (see Figure 2) or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/)) 
 
 ![Screenshot of a slip distributions imported to QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis2.jpg)
 *Figure 2 - Screenshot of a slip distributions imported to QGis* 
