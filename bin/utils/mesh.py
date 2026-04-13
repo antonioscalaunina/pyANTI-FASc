@@ -20,7 +20,7 @@ from scipy.spatial import Delaunay
 from scipy.spatial import KDTree
 
 import utm
-from pyproj import Transformer
+from pyproj import CRS, Transformer
 from geopy.distance import geodesic
 import geopy.distance as distance
 
@@ -141,7 +141,7 @@ def geojson2mesh(config_file):
     os.makedirs(subfault_dir, exist_ok=True)
 
     # Step 3: Load the GeoJSON file (use the input name to locate it)
-    geojson_filename = os.path.join(base_dir,f'{nome_faglia}_mesh.json')
+    geojson_filename = os.path.join(base_dir,f'{nome_faglia}_mesh.geojson')
     print(geojson_filename)
     if os.path.isfile(geojson_filename):
         with open(geojson_filename) as f:
@@ -809,3 +809,318 @@ def from_latlon(lat, lon, zone):
 
         return x, y
 ############################################################################################
+
+# ==========================================================
+# Coordinate transformations
+# ==========================================================
+
+def local_projection(lon0, lat0):
+    """
+    Create local azimuthal equidistant projection centered on (lon0, lat0)
+    """
+    crs_geo = CRS.from_epsg(4326)
+    crs_local = CRS.from_proj4(
+        f"+proj=aeqd +lat_0={lat0} +lon_0={lon0} +units=m +datum=WGS84"
+    )
+
+    fwd = Transformer.from_crs(crs_geo, crs_local, always_xy=True)
+    inv = Transformer.from_crs(crs_local, crs_geo, always_xy=True)
+
+    return fwd, inv
+
+
+# ==========================================================
+# Fault plane mesh generation (metric space)
+# ==========================================================
+
+def fault_plane_mesh(
+    center_xyz,
+    length,
+    width,
+    strike_deg,
+    dip_deg,
+    target_area
+):
+    """
+    Build a triangular mesh of a rectangular fault plane in metric coordinates.
+    """
+
+    strike = np.deg2rad(strike_deg)
+    dip = np.deg2rad(dip_deg)
+
+    # Unit vector along strike (horizontal)
+    strike_vec = np.array([
+        np.sin(strike),
+        np.cos(strike),
+        0.0
+    ])
+
+    # Unit vector along dip (downward)
+    dip_vec = np.array([
+        np.cos(strike) * np.cos(dip),
+       -np.sin(strike) * np.cos(dip),
+       -np.sin(dip)
+    ])
+
+    # Grid resolution
+    cell_size = np.sqrt(2 * target_area)
+    n_strike = max(1, int(np.ceil(length / cell_size)))
+    n_dip = max(1, int(np.ceil(width / cell_size)))
+
+    s = np.linspace(-length / 2, length / 2, n_strike + 1)
+    d = np.linspace(-width / 2, width / 2, n_dip + 1)
+
+    # Vertices
+    vertices = []
+    for di in d:
+        for si in s:
+            p = center_xyz + si * strike_vec + di * dip_vec
+            vertices.append(p)
+
+    vertices = np.array(vertices)
+
+    # Triangles
+    triangles = []
+
+    def idx(i, j):
+        return i * (n_strike + 1) + j
+
+    for i in range(n_dip):
+        for j in range(n_strike):
+            v0 = idx(i, j)
+            v1 = idx(i, j + 1)
+            v2 = idx(i + 1, j)
+            v3 = idx(i + 1, j + 1)
+
+            triangles.append([v0, v1, v2])
+            triangles.append([v1, v3, v2])
+
+    return vertices, np.array(triangles)
+
+
+# ==========================================================
+# Create triangles in lonlat (geographic coordinates)
+# ==========================================================
+
+def triangles_to_lonlat(vertices, triangles, transformer_inv):
+    """
+    Convert mesh triangles from local coordinates to geographic coordinates.
+    """
+
+    triangles_lonlat = []
+    triangles_depth = []
+
+    for tri in triangles:
+        tri_ll = []
+        tri_z = []
+
+        for idx in tri:
+            x, y, z = vertices[idx]
+            lon, lat = transformer_inv.transform(x, y)
+
+            tri_ll.append((lon, lat))
+            tri_z.append(z)  # depth negative downward
+
+        triangles_lonlat.append(tri_ll)
+        triangles_depth.append(tri_z)
+
+    return triangles_lonlat, triangles_depth
+
+# ==========================================================
+# Save extended geoJSON (QGIS format)
+# ==========================================================
+
+def save_extended_mesh_geojson(
+    triangles_lonlat,
+    triangles_depth,
+    strike,
+    dip,
+    filename
+):
+    """
+    Save mesh in an extended GeoJSON format similar to GRCF003_mesh.json.
+    Geometry is 2D (lon, lat); depth is stored in properties.
+    """
+
+    features = []
+
+    for i, (tri_ll, tri_z) in enumerate(
+        zip(triangles_lonlat, triangles_depth), start=1
+    ):
+        (lon1, lat1), (lon2, lat2), (lon3, lat3) = tri_ll
+        z1, z2, z3 = tri_z
+
+        # Centroid
+        lon_c = (lon1 + lon2 + lon3) / 3
+        lat_c = (lat1 + lat2 + lat3) / 3
+        depth_c = (z1 + z2 + z3) / 3
+
+        feature = {
+            "type": "Feature",
+            "id": f"mesh.{i:06d}",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [lon1, lat1],
+                    [lon2, lat2],
+                    [lon3, lat3],
+                    [lon1, lat1]
+                ]]
+            },
+            "properties": {
+                "idtriangle": i,
+
+                "lon1": lon1, "lat1": lat1, "depth1": z1,
+                "lon2": lon2, "lat2": lat2, "depth2": z2,
+                "lon3": lon3, "lat3": lat3, "depth3": z3,
+
+                "lon_c": lon_c,
+                "lat_c": lat_c,
+                "depth_c": depth_c,
+
+                "strike": strike,
+                "dip": dip
+            }
+        }
+
+        features.append(feature)
+
+    geojson = {
+        "type": "FeatureCollection",
+        "features": features
+    }
+
+    with open(filename, "w") as f:
+        json.dump(geojson, f, indent=2)
+
+    print(f"Extended GeoJSON written to: {filename}")
+
+
+def point2geojson(config_file):
+
+    
+    
+    with open(config_file) as fid:
+        Param = json.load(fid)
+    zone_name=Param["zone_name"]
+    filename = f"../utils/sz_slabs/{zone_name}_mesh.geojson"
+    # ------------------------------
+    # Input fault parameters
+    if "lon_c" in Param:
+        lon_val = Param["lon_c"]
+        if -180.0 <= lon_val <= 180.0:
+            lon0 = lon_val
+        else:
+            raise ValueError(f"Invalid longitude (lon_c = {lon_val}). Must be in the range [-180, 180]")
+    else:
+        raise KeyError(f"Longitude not defined check 'mesh_gen' or lon_c parameter")
+    
+    if "lat_c" in Param:
+        lat_val = Param["lat_c"]
+        if -90.0 <= lon_val <= 90.0:
+            lat0 = lat_val
+        else:
+            raise ValueError(f"Invalid longitude (lat_c = {lat_val}). Must be in the range [-90, 90]")
+    else:
+        raise KeyError(f"Latitude not defined check 'mesh_gen' or lat_c parameter")
+    
+
+    if "depth_km" in Param:
+        depth0 = Param['depth_km']  
+        depth0 = 1000.0*depth0 # meters (positive downward)
+    else:
+        print("Depth not defined in the input.json file. A standard depth of 10 km is used")
+        depth0 = 10000.0 #
+
+    if "length_km" in Param:
+        length = Param['length_km']  
+        length = 1000.0*length # meters 
+    else:
+        print("Length not defined in the input.json file. A standard length of 50 km is used")
+        length = 50000.0 #
+
+    if "width_km" in Param:
+        width = Param['width_km']  
+        width = 1000.0*width # meters 
+    else:
+        print("Width not defined in the input.json file. A standard width of 25 km is used")
+        width = 25000.0 #
+
+    if "strike" in Param:
+        strike_val = Param["strike"]
+        if 0.0 <= strike_val <= 360.0:
+            strike = strike_val
+        else:
+            raise ValueError(f"Invalid strike (strike = {strike_val}). Must be in the range [0, 360]")
+    else:
+        print("Strike not defined in the input.json file. A standard strike of 0° is used")
+        strike=0.0
+
+    if "dip" in Param:
+        dip_val = Param["dip"]
+        if 0.0 <= dip_val <= 90.0:
+            dip = dip_val
+        else:
+            raise ValueError(f"Invalid dip (dip = {dip_val}). Must be in the range [0, 90]")
+    else:
+        print("Dip not defined in the input.json file. A standard dip of 30° is used")
+        dip=30.0
+
+    if "elem_size_km2" in Param:
+        area = Param['elem_size_km2']  
+        area = 1e6*area # meters^2 
+    else:
+        print("Average element size not defined in the input.json file. A standard area of 5 km^2 is used")
+        area = 5.0e6 # m^2 (average triangle area)
+
+
+    # ------------------------------
+    # Build local projection
+    fwd, inv = local_projection(lon0, lat0)
+
+    x0, y0 = fwd.transform(lon0, lat0)
+    center_xyz = np.array([x0, y0, -depth0])
+
+    # ------------------------------
+    # Generate mesh
+    vertices, triangles = fault_plane_mesh(
+        center_xyz,
+        length,
+        width,
+        strike,
+        dip,
+        area
+    )
+    # ------------------------------
+    # Check profondità (devono essere tutte <= 0)
+    if np.any(vertices[:, 2] > 0):
+        raise ValueError(
+            "ERROR: some depths are positive (above the surface). "
+            "Increase the central depth or adjust the fault parameters."
+        )
+    # ------------------------------
+    # Plot
+    #plot_fault_mesh(vertices, triangles)
+
+    # ------------------------------
+    # Export GeoJSON
+    #save_mesh_geojson(vertices, triangles, inv, "fault_mesh.geojson")
+
+    # -------------------------------------------------
+    # Convert triangles to geographic coordinates
+    triangles_lonlat, triangles_depth = triangles_to_lonlat(
+        vertices,
+        triangles,
+        inv
+    )
+
+    # -------------------------------------------------
+    # Save EXTENDED GeoJSON (GRCF-like)
+    save_extended_mesh_geojson(
+        triangles_lonlat,
+        triangles_depth,
+        strike,
+        dip,
+        filename
+    )
+

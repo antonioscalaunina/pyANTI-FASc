@@ -84,6 +84,12 @@ class Slab:
         elif self.mesh_gen == 1:
             mesh.geojson2mesh(config_file)
             mesh.faces_nodes_2_mesh_file(config_file)
+        elif self.mesh_gen == 2:
+            mesh.point2geojson(config_file)
+            mesh.geojson2mesh(config_file)
+            mesh.faces_nodes_2_mesh_file(config_file)
+        else:
+            raise AttributeError(f"I don't know how to generate the mesh, select 0 for slab in the database, 1 for a predefined mesh in GeoJSON,2 to build a fault (and its mesh) from a point")
 
         print('reading mesh')
         read_mesh(self)
@@ -240,7 +246,8 @@ class Slab:
         self._check_attribute('Matrix_distance')
         Area_tot, Area_cells=mesh.compute_area(self.cells,self.Matrix_distance)
         self.Area_cells=Area_cells*1e-6
-        #print(self.Area_cells)
+        self.elem_size=np.sqrt(2*np.mean(self.Area_cells))
+        #print(self.elem_size)
         #print(np.sum(self.Area_cells))
     
 
@@ -679,7 +686,7 @@ class Slab:
                 slip_filename = f'{folder_out}Slip4HySea{ra_id+1:05d}_001.dat'
                 slip=plotutils.get_slip(slip_filename)
 
-                tpc = ax.tripcolor(lon,lat,triang_ra,slip,shading='flat',cmap='jet_r')
+                tpc = ax.tripcolor(lon,lat,triang_ra,slip,shading='flat',cmap='jet')
                 #sc_ra = ax.scatter(lon_ra, lat_ra, c=-depth_ra/1000, cmap='viridis_r', s=1, transform=ccrs.PlateCarree())
     
                 if colorbar:
@@ -737,14 +744,14 @@ def read_inputfile(Slab, config_file):
     mesh_gen = Param['mesh_gen'] #Should mesh be generated?
     application = Param['Configure']['application'] #Hazard: All magnitude bins - all barycenters, PTF: Magnitude and location around estimated ones
     shape = Param['Configure']['shape'] #Rectangle: rectangular shape, Circle: circular shape
-    elem_size = Param['element_size'] 
+    #elem_size = Param['element_size'] 
     Fact_rigidity = Param['Configure']['Fact_rigidity']
 
     Slab.zone_code = zone_code
     Slab.Merc_zone = Merc_zone
     Slab.application = application
     Slab.shape = shape
-    Slab.elem_size = elem_size
+    #Slab.elem_size = elem_size
     Slab.Fact_rigidity = Fact_rigidity
     Slab.mesh_gen = mesh_gen
 
