@@ -2,14 +2,9 @@
 	"Merc_zone": 54,
     "acronym": "KuJ",
 	"mesh_gen": 0,
-    "slab_file": "kur_slab2_dep_02.24.18.xyz",
-    "seismog_depth": 60,
-    "depth_interpolator": "v4",
-    "mesh_convex": 0.5,
-    "element_size": 12.5e3,
        	
 "Event": {
-"Name": "Tohoku_test",
+"Name": "Tohoku_test2",
 "Hypo_LonLat" : [142.369, 38.322],
 "Magnitude" : 9.0
 },
