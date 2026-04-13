@@ -40,7 +40,7 @@ The presented configuration is set to run this example, but it can be easily mod
 
 The key parameters that users may need to adjust are listed below. **Please refer carefully to the comments provided alongside each parameter**. Parameters not shown in this example can be left unchanged. Their functionality will be further refined in future releases and documented in the [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) which is currently under development.
 
-	{"zone_name": "ITCF00G",     → Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as within the `utils/sz_slabs/' folder as shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.json)
+	{"zone_name": "ITCF00G",     → Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as within the `utils/sz_slabs/' folder as shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.geojson)
 	"Merc_zone": 33,             → Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
     "acronym": "ITC",		     → 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database.
 	
