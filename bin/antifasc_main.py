@@ -24,8 +24,8 @@ import cartopy.feature as cfeature
 
 
 #Specify input json file and scaling_relationship file paths
-input_file='../config_files/Parameters/input_Samos.json'
-scaling_file='../config_files/Parameters/scaling_relationship_WC.json'
+input_file='../config_files/Parameters/input.json'
+scaling_file='../config_files/Parameters/scaling_relationship.json'
 
 #Initialize an instance of the class Slab with the input files
 Slab_obj=slab.Slab(input_file,scaling_file)
