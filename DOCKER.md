@@ -4,7 +4,9 @@ This guide provides all instructions to install Docker Desktop (or Docker on Lin
 
 ---
 
-# ✅ Quick Start (Linux & Mac)
+# ✅ Quick Start (if you already have installed and run Docker)
+
+## Linux & Mac
 
 ``` bash
 git clone https://github.com/antonioscalaunina/pyANTI-FASc.git  
@@ -14,7 +16,7 @@ chmod +x antifasc
 ./antifasc
 ```
 
-# ✅ Quick Start (Windows Power Shell)
+## Windows Power Shell
 
 ``` bash
 git clone https://github.com/antonioscalaunina/pyANTI-FASc.git  
