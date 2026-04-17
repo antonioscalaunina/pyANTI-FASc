@@ -113,7 +113,20 @@ Run:
 
 ``` bash
 .\antifasc.ps1
-```  
+```
+
+If you get an error concerning the abilitation to script execution run this command
+
+``` bash
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+It is enough to run this command just once. From that moment on you can run
+
+``` bash
+.\antifasc.ps1
+```
+
+without any issue
 
 ---
 
