@@ -4,7 +4,9 @@ This guide provides all instructions to install Docker Desktop (or Docker on Lin
 
 ---
 
-# ✅ Quick Start (if you already have installed and run Docker)
+# ✅ Quick Start 
+
+### (if you already have installed and run Docker)
 
 ## Linux & Mac
 
