@@ -93,7 +93,7 @@ Run the software:
 ./antifasc
 ```  
 
-Optional (to use it as a global command in Linux or Mac):
+Optional (to use it as a global command):
 
 ``` bash
 sudo cp antifasc /usr/local/bin/
