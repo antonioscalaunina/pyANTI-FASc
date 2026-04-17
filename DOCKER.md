@@ -6,11 +6,13 @@ This guide provides all instructions to install Docker Desktop (or Docker on Lin
 
 # ✅ Quick Start
 
+``` bash
 git clone https://github.com/antonioscalaunina/pyANTI-FASc.git  
 cd pyANTI-FASc  
 docker build -t pyantifasc .  
 chmod +x antifasc  
-./antifasc  
+./antifasc
+```  
 
 
 # 1️⃣ Install Docker
@@ -30,13 +32,17 @@ Install and launch Docker Desktop.
 
 ## Linux (Ubuntu)
 
+``` bash
 sudo apt update  
 sudo apt install -y docker.io  
 sudo usermod -aG docker $USER  
+```
 
 Then either restart your terminal or run:
 
-newgrp docker  
+``` bash
+newgrp docker
+```  
 
 This allows you to run Docker commands without `sudo`.
 
@@ -44,8 +50,10 @@ This allows you to run Docker commands without `sudo`.
 
 # 2️⃣ Clone the repository
 
+``` bash
 git clone https://github.com/antonioscalaunina/pyANTI-FASc.git  
-cd pyANTI-FASc  
+cd pyANTI-FASc
+```  
 
 If you are using Windows PowerShell, make sure that `git` is installed. Otherwise, you can download the ZIP version of the repository.
 
@@ -55,7 +63,9 @@ If you are using Windows PowerShell, make sure that `git` is installed. Otherwis
 
 From the root of the project (where the Dockerfile is located):
 
-docker build -t pyantifasc .  
+``` bash
+docker build -t pyantifasc .
+```  
 
 The image includes:
 - Python and Conda
@@ -73,19 +83,27 @@ To simplify usage, a launcher script is provided.
 
 Make the script executable:
 
-chmod +x antifasc  
+``` bash
+chmod +x antifasc
+```  
 
 Run the software:
 
-./antifasc  
+``` bash
+./antifasc
+```  
 
 Optional (to use it as a global command):
 
-mv antifasc ~/.local/bin/  
+``` bash
+mv antifasc ~/.local/bin/
+```  
 
 Then you can simply run:
 
-antifasc  
+``` bash
+antifasc
+```  
 
 ---
 
@@ -93,7 +111,9 @@ antifasc
 
 Run:
 
-.\antifasc.ps1  
+``` bash
+.\antifasc.ps1
+```  
 
 ---
 
@@ -101,7 +121,9 @@ Run:
 
 The `antifasc` command runs:
 
-docker run --rm -it -v $(pwd):/app pyantifasc  
+``` bash
+docker run --rm -it -v $(pwd):/app pyantifasc
+```  
 
 This means:
 
@@ -120,13 +142,20 @@ Before running the software, you may want to adapt the inputs or configuration p
 You can do this in two ways:
 
 ### 📂 Modify input files
-Edit the input files used by the main script (located in the `bin/` directory).  
-These include datasets and other inputs required by the workflow.
+Edit the following lines where the input files are defined in the main script (`bin/antifasc_main.py`).  
+
+``` bash
+#Specify input json file and scaling_relationship file paths
+input_file='../config_files/Parameters/input.json'
+scaling_file='../config_files/Parameters/scaling_relationship.json'
+``` 
 
 ### ⚙️ Modify configuration files
 Edit the parameter files located in:
 
+``` bash
 config_files/Parameters/
+``` 
 
 These control:
 - Model parameters  
@@ -134,14 +163,16 @@ These control:
 - Processing options  
 
 👉 This is the recommended approach to tune the model or run different scenarios.
-
+refer to the Example.md files for more details
 ---
 
 ### 🔄 Important note
 
 Because the project folder is mounted into the container:
 
--v $(pwd):/app  
+``` bash
+-v $(pwd):/app
+```  
 
 any changes you make locally are **immediately available inside Docker**.
 
@@ -162,11 +193,15 @@ Refer to the example notebooks and sample configurations included in the reposit
 
 Make sure you are in the main project directory:
 
-cd pyANTI-FASc  
+``` bash
+cd pyANTI-FASc
+```   
 
 Then execute:
 
-./antifasc  
+``` bash
+./antifasc
+```   
 
 The program will run directly inside the container.
 
@@ -174,9 +209,11 @@ The program will run directly inside the container.
 
 # 8️⃣ Outputs
 
-All generated outputs (GeoJSON, PDFs, reports, etc.) will be immediately available in your local project folder:
+All generated outputs (GeoJSON, ASCII, etc.) will be immediately available in your local project folder:
 
-pyANTI-FASc/  
+``` bash
+pyANTI-FASc/output/
+```   
 
 ---
 
@@ -192,7 +229,6 @@ As long as Docker is running, the image will be reused.
 
 # 🔟 Stopping the container
 
-- If the program is interactive → press CTRL + C  
 - The container will be automatically removed thanks to the `--rm` flag  
 
 ---
