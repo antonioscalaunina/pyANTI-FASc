@@ -23,8 +23,10 @@ docker build -t pyantifasc .
 Set-ExecutionPolicy -Scope CurrentUser RemoteSigned 
 ./antifasc.ps1
 ```
+**WARNING**
 
 `Set-ExecutionPolicy` might be not necessary
+
 If `git` is not installed, you can download the ZIP version of the repository.
 
 
