@@ -141,7 +141,7 @@ Before running the software, you may want to adapt the inputs or configuration p
 
 You can do this in two ways:
 
-### 📂 Modify input files
+### 📂 Modify used input files
 Edit the following lines where the input files are defined in the main script (`bin/antifasc_main.py`).  
 
 ``` bash
@@ -150,7 +150,7 @@ input_file='../config_files/Parameters/input.json'
 scaling_file='../config_files/Parameters/scaling_relationship.json'
 ``` 
 
-### ⚙️ Modify configuration files
+### ⚙️ Modify configuration directly in the input files
 Edit the parameter files located in:
 
 ``` bash
