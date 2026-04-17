@@ -37,8 +37,10 @@ If you are using Windows PowerShell you have to be sure that git is installed. O
 
 ## 3️⃣ Build the Docker image
 
-From the root of the project (where the Dockerfile is located):
+From the root of the project (where the Dockerfile is located) change the docker file names to use the one for Jupyter notebook (the default dockerfile is for the CLI version)
 ```
+mv dockerfile dockerfile_cli
+mv dockerfile_jn dockerfile
 docker build -t pyantifasc-jupyter .
 ```
 
