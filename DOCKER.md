@@ -211,7 +211,7 @@ Because the project folder is mounted into the container:
 
 any changes you make locally are **immediately available inside Docker**.
 
-👉 No rebuild is required.
+👉 **No rebuild is required.**
 
 ---
 
