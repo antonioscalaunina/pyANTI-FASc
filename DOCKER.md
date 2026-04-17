@@ -4,7 +4,7 @@ This guide provides all instructions to install Docker Desktop (or Docker on Lin
 
 ---
 
-# ✅ Quick Start
+# ✅ Quick Start (Linux & Mac)
 
 ``` bash
 git clone https://github.com/antonioscalaunina/pyANTI-FASc.git  
@@ -12,7 +12,22 @@ cd pyANTI-FASc
 docker build -t pyantifasc .  
 chmod +x antifasc  
 ./antifasc
-```  
+```
+
+# ✅ Quick Start (Windows Power Shell)
+
+``` bash
+git clone https://github.com/antonioscalaunina/pyANTI-FASc.git  
+cd pyANTI-FASc  
+docker build -t pyantifasc .  
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned 
+./antifasc.ps1
+```
+
+`Set-ExecutionPolicy` might be not necessary
+If `git` is not installed, you can download the ZIP version of the repository.
+
+
 
 
 # 1️⃣ Install Docker
