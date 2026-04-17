@@ -197,7 +197,7 @@ These control:
 - Processing options  
 
 👉 This is the recommended approach to tune the model or run different scenarios.
-refer to the Example.md files for more details
+refer to the **example documentation** for more details
 
 ---
 
