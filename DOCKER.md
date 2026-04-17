@@ -251,7 +251,9 @@ pyANTI-FASc/output/
 
 After building the Docker image, you can run the software again at any time without rebuilding:
 
-./antifasc  
+``` bash
+./antifasc
+```    
 
 As long as Docker is running, the image will be reused.
 
