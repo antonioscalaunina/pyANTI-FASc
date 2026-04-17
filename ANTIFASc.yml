@@ -1,14 +1,15 @@
 name: antifasc
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - pip
   - python=3.11.11
+  - cartopy==0.23.0  
   - pip:
       - alphashape==1.3.1
       - asttokens==3.0.1
       - branca==0.7.2
-      - cartopy==0.23.0
       - certifi==2026.2.25
       - charset-normalizer==3.4.7
       - click==8.3.2
