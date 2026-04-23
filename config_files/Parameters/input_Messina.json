@@ -12,7 +12,7 @@
 "application": "Hazard",
 "shape": "Rectangle",
 "numb_stoch": 5,
-"variable_mu": 1,
+"variable_mu": 0,
 "coupling_shallow_limit":1.0,
 "coupling_deep_limit":55.0,
 "mesh_sub_boundary": 0,
