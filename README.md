@@ -18,6 +18,35 @@ These slip models can be used as initial conditions for tsunami simulations in:
 https://doi.org/10.5281/zenodo.13614657
 
 ---
+## 🐳 Install Docker
+
+Before running pyANTI-FASc, make sure Docker is installed and running.
+
+### Windows (also for WSL) / Mac
+
+Download and install Docker Desktop:  
+https://www.docker.com/products/docker-desktop  
+
+- Launch Docker Desktop after installation  
+- Make sure it is running before using the software
+
+If you are using pyANTI-FASc on WSL on Windows make sure to *enable wsl integration* on Docker Desktop 
+
+---
+
+### Linux (Ubuntu)
+
+    sudo apt update
+    sudo apt install -y docker.io
+    sudo usermod -aG docker $USER
+
+
+Then restart your terminal or run:
+
+    newgrp docker
+
+
+This allows you to run Docker without `sudo`.
 
 ## 🚀 Quick Start (Recommended – Docker) 🐳
 
@@ -68,12 +97,22 @@ or on Windows:
     .\antifasc.ps1 notebook
 
 
-👉 Opens JupyterLab for:
-- step-by-step workflow
-- intermediate outputs
-- interactive visualization
+### 🔑 Accessing JupyterLab
 
----
+After running the notebook command, a URL will appear in the terminal, similar to:
+
+
+http://127.0.0.1:8888/lab?token=xxxxxxxxxxxxxxxx
+
+
+👉 To open JupyterLab:
+
+- **Linux (also WSL) / Mac**: press `Ctrl + Click` on the link  
+- **Windows PowerShell**: copy and paste the URL into your browser  
+
+⚠️ This token is required for authentication and changes every time you start the container.
+
+You can then navigate within the file system of the repository and run the different Jupyter Notebook through the Jupyter interface
 
 ## 📊 Interactive visualization
 
