@@ -107,6 +107,12 @@ The file actually used for the run must be always named **scaling_relationship.j
 
 Once the mesh is selected and the other configuration parameters are set through the described input files, the whole process can be launched simply running the following commands:
 
+For Docker installation
+
+	./antifasc
+
+For manual installation
+
 	conda activate antifasc
 	cd bin
 	python antifasc_main.py
@@ -491,8 +497,4 @@ A single scaling law is defined:
 
 Within the selected folder, for each `Slip4Hysea*.dat` file, a new file will be produced that is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00136_005.html)). 
 
-As already outlined in the [README](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) and at the beginning of this `.md` guide, this example can be run through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb). For example, you can install an IDE like [Visual Studio Code](https://code.visualstudio.com/download)  to run the Jupyter Notebook on Ubuntu, macOS, or Windows. 
-
-**IMPORTANT**: To ensure everything works correctly, it's essential to properly install all the needed components as outlined in the README.
-
-
+As already outlined in the [README](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) and at the beginning of this `.md` guide, this example can be run,in the Docker version, also through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb). 
