@@ -90,7 +90,7 @@ def plot_slip_map(Param,geojson_file, map_file, hypo=[0,0]):
     #m.zoom_start = zoom
 
     # Inizializza la mappa Folium
-    m = folium.Map(location=[center_lat, center_lon], zoom_start=7)
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=7, tiles="CartoDB positron")
 
     # Definisci una scala di colori per lo slip
     cmap = linear.YlOrRd_09.scale(min(data['features'], key=lambda x: x['properties']['slip'])['properties']['slip'],
@@ -134,68 +134,72 @@ def plot_slip_map(Param,geojson_file, map_file, hypo=[0,0]):
 # Clear screen
 #os.system('cls' if os.name == 'nt' else 'clear')
 
-# Read parameters from JSON file
-with open('./config_files/Parameters/input.json') as fid:
-    Param = json.load(fid)
-Zone = Param['acronym']
-
-# Define folder path
-folder = './output/'
-
-# Check if application is 'PTF' and set variable accordingly
-if Param['Configure']['application'] == 'PTF':
-    hypo = Param['Event']['Hypo_LonLat']
-
-# Define choices
-values = ["event", "rigidity distribution", "magnitude", "scaling law"]
-
-# Iterate through each choice
-for ilev, value in enumerate(values, 1):
-    print(f"Current folder is '{folder}'\n")
-    choices = list(filter(lambda x: os.path.isdir(os.path.join(folder, x)), os.listdir(folder)))
-
-    if len(choices) == 1:
-        print(f"There is only one {value} directory\n")
-        folder = os.path.join(folder+ choices[0]+ '/')
-        print(folder)
-        time.sleep(1.5)
-    else:
-        while True:
-            print(f"Choose your {value} directory between:")
-            for ndir, choice in enumerate(choices, 1):
-                print(f"{ndir}. {choice}/")
-            
-            idir = input(f"Insert a number between 1 and {len(choices)}:\n\n")
-            try:
-                idir = int(idir)
-                if 1 <= idir <= len(choices):
-                    break
-                else:
-                    print(f"Please enter a number between 1 and {len(choices)}")
-            except ValueError:
-                print(f"Please enter a number between 1 and {len(choices)}")
-
-        folder = os.path.join(folder+ choices[idir - 1]+ '/')
-
-    # Clear screen
-    # os.system('cls' if os.name == 'nt' else 'clear')
-
-##############################################################
-
-home=os.getcwd()
-file_arr = glob.glob(folder+ 'Slip4H*.dat')
-print ('Number of files: ', len(file_arr))
-os.chdir(folder)
-for i in range(len(file_arr)):
-    progress(int(i*100/(len(file_arr)-1)))
-    sleep(0.1)
-    ascii_input_file = os.path.basename(file_arr[i])  # Assicurati di sostituire "input.txt" con il nome del tuo file ASCII
-    geojson_output_file = (ascii_input_file[:-4]+'.json')  # Sostituisci con il nome del file GeoJSON che desideri creare
-    map_file = (ascii_input_file[:-4]+'.html')	
-    ascii_to_geojson(ascii_input_file, geojson_output_file)
+def main():
+    # Read parameters from JSON file
+    with open('../config_files/Parameters/input.json') as fid:
+        Param = json.load(fid)
+    Zone = Param['acronym']
+    
+    # Define folder path
+    folder = '../output/'
+    
+    # Check if application is 'PTF' and set variable accordingly
     if Param['Configure']['application'] == 'PTF':
-        plot_slip_map(Param,geojson_output_file, map_file, hypo)
-    else:
-        plot_slip_map(Param,geojson_output_file, map_file)
-os.chdir(home)
-print("\n")
+        hypo = Param['Event']['Hypo_LonLat']
+    
+    # Define choices
+    values = ["event", "rigidity distribution", "magnitude", "scaling law"]
+    
+    # Iterate through each choice
+    for ilev, value in enumerate(values, 1):
+        print(f"Current folder is '{folder}'\n")
+        choices = list(filter(lambda x: os.path.isdir(os.path.join(folder, x)), os.listdir(folder)))
+    
+        if len(choices) == 1:
+            print(f"There is only one {value} directory\n")
+            folder = os.path.join(folder+ choices[0]+ '/')
+            print(folder)
+            time.sleep(1.5)
+        else:
+            while True:
+                print(f"Choose your {value} directory between:")
+                for ndir, choice in enumerate(choices, 1):
+                    print(f"{ndir}. {choice}/")
+                
+                idir = input(f"Insert a number between 1 and {len(choices)}:\n\n")
+                try:
+                    idir = int(idir)
+                    if 1 <= idir <= len(choices):
+                        break
+                    else:
+                        print(f"Please enter a number between 1 and {len(choices)}")
+                except ValueError:
+                    print(f"Please enter a number between 1 and {len(choices)}")
+    
+            folder = os.path.join(folder+ choices[idir - 1]+ '/')
+    
+        # Clear screen
+        # os.system('cls' if os.name == 'nt' else 'clear')
+    
+    ##############################################################
+    
+    home=os.getcwd()
+    file_arr = glob.glob(folder+ 'Slip4H*.dat')
+    print ('Number of files: ', len(file_arr))
+    os.chdir(folder)
+    for i in range(len(file_arr)):
+        progress(int(i*100/(len(file_arr)-1)))
+        sleep(0.1)
+        ascii_input_file = os.path.basename(file_arr[i])  # Assicurati di sostituire "input.txt" con il nome del tuo file ASCII
+        geojson_output_file = (ascii_input_file[:-4]+'.json')  # Sostituisci con il nome del file GeoJSON che desideri creare
+        map_file = (ascii_input_file[:-4]+'.html')	
+        #ascii_to_geojson(ascii_input_file, geojson_output_file)
+        if Param['Configure']['application'] == 'PTF':
+            plot_slip_map(Param,geojson_output_file, map_file, hypo)
+        else:
+            plot_slip_map(Param,geojson_output_file, map_file)
+    os.chdir(home)
+    print("\n")
+
+if __name__ == "__main__":
+    main()

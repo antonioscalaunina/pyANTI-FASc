@@ -1,5 +1,24 @@
 #!/usr/bin/env bash
+
+MODE=$1
+
+if [ "$MODE" = "notebook" ]; then
+  shift
+  docker run --rm -it \
+	-u $(id -u):$(id -g) \
+    	-e HOME=/tmp \
+    	-e JUPYTER_RUNTIME_DIR=/tmp/jupyter-runtime \
+    	-e JUPYTER_DATA_DIR=/tmp/jupyter-data \
+    	-e JUPYTER_CONFIG_DIR=/tmp/jupyter-config \
+    	-p 8888:8888 \
+    	-v "$(pwd)":/app \
+    	pyantifasc \
+    	conda run --no-capture-output -n antifasc jupyter lab \
+    	--ip=0.0.0.0 --port=8888 --no-browser
+else
   docker run --rm -it \
     -u $(id -u):$(id -g) \
     -v "$(pwd)":/app \
-    pyantifasc "$@"
+    pyantifasc \
+    conda run --no-capture-output -n antifasc python "$@"
+fi

@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+output/
+input/
+.Trash-1000/
+Dockerfile_backup*
+antifasc_backup

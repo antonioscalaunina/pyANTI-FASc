@@ -13,6 +13,14 @@ RUN mkdir -p /tmp/matplotlib
 # Attivazione dell'ambiente
 SHELL ["conda", "run", "-n", "antifasc", "/bin/bash", "-c"]
 
+# Installa Jupyter nel tuo env conda
+RUN conda run -n antifasc pip install jupyterlab ipykernel
+
+# Registra il kernel
+RUN conda run -n antifasc python -m ipykernel install \
+    --name antifasc \
+    --display-name "Python (pyANTI-FASc)"
+
 # Installazione delle dipendenze Python
 # RUN pip install -r /tmp/requirements.txt
 
