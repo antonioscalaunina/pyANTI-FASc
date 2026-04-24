@@ -47,7 +47,8 @@ https://doi.org/10.5281/zenodo.13614657
 
 ## ⚙️ How to run
 
-### 🔹 CLI execution
+### <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/75177071-5d70-4223-9026-541e322d5ddb" />
+ CLI execution
 
     ./antifasc
 
