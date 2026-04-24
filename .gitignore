@@ -6,3 +6,7 @@ input/
 .Trash-1000/
 Dockerfile_backup*
 antifasc_backup
+*.html
+config_files/Matrix_distances/
+config_files/Mesh/
+config_files/Rigidity/

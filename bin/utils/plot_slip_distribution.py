@@ -129,7 +129,103 @@ def plot_slip_map(Param,geojson_file, map_file, hypo=[0,0]):
     # Salva la mappa in un file HTML
     m.save(map_file)
 
+def plot_geojson_property(geojson_file, property_name="slip"):
+    geojson_file = Path(geojson_file)
 
+    with open(geojson_file, "r") as f:
+        data = json.load(f)
+
+    values = [
+        feature["properties"][property_name]
+        for feature in data["features"]
+        if property_name in feature["properties"]
+    ]
+
+    if not values:
+        print(f"No property '{property_name}' found in {geojson_file.name}")
+        return None
+
+    vmin = min(values)
+    vmax = max(values)
+
+    lats = []
+    lons = []
+
+    for feature in data["features"]:
+        coords = feature["geometry"]["coordinates"][0]
+        for lon, lat, *_ in coords:
+            lats.append(lat)
+            lons.append(lon)
+
+    center_lat = (min(lats) + max(lats)) / 2
+    center_lon = (min(lons) + max(lons)) / 2
+
+    cmap = LinearColormap(
+        colors=["white", "#fee5d9", "#fcae91", "#fb6a4a", "#de2d26", "#a50f15"],
+        vmin=vmin,
+        vmax=vmax,
+        caption=property_name
+    )
+
+    m = folium.Map(
+        location=[center_lat, center_lon],
+        zoom_start=7,
+        tiles="CartoDB positron"
+    )
+
+    for feature in data["features"]:
+        coords = feature["geometry"]["coordinates"][0]
+        value = feature["properties"][property_name]
+
+        polygon_coords = [
+            [lat, lon]
+            for lon, lat, *_ in coords
+        ]
+
+        folium.Polygon(
+            locations=polygon_coords,
+            color="black",
+            weight=0.2,
+            fill=True,
+            fill_color=cmap(value),
+            fill_opacity=0.75,
+            tooltip=f"{property_name}: {value:.4g}"
+        ).add_to(m)
+
+    cmap.add_to(m)
+
+    return m
+
+def generate_slip_maps(folder, Param):
+    folder = Path(folder)
+
+    file_arr = sorted(folder.glob("Slip4H*.dat"))
+    print("Number of files:", len(file_arr))
+
+    if len(file_arr) == 0:
+        print("No Slip4H*.dat files found.")
+        return
+
+    hypo = None
+    if Param["Configure"]["application"] == "PTF":
+        hypo = Param["Event"]["Hypo_LonLat"]
+
+    for i, file in enumerate(file_arr):
+        percent = int(i * 100 / max(len(file_arr) - 1, 1))
+        progress(percent)
+
+        geojson_file = file.with_suffix(".json")
+        map_file = file.with_suffix(".html")
+
+        if not geojson_file.exists():
+            ascii_to_geojson(file, geojson_file)
+
+        if hypo is not None:
+            plot_slip_map(Param, geojson_file, map_file, hypo)
+        else:
+            plot_slip_map(Param, geojson_file, map_file)
+
+    print("\nDone.")
 
 # Clear screen
 #os.system('cls' if os.name == 'nt' else 'clear')

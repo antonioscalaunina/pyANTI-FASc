@@ -1176,10 +1176,32 @@ def run_homo(slab):
             os.chdir(main_dir)
     
     if variable_mu == 0:
-        create_directory(os.path.join(main_dir,'input'))
-        create_directory(os.path.join(main_dir,'output'))
-        shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
-        shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
+        input_dir = os.path.join(main_dir, "input")
+        output_dir = os.path.join(main_dir, "output")
+
+        create_directory(input_dir)
+        create_directory(output_dir)
+
+        src_output = os.path.join(main_dir, event_out)
+        dst_output = os.path.join(output_dir, event_out)
+
+        src_input = os.path.join(main_dir, event)
+        dst_input = os.path.join(input_dir, event)
+
+        if os.path.exists(dst_output):
+            print(f"[WARNING] Overwriting existing output directory: {dst_output}")
+            shutil.rmtree(dst_output)
+
+        if os.path.exists(dst_input):
+            print(f"[WARNING] Overwriting existing input directory: {dst_input}")
+            shutil.rmtree(dst_input)
+
+        shutil.move(src_output, dst_output)
+        shutil.move(src_input, dst_input)
+        #create_directory(os.path.join(main_dir,'input'))
+        #create_directory(os.path.join(main_dir,'output'))
+        #shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
+        #shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
         for file in [ 'input_magnitude']:
             os.remove(os.path.join(main_dir,file))
 
@@ -1288,10 +1310,32 @@ def run_var(slab):
 
 
     if variable_mu == 1:
-        create_directory(os.path.join(main_dir,'input'))
-        create_directory(os.path.join(main_dir,'output'))
-        shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
-        shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
+        input_dir = os.path.join(main_dir, "input")
+        output_dir = os.path.join(main_dir, "output")
+
+        create_directory(input_dir)
+        create_directory(output_dir)
+
+        src_output = os.path.join(main_dir, event_out)
+        dst_output = os.path.join(output_dir, event_out)
+
+        src_input = os.path.join(main_dir, event)
+        dst_input = os.path.join(input_dir, event)
+
+        if os.path.exists(dst_output):
+            print(f"[WARNING] Overwriting existing output directory: {dst_output}")
+            shutil.rmtree(dst_output)
+
+        if os.path.exists(dst_input):
+            print(f"[WARNING] Overwriting existing input directory: {dst_input}")
+            shutil.rmtree(dst_input)
+
+        shutil.move(src_output, dst_output)
+        shutil.move(src_input, dst_input)
+        #create_directory(os.path.join(main_dir,'input'))
+        #create_directory(os.path.join(main_dir,'output'))
+        #shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
+        #shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
         
         #for file in [ 'input_magnitude']:
             #os.remove(os.path.join(main_dir,file))
