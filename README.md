@@ -56,7 +56,7 @@ Runs the full pipeline.
 
 ---
 
-### <img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/ed54452d-a63f-48ec-8db2-080ed147353d" /> Jupyter Notebook (interactive)
+### <img width="30" height="30" alt="image" src="https://github.com/user-attachments/assets/ed54452d-a63f-48ec-8db2-080ed147353d" /> Jupyter Notebook (interactive)
 
 
     ./antifasc notebook
