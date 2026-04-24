@@ -19,7 +19,7 @@ https://doi.org/10.5281/zenodo.13614657
 
 ---
 
-## 🚀 Quick Start (Recommended – Docker)
+## 🚀 Quick Start (Recommended – Docker) 🐳
 
 ### Linux / Mac
 
