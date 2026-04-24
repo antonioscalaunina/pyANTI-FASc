@@ -95,7 +95,7 @@ Features:
 The software is composed of three main modules:
 
 ### 1. Preprocess
-- Mesh generation from slab geometries
+- Mesh reading from slab geometries (soon available interaction with (seismofault services)[https://seismofaults.eu/services/efsm20-services] 
 - Area computation
 - Connectivity and distances
 
@@ -114,8 +114,8 @@ The software is composed of three main modules:
 
 Main configuration file:
 
-    `config_files/Parameters/input.json`    
-    `config_files/Parameters/scaling_relationship.json`
+     config_files/Parameters/input.json    
+     config_files/Parameters/scaling_relationship.json
 
 **In the notebook version you can change the input file names**
 
@@ -133,7 +133,7 @@ You can control:
 
 Generated in:
 
-    `output/`
+     output/
 
 Includes:
   - ASCII slip files
