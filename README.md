@@ -83,7 +83,7 @@ This allows you to run Docker without `sudo`.
 
 or on Windows Power Shell
 
-    ./antifasc_ps1
+    ./antifasc.ps1
 
 Runs the full pipeline.
 
