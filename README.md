@@ -111,12 +111,16 @@ http://127.0.0.1:8888/lab?token=xxxxxxxxxxxxxxxx
 
 👉 To open JupyterLab:
 
-- **Linux (also WSL) / Mac**: press `Ctrl + Click` on the link  
+- **Linux (also WSL) / Mac**: press `Ctrl + Click` on the link (or copy and paste the URL into your browser)
 - **Windows PowerShell**: copy and paste the URL into your browser  
 
 ⚠️ This token is required for authentication and changes every time you start the container.
 
 You can then navigate within the file system of the repository and run the different Jupyter Notebook through the Jupyter interface
+
+the main pipeline is available in the notebook:
+
+    bin/antifasc_main.ipynb
 
 ## 📊 Interactive visualization
 
@@ -124,12 +128,13 @@ Interactive notebook available at:
 
      bin/interactive_slip_maps.ipynb
 
-Features:
-- folder selection via widgets 👆
-- GeoJSON visualization
-- slip / rake plotting
-- interactive maps
-- optional HTML export
+it can be run after the running of either the CLI pipeline or the notebook.
+
+Running it the user can:
+
+- select the folder via interactive widgets 👆
+- visualize slip and rake maps through the GeoJSON output files
+- optionally generate, visualize and export HTML interactive maps
 
 ---
 
@@ -162,13 +167,15 @@ Main configuration file:
 
 **In the notebook version you can change the input file names**
 
-You can control:
+Through these files the users can control:
 - application mode (Hazard / PTF)
 - magnitude ranges
 - rigidity models
 - scaling laws
 
 👉 Changes are immediately available inside Docker (no rebuild required)
+**IMPORTANT: please have a look at the Example1_Tohoku.md and Example2_Mediterranean.md documentation for
+more details about the input files**
 
 ---
 
@@ -182,6 +189,9 @@ Includes:
   - ASCII slip files
   - GeoJSON
   - HTML maps (optionally, look at `bin/plot_interactive_maps.ipynb`
+
+**IMPORTANT: please have a look at the Example1_Tohoku.md and Example2_Mediterranean.md documentation for
+more details about the output folder and its folder tree**
 
 ---
 
@@ -219,30 +229,30 @@ This ensures:
 
 See:
 
-   - `bin/antifasc_main.ipynb`
-   - `bin/antifasc_main_Ex2.ipynb`
+   - bin/antifasc_main.ipynb
+   - bin/antifasc_main_Ex2.ipynb
 
 And the corresponding example descriptions:
 
-  - `Example1_Tohoku.md`
-  - `Example2_Mediterranean.md`
+   - Example1_Tohoku.md
+   - Example2_Mediterranean.md
    
 
 ---
 
-## 🧱 Legacy installation (Conda)
+## 🧱 Manual installation (Conda)
 
 If you prefer a manual setup without Docker, see:
 
-👉 **LEGACY_INSTALL.md**
+👉 **MANUAL_INSTALL.md**
 
 ⚠️ This approach requires manual dependency management and is not recommended for new users.
 
 ---
 
-## 📚 Documentation
+## 📚 Complementary Documentation
 
-- Legacy installation → `LEGACY_INSTALL.md`
+- Manual installation → `MANUAL_INSTALL.md`
 - Interactive notebooks → included in `bin/`
 - Wiki → under construction
 
