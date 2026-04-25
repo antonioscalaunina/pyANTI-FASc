@@ -179,6 +179,7 @@ Through these files the users can control:
 - scaling laws
 
 👉 Changes are immediately available inside Docker (no rebuild required)
+
 **IMPORTANT: please have a look at the Example1_Tohoku.md and Example2_Mediterranean.md documentation for
 more details about the input files**
 
