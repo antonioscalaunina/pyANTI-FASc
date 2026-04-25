@@ -84,7 +84,7 @@ The command
 
 or, on Windows Power Shell
 
-    ./antifasc.ps1
+    .\antifasc.ps1
 
 Runs the full pipeline.
 
