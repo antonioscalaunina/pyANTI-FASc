@@ -1,4 +1,4 @@
-# pyANTI-FASc
+io# pyANTI-FASc
 
 Python implementation of **ANTI-FASc**  
 (*Automatic Numerical Tsunami Initial conditions: on-the-Fly rupture Areas and earthquake Scenarios*)
@@ -78,10 +78,11 @@ This allows you to run Docker without `sudo`.
 
 ### <img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/75177071-5d70-4223-9026-541e322d5ddb" >  CLI execution
 
+The command
 
     ./antifasc
 
-or on Windows Power Shell
+or, on Windows Power Shell
 
     ./antifasc.ps1
 
@@ -91,6 +92,7 @@ Runs the full pipeline.
 
 ### <img width="30" height="30" alt="image" src="https://github.com/user-attachments/assets/ed54452d-a63f-48ec-8db2-080ed147353d" /> Jupyter Notebook (interactive)
 
+The command
 
     ./antifasc notebook
 
@@ -99,6 +101,9 @@ or on Windows:
 
 
     .\antifasc.ps1 notebook
+
+accesses to the Jupyter Notebook environment 
+see below 👇
 
 
 ### 🔑 Accessing JupyterLab
