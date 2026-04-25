@@ -97,7 +97,7 @@ The command
     ./antifasc notebook
 
 
-or on Windows:
+or, on Windows Power Shell:
 
 
     .\antifasc.ps1 notebook
