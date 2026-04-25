@@ -148,7 +148,7 @@ Running it the user can:
 The software is composed of three main modules:
 
 ### 1. Preprocess
-- Mesh reading from slab geometries (soon available interaction with (seismofault services)[https://seismofaults.eu/services/efsm20-services] 
+- Mesh reading from slab geometries (soon available interaction with [seismofault services](https://seismofaults.eu/services/efsm20-services)
 - Area computation
 - Connectivity and distances
 
