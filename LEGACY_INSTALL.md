@@ -1,6 +1,6 @@
  # pyANTI-FASc
 
-This readme contains a guide to the installation and running of the base version and Jupyter Notebook of pyANTI-FASc through a Conda environement. Complete guides to use the Dockerised version for the Command Line Interface and the Jupyter Notebook versions are available in the files [DOCKER.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/DOCKER.md) and [DOCKER_notebook.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/DOCKER_notebook.md), respectively
+This readme contains a guide to install and run of the base version and Jupyter Notebook of pyANTI-FASc through a manual installation of the Conda environement. For a guide to install and use the Dockerised versions please refer to the main [README.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md)
 
 ## 1. General description
 
