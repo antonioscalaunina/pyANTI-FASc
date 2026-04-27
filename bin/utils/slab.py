@@ -1202,8 +1202,8 @@ def run_homo(slab):
         #create_directory(os.path.join(main_dir,'output'))
         #shutil.move(os.path.join(main_dir,event_out), os.path.join(main_dir,'output'))
         #shutil.move(os.path.join(main_dir,event), os.path.join(main_dir,'input'))
-        for file in [ 'input_magnitude']:
-            os.remove(os.path.join(main_dir,file))
+        #for file in [ 'input_magnitude']:
+        #    os.remove(os.path.join(main_dir,file))
 
         for file in os.listdir(main_dir):
             if file.endswith('.txt') or file.endswith('.dat'):
