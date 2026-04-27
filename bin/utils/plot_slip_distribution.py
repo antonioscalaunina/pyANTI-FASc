@@ -5,7 +5,7 @@ from pathlib import Path
 import time
 from time import sleep
 import folium
-from branca.colormap import linear
+from branca.colormap import linear, LinearColormap
 
 # Define function to read JSON file
 def read_config_json(file_path):
@@ -129,7 +129,7 @@ def plot_slip_map(Param,geojson_file, map_file, hypo=[0,0]):
     # Salva la mappa in un file HTML
     m.save(map_file)
 
-def plot_geojson_property(geojson_file, property_name="slip"):
+def plot_geojson_property(geojson_file, property_name="slip", tile_config=None):
     geojson_file = Path(geojson_file)
 
     with open(geojson_file, "r") as f:
@@ -167,12 +167,26 @@ def plot_geojson_property(geojson_file, property_name="slip"):
         caption=property_name
     )
 
-    m = folium.Map(
-        location=[center_lat, center_lon],
-        zoom_start=7,
-        tiles="CartoDB positron"
-    )
+    if tile_config is None:
+        tile_config = {
+            "tiles": "CartoDB positron",
+            "attr": None
+        }
 
+    if tile_config["attr"] is None:
+        m = folium.Map(
+            location=[center_lat, center_lon],
+            zoom_start=7,
+            tiles=tile_config["tiles"]
+        )
+    else:
+        m = folium.Map(
+            location=[center_lat, center_lon],
+            zoom_start=7,
+            tiles=tile_config["tiles"],
+            attr=tile_config["attr"]
+        )
+        
     for feature in data["features"]:
         coords = feature["geometry"]["coordinates"][0]
         value = feature["properties"][property_name]
