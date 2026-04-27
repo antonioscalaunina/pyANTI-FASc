@@ -262,7 +262,7 @@ For each Slip4Hysea*.dat file, a geojson file, containing the same distributions
  The slip distributions can be easily plotted by simple personal scripts. The geojson files can be uploaded to Qgis or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/)) 
  
  Beyond that, in the folder [bin](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/bin) there is another Jupyter Notebook [interactive_slip_maps.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/interactive_slip_maps.ipynb). 
- Within this Jupyter Notebook, the user might select all the slip distributions computed so far (and available in the output folder) and plot for each of them an interactive slip map (either from the GeoJSON files or creating HTML maps) as shown in this ![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN.png)
+ Within this Jupyter Notebook, the user might select all the slip distributions computed so far (and available in the output folder) and plot for each of them an interactive slip map (either from the GeoJSON files or creating HTML maps) as shown in this screeshot below ![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN.png)
 	
 
 As above mentioned this example can be run, in the Docker version, also through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb).
