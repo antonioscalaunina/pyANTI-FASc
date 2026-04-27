@@ -30,7 +30,7 @@ https://www.docker.com/products/docker-desktop
 - Launch Docker Desktop after installation  
 - Make sure it is running before using the software
 
-If you are using pyANTI-FASc on WSL on Windows make sure to *enable wsl integration* on Docker Desktop 
+If you are using pyANTI-FASc on WSL on Windows make sure to *enable wsl integration* on Docker Desktop. Note that if you are on Windows 11 Home, WSL is the only mode to install Docker pyANTI-FASc image
 
 ---
 
