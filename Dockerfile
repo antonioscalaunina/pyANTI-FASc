@@ -7,8 +7,8 @@ COPY ANTIFASc.yml /tmp/ANTIFASc.yml
 
 # Creazione dell'ambiente Conda
 RUN conda env create -f /tmp/ANTIFASc.yml
+RUN mkdir -p /tmp/matplotlib && chmod 777 /tmp/matplotlib
 ENV MPLCONFIGDIR=/tmp/matplotlib
-RUN mkdir -p /tmp/matplotlib
 
 # Attivazione dell'ambiente
 SHELL ["conda", "run", "-n", "antifasc", "/bin/bash", "-c"]
