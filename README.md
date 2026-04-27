@@ -1,4 +1,4 @@
-## pyANTI-FASc
+# pyANTI-FASc (Recommended version Docker 🐳)
 
 Python implementation of **ANTI-FASc**  
 (*Automatic Numerical Tsunami Initial conditions: on-the-Fly rupture Areas and earthquake Scenarios*)
@@ -48,7 +48,7 @@ Then restart your terminal or run:
 
 This allows you to run Docker without `sudo`.
 
-## 🚀 Quick Start (Recommended – Docker) 🐳
+## 🚀 Quick Start 🐳
 
 ### Linux / Mac
 
@@ -148,7 +148,7 @@ Running it the user can:
 The software is composed of three main modules:
 
 ### 1. Preprocess
-- Mesh reading from slab geometries (soon available interaction with [seismofault services](https://seismofaults.eu/services/efsm20-services))
+- Mesh reading from slab geometries (soon available interaction with [EFSM20 services](https://seismofaults.eu/services/efsm20-services))
 - Area computation
 - Connectivity and distances
 
