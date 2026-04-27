@@ -1,7 +1,5 @@
 # pyANTI-FASc 
-
 ## Recommended version - Docker 🐳
-
 Python implementation of **ANTI-FASc**  
 (*Automatic Numerical Tsunami Initial conditions: on-the-Fly rupture Areas and earthquake Scenarios*)
 
