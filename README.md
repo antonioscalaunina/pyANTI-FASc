@@ -180,7 +180,7 @@ Through these files the users can control:
 
 👉 Changes are immediately available inside Docker (no rebuild required)
 
-**IMPORTANT: please have a look at the Example1_Tohoku.md and Example2_Mediterranean.md documentation for
+**IMPORTANT: please have a look at the [Example1](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) and [Example2](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example2_Mediterranean.md) documentation for
 more details about the input files**
 
 ---
@@ -196,7 +196,7 @@ Includes:
   - GeoJSON
   - HTML maps (optionally, look at `bin/plot_interactive_maps.ipynb`
 
-**IMPORTANT: please have a look at the Example1_Tohoku.md and Example2_Mediterranean.md documentation for
+**IMPORTANT: please have a look at the [Example1](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) and [Example2](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example2_Mediterranean.md) documentation for
 more details about the output folder and its folder tree**
 
 ---
@@ -235,8 +235,8 @@ This ensures:
 
 See:
 
-   - bin/antifasc_main.ipynb
-   - bin/antifasc_main_Ex2.ipynb
+- [bin/antifasc_main.ipynb]
+- [bin/antifasc_main_Ex2.ipynb]
 
 And the corresponding example descriptions:
 
