@@ -406,7 +406,7 @@ For smaller magnitudes not enough cells are defined to build stochastic slip dis
  
 Beyond that, in the folder [bin](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/bin) there is another Jupyter Notebook [interactive_slip_maps.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/interactive_slip_maps.ipynb). 
  Within this Jupyter Notebook, the user might select all the slip distributions computed so far (and available in the output folder) and plot for each of them an interactive slip map (either from the GeoJSON files or creating HTML maps) as shown in the Figure 3 
- ![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN.png)
+ ![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN_Sicily.png)
  *Figure 3 - Screenshot showing the working of the interactive slip plotter Jupyter Notebook*
 	
 
