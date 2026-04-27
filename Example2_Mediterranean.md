@@ -111,6 +111,12 @@ For Docker installation
 
 	./antifasc
 
+or:
+
+	./antifasc notebook
+
+to access to the notebook
+
 For manual installation
 
 	conda activate antifasc
@@ -398,100 +404,15 @@ For smaller magnitudes not enough cells are defined to build stochastic slip dis
 ![Screenshot of a slip distributions imported to QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis2.jpg)
 *Figure 2 - Screenshot of a slip distributions imported to QGis* 
  
- Beyond that, in the folder [utils](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils) there is the script [plot_slip_distribution.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/plot_slip_distribution.py). It might be run (still in the *antifasc* Conda environment) with the following command:
- 
-	python plot_slip_distribution.py
-
- This script will ask which class the user wants to plot as shown in the example below:
- First select among all the outputs produced so far you folder. In the shown example the ITCF00G_Hazard_slip_ITC/ folder is the 24th
-
- 	Current folder is '../output/'
-
-	Choose your event directory between:
-	1. Irpinia_W&C1994_M69_E1533_N4085_slip_IrT/
-	2. Calabrian_test_3_M70_E1800_N3760_slip_CaL/
-	3. Messina_W&C1994_M70_E1569_N3817_slip_MeS/
-	4. Calabrian_test_M70_E1827_N3800_slip_CaL/
-	5. Samos_test_QGis_fix_mesh_M70_E2675_N3790_slip_SaM/
-	6. Samos_rough_M70_E2682_N3784_slip_SaM/
-	7. Irpinia_boh_3_M70_E1550_N4060_slip_IrP/
-	8. Irpinia_test_QGis_M70_E1557_N4056_slip_IrP/
-	9. Calabrian_test_static_M80_E1800_N3760_slip_CaA/
-	10. Irpinia_refined_M70_E1550_N4060_slip_IrR/
-	11. Samos_test_QGis_M70_E2675_N3790_slip_SaM/
-	12. Samos_test_QGis_1_M70_E2675_N3790_slip_SaM/
-	13. Irpinia_boh_M70_E1510_N4010_slip_IrP/
-	14. Irpinia_refined3_M70_E1550_N4060_slip_IrR/
-	15. Irpinia_test_M70_E1550_N4060_slip_IrT/
-	16. Calabrian_test_7_M70_E1800_N3760_slip_CaA/
-	17. Irpinia_refined2_M70_E1550_N4060_slip_IrR/
-	18. Calabrian_test_8_M80_E1800_N3760_slip_CaA/
-	19. Irpinia_boh_2_M70_E1480_N4080_slip_IrP/
-	20. Irpinia_refined25_M70_E1550_N4060_slip_IrR/
-	21. Samos_test_QGis_fix_thin_M70_E2675_N3790_slip_SaM/
-	22. Calabrian_test_2_M70_E1800_N3760_slip_CaL/
-	23. Sicily_rough_M70_E1311_N3850_slip_ITC/
-	24. ITCF00G_Hazard_slip_ITC/
-	25. Calabrian_test_9_M80_E1800_N3760_slip_CaA/
-	26. Tohoku_test_json_M90_E14237_N3832_slip_KuJ/
-	27. Irpinia_refined5_M70_E1550_N4060_slip_IrR/
-	28. Irpinia_boh_4_M70_E1550_N4060_slip_IrP/
-	29. Samos_test_QGis_large_M70_E2675_N3790_slip_SaM/
-	30. Tohoku_test_M90_E14237_N3832_slip_KuJ/
-	Insert a number between 1 and 30:
+Beyond that, in the folder [bin](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/bin) there is another Jupyter Notebook [interactive_slip_maps.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/interactive_slip_maps.ipynb). 
+ Within this Jupyter Notebook, the user might select all the slip distributions computed so far (and available in the output folder) and plot for each of them an interactive slip map (either from the GeoJSON files or creating HTML maps) as shown in the Figure 3 
+ ![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN.png)
+ *Figure 3 - Screenshot showing the working of the interactive slip plotter Jupyter Notebook*
 	
-	24
 
-Then we select either variable_mu of homogeneous_mu case
+As above mentioned this example can be run, in the Docker version, also through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb).
+   
 
-	Current folder is '../output/ITCF00G_Hazard_slip_ITC/'
-
-	Choose your rigidity distribution directory between:
-	1. variable_mu/
-	2. homogeneous_mu/
-	Insert a number between 1 and 2:
-	
-	1
-
-Then we select one of the magnitude bin
-	
-	Current folder is '../output/ITCF00G_Hazard_slip_ITC/variable_mu/'
-
-	Choose your magnitude directory between:
-	1. 5_6000/
-	2. 7_5000/
-	3. 5_8000/
-	4. 6_8000/
-	5. 7_2000/
-	6. 6_7000/
-	7. 6_2000/
-	8. 7_0000/
-	9. 6_9000/
-	10. 6_3000/
-	11. 6_1000/
-	12. 6_4000/
-	13. 5_7000/
-	14. 5_5000/
-	15. 7_1000/
-	16. 6_5000/
-	17. 7_4000/
-	18. 7_3000/
-	19. 6_0000/
-	20. 5_9000/
-	21. 6_6000/
-	Insert a number between 1 and 21:
-	
-	2
-
-A single scaling law is defined:
-
-	Current folder is '../output/ITCF00G_Hazard_slip_ITC/variable_mu/7_5000/'
-
-	There is only one scaling law directory
-	
-	../output/ITCF00G_Hazard_slip_ITC/variable_mu/7_5000/WellsCopp1994_Normal/
-	Number of files:  160
-	[#####                         ]  17%
 
 
 
