@@ -235,13 +235,13 @@ This ensures:
 
 See:
 
-- [bin/antifasc_main.ipynb]
-- [bin/antifasc_main_Ex2.ipynb]
+- [bin/antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb)
+- [bin/antifasc_main_Ex2.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb)
 
 And the corresponding example descriptions:
 
-   - Example1_Tohoku.md
-   - Example2_Mediterranean.md
+- [Example1_Tohoku.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md)
+- [Example2_Mediterranean.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example2_Mediterranean.md)
    
 
 ---
@@ -250,7 +250,7 @@ And the corresponding example descriptions:
 
 If you prefer a manual setup without Docker, see:
 
-👉 **MANUAL_INSTALL.md**
+👉 [MANUAL_INSTALL.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/MANUAL_INSTALL.md)
 
 ⚠️ This approach requires manual dependency management and is not recommended for new users.
 
