@@ -4,14 +4,12 @@ In this brief guide, a practical example to run a pyANTI-FASc application is sho
 
 ## Goal of this example
 
-This example demonstrates how to generate stochastic slip distributions consistent with  2011, March the 11th, Mw 9.0 Tohoku earthquake.
+This example demonstrates how to generate stochastic slip distributions consistent with  2011, March the 11th, Mw 9.0 Tohoku earthquake. It can be run both through Docker or Manual version
 
-👉 The final output consists of thousands of stochastic slip distributions ready for tsunami simulations.
+👉 The final output consists of stochastic slip distributions ready for tsunami simulations.
 
 The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). 
 
-> ⚠️ **Performance note**  
-> This notebook includes intermediate plots to illustrate key steps (e.g., barycenter selection and rupture area computation), but it is significantly slower than running the equivalent Python script [antifasc_main.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.py).
 
 # 1 - Mesh
 
@@ -110,6 +108,10 @@ Once the mesh is selected and the other configuration parameters are set through
 For Docker installation
 
 	./antifasc
+
+or for accessing to the notebook
+
+	./antifasc notebook
 
 For manual installation
 
@@ -259,46 +261,9 @@ For each Slip4Hysea*.dat file, a geojson file, containing the same distributions
 
  The slip distributions can be easily plotted by simple personal scripts. The geojson files can be uploaded to Qgis or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/)) 
  
- Beyond that, in the folder [utils](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils) there is the script [plot_slip_distribution.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/plot_slip_distribution.py). It might be run (still in the *antifasc* Conda environment) with the following command:
- 
-	python plot_slip_distribution.py
+ Beyond that, in the folder [bin](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/bin) there is another Jupyter Notebook [interactive_slip_maps.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/interactive_slip_maps.ipynb). 
+ Within this Jupyter Notebook, the user might select all the slip distributions computed so far (and available in the output folder) and plot for each of them an interactive slip map (either from the GeoJSON files or creating HTML maps) as shown in this ![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN.png)
+	
 
- This script will ask which class the user wants to plot as shown in the example below:
-
- 	Current folder is '../output/'
-
-	There is only one event directory
-	
-	../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/
-	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/'
-	
-	Choose your rigidity distribution directory between:
-	1. homogeneous_mu/
-	2. variable_mu/
-	Insert a number between 1 and 2:
-	
-	2
-	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/'
-	
-	Choose your magnitude directory between:
-	1. 8_9588/
-	2. 9_0260/
-	3. 9_0869/
-	Insert a number between 1 and 3:
-	
-	2
-	Current folder is '../output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/'
-	
-	Choose your scaling law directory between:
-	1. Murotani/
-	2. Strasser/
-	Insert a number between 1 and 2:
-	
-	2
-	Number of files:  50
-	[##############################]  100%
-
-In this example we have finally selected the folder */output/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/*. Within that folder, for each Slip4Hysea*.dat file, a new file will be produced, that is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00004_002.html)).
-
-As already outlined in the [README](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md), this example can be run, in the Docker version, also through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb).
+As above mentioned this example can be run, in the Docker version, also through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb).
    
