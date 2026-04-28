@@ -14,7 +14,8 @@ if [ "$MODE" = "notebook" ]; then
     	-v "$(pwd)":/app \
     	pyantifasc \
     	conda run --no-capture-output -n antifasc jupyter lab \
-    	--ip=0.0.0.0 --port=8888 --no-browser
+    	--ip=0.0.0.0 --port=8888 --no-browser \
+	--notebook-dir=/app
 else
   docker run --rm -it \
     -u $(id -u):$(id -g) \
