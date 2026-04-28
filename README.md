@@ -141,6 +141,8 @@ Running it the user can:
 - visualize slip and rake maps through the GeoJSON output files
 - optionally generate, visualize and export HTML interactive maps
 
+*Note that to access to the notebooks you should enter in the folder `bin`*
+
 ---
 
 ## 🧩 Workflow structure
