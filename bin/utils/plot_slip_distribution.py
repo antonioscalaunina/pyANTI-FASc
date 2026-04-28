@@ -173,12 +173,34 @@ def plot_geojson_property(geojson_file, property_name="slip", tile_config=None):
             "attr": None
         }
 
-    if tile_config["attr"] is None:
+    if tile_config.get("type") == "esri_hybrid":
+        m = folium.Map(
+            location=[center_lat, center_lon],
+            zoom_start=7,
+            tiles=None
+        )
+
+        folium.TileLayer(
+            tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            attr="Tiles © Esri",
+            name="Esri World Imagery"
+        ).add_to(m)
+
+        folium.TileLayer(
+            tiles="https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+            attr="Labels © Esri",
+            name="Esri Labels",
+            overlay=True,
+            control=False
+        ).add_to(m)
+
+    elif tile_config["attr"] is None:
         m = folium.Map(
             location=[center_lat, center_lon],
             zoom_start=7,
             tiles=tile_config["tiles"]
         )
+
     else:
         m = folium.Map(
             location=[center_lat, center_lon],
@@ -186,6 +208,31 @@ def plot_geojson_property(geojson_file, property_name="slip", tile_config=None):
             tiles=tile_config["tiles"],
             attr=tile_config["attr"]
         )
+
+
+
+
+
+
+
+
+
+
+    
+
+    #if tile_config["attr"] is None:
+    #    m = folium.Map(
+    #        location=[center_lat, center_lon],
+    #        zoom_start=7,
+    #        tiles=tile_config["tiles"]
+    #    )
+    #else:
+    #    m = folium.Map(
+    #        location=[center_lat, center_lon],
+    #        zoom_start=7,
+    #        tiles=tile_config["tiles"],
+    #        attr=tile_config["attr"]
+    #    )
         
     for feature in data["features"]:
         coords = feature["geometry"]["coordinates"][0]
