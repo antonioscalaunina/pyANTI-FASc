@@ -340,6 +340,10 @@ Then open the JupyterLab URL printed in the terminal and run:
 bin/antifasc_main.ipynb
 ```
 
+The notebook run also allows to visualize intermediate step outcomes such as the barycenter selection and the rupture areas computation
+
+**Look at [README.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) to see how to run the same pipeline of Windows Powershell**
+
 ## Manual installation
 
 If running without Docker:
@@ -356,7 +360,6 @@ or with a custom input:
 python antifasc_main.py --input input.yaml
 ```
 
-**Look at [README.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) to see how to run the same pipeline of Windows Powershell**
 ---
 
 # 4 — Expected screen output
