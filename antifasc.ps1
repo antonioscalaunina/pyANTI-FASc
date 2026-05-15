@@ -13,7 +13,8 @@ if ($MODE -eq "notebook") {
         pyantifasc `
         conda run --no-capture-output -n antifasc jupyter lab `
         --ip=0.0.0.0 --port=8888 --no-browser `
-        --notebook-dir=/app
+        --notebook-dir=/app `
+		--allow-root 
 }
 else {
     docker run --rm -it `
