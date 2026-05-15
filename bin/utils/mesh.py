@@ -637,18 +637,38 @@ def assign_rigidity_from_file(depth, namefile):
             if depth[i] > 10:
                 mu_BL[i] = rigidity_PREM[i]
     
-    if not os.path.exists(f'../config_files/Parameters/{namefile}'):
-        print('Error: File of rigidity variation not available: PLEASE CHECK!')
+    rigidity_file = namefile
+
+    if rigidity_file is None:
+        print("Error: Rigidity_file is not defined in input.json")
         return None, None
-    else:
-        table_mu = np.genfromtxt(f'../config_files/Parameters/{namefile}', delimiter=',', skip_header=1)
-        
-        mu = np.zeros(len(depth))
-        for i in range(len(depth)):
-            for j in range(len(table_mu) - 1):
-                if depth[i] >= table_mu[j, 0] and depth[i] <= table_mu[j + 1, 0]:
-                    mu[i] = linear_interp(depth[i], table_mu[j:j + 2, :])
-                    break
+    
+    # Accept:
+    # 1. absolute paths
+    # 2. relative paths already valid from current working directory
+    # 3. simple filenames to be searched in ../config_files/Rigidity/
+    if not os.path.isabs(rigidity_file):
+        if os.path.isfile(rigidity_file):
+            pass
+        else:
+            rigidity_file = os.path.join("..", "config_files", "Rigidity", rigidity_file)
+    
+    if not os.path.exists(rigidity_file):
+        print(f"Error: File of rigidity variation not available: {namefile}")
+        return None, None
+    
+    table_mu = np.genfromtxt(
+        rigidity_file,
+        delimiter=",",
+        skip_header=1
+    )
+    
+    mu = np.zeros(len(depth))
+    for i in range(len(depth)):
+        for j in range(len(table_mu) - 1):
+            if depth[i] >= table_mu[j, 0] and depth[i] <= table_mu[j + 1, 0]:
+                mu[i] = linear_interp(depth[i], table_mu[j:j + 2, :])
+                break
 
     mu[depth < table_mu[0, 0]] = table_mu[0, 1]
     mu[depth > table_mu[-1, 0]] = table_mu[-1, 1]
@@ -1017,7 +1037,7 @@ def point2geojson(config_file):
     
     if "lat_c" in Param:
         lat_val = Param["lat_c"]
-        if -90.0 <= lon_val <= 90.0:
+        if -90.0 <= lat_val <= 90.0:
             lat0 = lat_val
         else:
             raise ValueError(f"Invalid longitude (lat_c = {lat_val}). Must be in the range [-90, 90]")

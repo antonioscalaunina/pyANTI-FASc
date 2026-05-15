@@ -1,4 +1,5 @@
-$MODE = $args[0]
+#$MODE = $args[0]
+$MODE = if ($args.Count -gt 0) { $args[0] } else { "" }
 
 if ($MODE -eq "notebook") {
     docker run --rm -it `
@@ -11,13 +12,14 @@ if ($MODE -eq "notebook") {
         -v "${PWD}:/app" `
         pyantifasc `
         conda run --no-capture-output -n antifasc jupyter lab `
-        --ip=0.0.0.0 --port=8888 --no-browser
+        --ip=0.0.0.0 --port=8888 --no-browser `
         --notebook-dir=/app
 }
 else {
     docker run --rm -it `
         -e MPLCONFIGDIR=/tmp/matplotlib `
         -v "${PWD}:/app" `
+	-w /app/bin `
         pyantifasc `
-        conda run --no-capture-output -n antifasc python $args
+        conda run --no-capture-output -n antifasc python antifasc_main.py $args
 }

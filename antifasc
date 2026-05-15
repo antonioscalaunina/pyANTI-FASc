@@ -20,6 +20,7 @@ else
   docker run --rm -it \
     -u $(id -u):$(id -g) \
     -v "$(pwd)":/app \
+    -w /app/bin \
     pyantifasc \
-    #conda run --no-capture-output -n antifasc python "$@"
+    conda run --no-capture-output -n antifasc python antifasc_main.py "$@"
 fi

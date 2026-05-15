@@ -9,6 +9,7 @@ import os
 import sys
 import glob
 import json
+import yaml
 import shutil
 import subprocess
 import platform
@@ -33,7 +34,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.tri as tri
-
+import warnings
 
 def find_main_dir():
     current_dir = os.getcwd()
@@ -55,6 +56,7 @@ sys.path.append(utils_dir)
 import mesh as mesh
 import Rupture_areas_utils as rupture
 import plot_utils as plotutils
+from scaling_laws import SCALING_LAWS
 
 
 
@@ -68,7 +70,7 @@ class Slab:
     """
 
 
-    def __init__(self, config_file, scaling_file):
+    def __init__(self, config_file, scaling_file=None):
         """
         Initialize the Slab object by reading configuration and scaling files, and the mesh.
         """
@@ -76,8 +78,22 @@ class Slab:
         
         print('reading '+ config_file.split('/')[-1] + ' file')
         read_inputfile(self, config_file)
-        print('reading '+ scaling_file.split('/')[-1] + ' file')
-        read_scalingrel_file(self, scaling_file)
+
+        with open(config_file) as fid:
+            Param = json.load(fid)
+            
+        if "Scaling" in Param:
+            print('reading scaling laws from input.json')
+            read_scalingrel_from_input(self, config_file)
+        elif scaling_file is not None and os.path.isfile(scaling_file):
+            print('reading '+ scaling_file.split('/')[-1] + ' file')
+            read_scalingrel_file(self, scaling_file)
+        else:
+            raise RuntimeError(
+            "ERROR: scaling laws are not defined. "
+            "Please define a 'Scaling' block in input.json or provide a valid scaling_relationship.json file. "
+            "Cannot proceed."
+        )
 
         if self.mesh_gen == 0:
             mesh.faces_nodes_2_mesh_file(config_file)
@@ -738,14 +754,17 @@ def read_inputfile(Slab, config_file):
     # Read input from JSON file
     with open(config_file) as fid:
         Param = json.load(fid)
-    
+    Configure = Param.get("Configure", {})
     zone_code = Param['acronym'] #Slab
     Merc_zone = Param['Merc_zone'] #Mercator projection zone
     mesh_gen = Param['mesh_gen'] #Should mesh be generated?
-    application = Param['Configure']['application'] #Hazard: All magnitude bins - all barycenters, PTF: Magnitude and location around estimated ones
+    application = Param.get(    #Hazard: All magnitude bins - all barycenters, PTF: Magnitude and location around estimated ones
+        "application",
+        Param["Configure"].get("application", "Hazard")
+        ) 
     shape = Param['Configure']['shape'] #Rectangle: rectangular shape, Circle: circular shape
     #elem_size = Param['element_size'] 
-    Fact_rigidity = Param['Configure']['Fact_rigidity']
+    Fact_rigidity = Configure.get("Fact_rigidity", 0.5)
 
     Slab.zone_code = zone_code
     Slab.Merc_zone = Merc_zone
@@ -782,13 +801,18 @@ def read_inputfile(Slab, config_file):
         fid.write(f'mercator={Merc_zone}\n')
     
     #logical: if file with a prescribed depth variation of rigidity is given
-    if Param['Configure']['Rigidity_file_logic'] == 1:
-        Slab.Rigidity_file_logic = True
-        Slab.Rigidity_file = Param['Configure']['Rigidity_file'] #Name of the file containing the rigidity variation with depth
+    Configure = Param.get("Configure", {})
+
+    Slab.Rigidity_file_logic = bool(Configure.get("Rigidity_file_logic", 0))
+    Slab.Rigidity_file = Configure.get("Rigidity_file", None)
     
-    Slab.Preprocess_logic = Param['Configure']['preprocess'] == 1 #true: the active barycenters are already in preprocessing file
-    Slab.Sub_boundary_logic = Param['Configure']['mesh_sub_boundary'] == 1 #logical: if the rupture can extend only on a part of the mesh 
-    Slab.Stress_drop_logic = Param['Configure']['Stress_drop_var'] == 1 #logical: if the stress drop varies with depth
+    Slab.Preprocess_logic = bool(Configure.get("preprocess", 0))
+    
+    Slab.Sub_boundary_logic = bool(Configure.get("mesh_sub_boundary", 0))
+    Slab.Sub_boundary_file = Configure.get("sub_boundary_file", None)
+    
+    Slab.Stress_drop_logic = bool(Configure.get("Stress_drop_var", 0))
+
     
     # Logic for setting other attributes based on application type
     if application == 'PTF':
@@ -809,9 +833,9 @@ def read_inputfile(Slab, config_file):
         namefolder = f'{Zone}_M{Mw_string}_{hypo_GEO_string[0]}_{hypo_GEO_string[1]}'
         namefolder_slip = f'{namefolder}_slip_{zone_code}'
 
-        if Param['Configure']['file_baryc'] == 1:
-            Slab.Baryc_file_logic=True
-            Slab.Baryc_file=Param['Configure']['file_baryc_name']
+        if Configure.get("file_baryc", 0) == 1:
+            Slab.Baryc_file_logic = True
+            Slab.Baryc_file = Configure.get("file_baryc_name", None)
             
     elif application == 'Hazard':
         Zone = Param['zone_name']
@@ -831,6 +855,121 @@ def read_inputfile(Slab, config_file):
 
 
 
+
+def build_magnitude_bins(cfg):
+    mb = cfg["magnitude_bins"]
+
+    if mb["mode"] == "range":
+        return np.round(
+            np.arange(mb["min"], mb["max"] + 0.5 * mb["step"], mb["step"]),
+            3
+        ).tolist()
+
+    if mb["mode"] == "values":
+        return [float(x) for x in mb["values"]]
+
+    raise ValueError(f"Unknown magnitude bin mode: {mb['mode']}")
+
+import warnings
+
+def evaluate_scaling_law(law_name, Mw):
+    if law_name not in SCALING_LAWS:
+        available = ", ".join(SCALING_LAWS.keys())
+        raise ValueError(
+            f"Unknown scaling law '{law_name}'. Available scaling laws: {available}"
+        )
+
+    law = SCALING_LAWS[law_name]
+
+    area = law["area"](Mw)
+
+    if "length" in law:
+        length = law["length"](Mw)
+        width = area / length
+
+    else:
+        if "aspect_ratio" not in law:
+            warnings.warn(
+                f"Scaling law '{law_name}' defines only area. "
+                "Using default aspect_ratio = 2.0",
+                RuntimeWarning
+            )
+            aspect_ratio = 2.0
+        else:
+            aspect_ratio = law["aspect_ratio"]
+
+            if callable(aspect_ratio):
+                aspect_ratio = aspect_ratio(Mw)
+
+        length = np.sqrt(area * aspect_ratio)
+        width = np.sqrt(area / aspect_ratio)
+
+    return area, length, width
+
+def read_scalingrel_from_input(Slab, config_file):
+    with open(config_file) as fid:
+        cfg = json.load(fid)
+
+    if "Scaling" not in cfg:
+        raise KeyError("Missing 'Scaling' block in input.json")
+
+    scaling_cfg = cfg["Scaling"]
+
+    Magnitude = build_magnitude_bins(scaling_cfg)
+    Name_scaling = scaling_cfg["laws"]
+    N_scaling = len(Name_scaling)
+    N_Magn_bins = len(Magnitude)
+
+    Area_aux = np.zeros((N_scaling, N_Magn_bins))
+    Length_aux = np.zeros((N_scaling, N_Magn_bins))
+    Width_aux = np.zeros((N_scaling, N_Magn_bins))
+
+    for i_law, law_name in enumerate(Name_scaling):
+        for i_mag, Mw in enumerate(Magnitude):
+            area, length, width = evaluate_scaling_law(law_name, Mw)
+
+            Area_aux[i_law, i_mag] = area
+            Length_aux[i_law, i_mag] = length
+            Width_aux[i_law, i_mag] = width
+
+    Slab.Magnitude = Magnitude
+    Slab.N_scaling = N_scaling
+    Slab.Name_scaling = Name_scaling
+
+    Slab.AreaSL = Area_aux.T
+    Slab.LengthSL = Length_aux.T
+    Slab.WidthSL = Width_aux.T
+
+    with open(
+        os.path.join(main_dir, "config_files", "Parameters", "classes_scaling.dat"),
+        "w"
+    ) as fid:
+        for name in Name_scaling:
+            fid.write(f"{name}\n")
+
+    index_magnitude = None
+
+    if Slab.application == "PTF":
+        if Slab.Baryc_file_logic:
+            raise NotImplementedError(
+                "Baryc_file_logic is not implemented in the new scaling-law workflow yet."
+            )
+
+        lb_Mw = Slab.Mw - Slab.lb_Mw
+        ub_Mw = Slab.Mw + Slab.ub_Mw
+
+        index_magnitude = [
+            i for i, Mw in enumerate(Magnitude)
+            if lb_Mw <= Mw <= ub_Mw
+        ]
+
+    elif Slab.application == "Hazard":
+        index_magnitude = list(range(len(Magnitude)))
+
+    if index_magnitude is not None:
+        index_magnitude = np.array(index_magnitude, dtype=int)
+
+    Slab.index_magnitude = index_magnitude
 
 def read_scalingrel_file(Slab, scaling_file):
     ## Magnitude bins and scaling laws (Strasser and Murotani size in km - km^2)
@@ -874,11 +1013,11 @@ def read_scalingrel_file(Slab, scaling_file):
     Slab.LengthSL=Length_aux.T 
     
     ##########################################################################
-    if Slab.Stress_drop_logic:
-        gamma1 = np.reshape(Scaling['Scaling_law']['gamma1'], (1, N_scaling))
-        gamma2 = np.reshape(Scaling['Scaling_law']['gamma2'], (1, N_scaling))
-        Slab.gamma1 = gamma1
-        Slab.gamma2 = gamma2
+    #if Slab.Stress_drop_logic:
+    #    gamma1 = np.reshape(Scaling['Scaling_law']['gamma1'], (1, N_scaling))
+    #    gamma2 = np.reshape(Scaling['Scaling_law']['gamma2'], (1, N_scaling))
+    #    Slab.gamma1 = gamma1
+    #    Slab.gamma2 = gamma2
     
     ##########################################################################
     
@@ -910,6 +1049,33 @@ def read_scalingrel_file(Slab, scaling_file):
     Slab.index_magnitude=index_magnitude 
 
 
+def build_scaling_block(laws, mode, mw_min=None, mw_max=None, mw_step=None, mw_values=None):
+
+    if mode == "range":
+        magnitude_bins = {
+            "mode": "range",
+            "min": float(mw_min),
+            "max": float(mw_max),
+            "step": float(mw_step)
+        }
+
+    elif mode == "values":
+        magnitude_bins = {
+            "mode": "values",
+            "values": [
+                float(x.strip())
+                for x in mw_values.split(",")
+                if x.strip()
+            ]
+        }
+
+    else:
+        raise ValueError("Unknown magnitude mode")
+
+    return {
+        "laws": list(laws),
+        "magnitude_bins": magnitude_bins
+    }
 
 
 ### read mesh, cell barycenters and boundary of seismogenic zone and rigidity yes/no ###
@@ -924,9 +1090,44 @@ def read_mesh(Slab):
     hemisphere = mesh.get_hemisphere(nodes[:,1]) #get hemisphere for further computations
     Slab.isboundary = True
     if Slab.Sub_boundary_logic:
-        name_bnd = os.path.join(main_dir,'config_files','Mesh',f"{Slab.zone_code}_boundary.txt")#f"../config_files/Mesh/{Slab.zone_code}_boundary.txt"
-        bnd_mesh = np.genfromtxt(name_bnd, skip_header=1)
+    
+        if Slab.Sub_boundary_file is None:
+            raise ValueError(
+                "mesh_sub_boundary is enabled, but Configure.sub_boundary_file is missing."
+            )
+    
+        name_bnd = Slab.Sub_boundary_file
+    
+        if not os.path.isabs(name_bnd):
+            if os.path.isfile(name_bnd):
+                pass
+            else:
+                name_bnd = os.path.join(main_dir, name_bnd)
+    
+        if not os.path.isfile(name_bnd):
+            raise FileNotFoundError(
+                f"Sub-boundary file not found: {Slab.Sub_boundary_file}"
+            )
+    
+        bnd_data = np.genfromtxt(
+            name_bnd,
+            delimiter=",",
+            names=True,
+            dtype=None,
+            encoding=None
+        )
+    
+        try:
+            lon = bnd_data["Longitude"]
+            lat = bnd_data["Latitude"]
+        except ValueError:
+            raise ValueError(
+                "Invalid sub-boundary CSV format. Expected columns: Longitude,Latitude"
+            )
+    
+        bnd_mesh = np.column_stack([lon, lat])
         bnd_mesh[bnd_mesh[:, 0] < 0, 0] += 360
+    
     else:
         nodes_plus = nodes.copy()
         nodes_plus[nodes[:, 0] < 0, 0] += 360
@@ -943,10 +1144,12 @@ def read_mesh(Slab):
     
     if Slab.Stress_drop_logic:
         fact_mu_z=np.zeros((Slab.N_scaling,len(barycenters_all[:,1])))
+
+        # Dummy exponent only used to allow assign_rigidity() to compute mu_bal.
+        # mu_bal is currently not used in the workflow.
+        exponent = 1.0
         for j in range(Slab.N_scaling):
-            V1 = -(Slab.gamma2[0, j] + 2 * Slab.gamma1[0, j]) / (Slab.gamma1[0, j] + Slab.gamma2[0, j])
-            V2 = -(Slab.gamma1[0, j] + 2 * Slab.gamma2[0, j]) / (Slab.gamma1[0, j] + Slab.gamma2[0, j])
-            exponent = (Slab.gamma1[0, j] + Slab.gamma2[0, j]) / (Slab.gamma1[0, j] * V1 + Slab.gamma2[0, j] * V2 - Slab.gamma1[0, j] - Slab.gamma2[0, j])
+            
     
             if not Slab.Rigidity_file_logic:
                 mu_all, mu_BL, mu_bal = mesh.assign_rigidity(-1e-3 * barycenters_all[:, 2], Slab.Fact_rigidity, exponent)
@@ -1343,3 +1546,67 @@ def run_var(slab):
             if file.endswith('.txt') or file.endswith('.dat'):
                 os.remove(os.path.join(main_dir,file))
 
+
+def get_parameters_dir():
+    """
+    Return the default config_files/Parameters directory.
+    """
+    return os.path.join(main_dir, "config_files", "Parameters")
+
+
+def resolve_input_file(input_arg):
+    """
+    Resolve input file path.
+
+    If only a filename is provided, search it in config_files/Parameters.
+    If a path is provided, use it as given.
+    """
+
+    if os.path.dirname(input_arg):
+        input_file = input_arg
+    else:
+        input_file = os.path.join(get_parameters_dir(), input_arg)
+
+    input_file = os.path.abspath(input_file)
+
+    if not os.path.isfile(input_file):
+        raise FileNotFoundError(f"Input file not found: {input_file}")
+
+    return input_file
+
+
+def prepare_input_file(input_arg="input.json"):
+    """
+    Resolve the input file and convert YAML/YML to JSON if needed.
+
+    Returns
+    -------
+    str
+        Path to the JSON input file to be passed to Slab.
+    """
+
+    input_file = resolve_input_file(input_arg)
+
+    root, ext = os.path.splitext(input_file)
+    ext = ext.lower()
+
+    if ext == ".json":
+        return input_file
+
+    if ext not in [".yaml", ".yml"]:
+        raise ValueError(
+            f"Unsupported input file extension: {ext}. "
+            "Use .json, .yaml, or .yml."
+        )
+
+    json_file = root + ".json"
+
+    with open(input_file, "r") as f:
+        cfg = yaml.safe_load(f)
+
+    with open(json_file, "w") as f:
+        json.dump(cfg, f, indent=2)
+
+    print(f"YAML input converted to JSON: {json_file}")
+
+    return json_file

@@ -9,6 +9,7 @@ import time
 start_time = time.time()
 import warnings
 warnings.filterwarnings("ignore")
+import argparse
 
 import utils.slab as slab
 import matplotlib.pyplot as plt
@@ -20,65 +21,31 @@ import cartopy.feature as cfeature
 # 
 # A slab object is built with the attributes contained in the `input.json` file and  `scaling_relationship.json` file, and other attributes are computed internally based on the input information.
 
-# In[2]:
 
+#Specify input json file path
+#input_file='../config_files/Parameters/input.json'
 
-#Specify input json file and scaling_relationship file paths
-input_file='../config_files/Parameters/input.json'
-scaling_file='../config_files/Parameters/scaling_relationship.json'
+parser = argparse.ArgumentParser(
+    description="Run ANTIFASc from command line."
+)
+
+parser.add_argument(
+    "--input",
+    default="input.json",
+    help=(
+        "Input configuration file. "
+        "If only a filename is provided, it is searched in config_files/Parameters. "
+        "Accepted formats: .json, .yaml, .yml."
+    )
+)
+
+args = parser.parse_args()
+
+input_file = slab.prepare_input_file(args.input)
 
 #Initialize an instance of the class Slab with the input files
-Slab_obj=slab.Slab(input_file,scaling_file)
+Slab_obj=slab.Slab(input_file)
 
-
-# In[3]:  THIS PART IS ONLY FOR PLOTTING IN THE JN - COMMENTED IN THE .PY WORKFLOW
-
-#plot slab and SPDF (Slip Probability Density Function)
-#print('PLOT SLAB MESH AND THE COMPUTED SPDF')
-#PLOT SLAB MESH AND COMPUTED SPDF
-#fig,axs = plt.subplots(1,2,figsize=(16, 8),subplot_kw={'projection': ccrs.PlateCarree()})
-
-# Create a GeoAxes in the tile's projection
-#ax=axs[0]
-# Add coastlines and features
-#ax.coastlines(resolution='10m',linewidth=0.7)
-#ax.add_feature(cfeature.LAND, linestyle=':',color='gainsboro')
-#ax.add_feature(cfeature.OCEAN, linestyle=':',color='#0085BD')
-
-# Add gridlines
-#gl = ax.gridlines(draw_labels=True, alpha=0)
-#gl.top_labels = False
-#gl.right_labels = False
-
-#plot Slab mesh
-#Slab_obj.plot_slab(ax,colorbar=True)
-
-
-#ax1=axs[1]
-#ax1 = plt.axes(projection=ccrs.PlateCarree())
-#ax1.coastlines(resolution='10m',linewidth=0.7)
-#ax1.add_feature(cfeature.LAND, linestyle=':',color='gainsboro')
-#ax1.add_feature(cfeature.OCEAN, linestyle=':',color='#0085BD')
-#Slab_obj.plot_SPDF(ax1,colorbar=True)
-# Add gridlines
-#gl = ax1.gridlines(draw_labels=True, alpha=0)
-#gl.top_labels = False
-#gl.right_labels = False
-
-
-# ### 2. SELECTION OF RUPTURE BARYCENTERS
-# 
-# The second step will generate a selection of rupture barycenters having a fixed `minimum_interdistance`
-# this distance is optimised to avoid to have too much similar rupture areas, in particular for large magnitude values. 
-# This selection is based on the magnitude binning and the selected scaling laws that are set in the file `scaling_relationships.json`.
-# For this, apply the method `active_barycenters()` to and subsequently the method `select_barycenter2()`.
-# 
-# 
-#
-
-# ### 3. RUPTURE AREAS COMPUTE
-
-# First we need to compute or load the matrix distance and the connectivity matrix of the mesh, and compute the mesh' elements areas
 
 # In[4]:
 Slab_obj.compute_matrix_distance()
@@ -98,61 +65,13 @@ print(f'Mw: {Slab_obj.get_magnitudes()}')
 print(f'Scaling names: {Slab_obj.Name_scaling}')
 
 
-# Now, let's choose from the lists above a combination of magnitude and scaling relationship and plot the respecive rupturing barycenters. 
-
-# In[7]: THIS PART IS ONLY FOR PLOTTING IN THE JN - COMMENTED IN THE .PY WORKFLOW
-#plot barycenters for the specified combination of Mw and scaling relationship
-#Mw=8.8846
-#scaling='Murotani'
-#print(f'PLOT BARYCENTERS FOR  Mw={Mw} and SCALING NAME: {scaling}')
-#fig,ax = plt.subplots(1,1,figsize=(6, 6),subplot_kw={'projection': ccrs.PlateCarree()})
-# Create a GeoAxes in the tile's projection
-# Add coastlines and features
-#ax.coastlines(resolution='10m',linewidth=0.7)
-#ax.add_feature(cfeature.LAND, linestyle=':',color='gainsboro')
-#ax.add_feature(cfeature.OCEAN, linestyle=':',color='#0085BD')
-# Add gridlines
-#gl = ax.gridlines(draw_labels=True, alpha=0)
-#gl.top_labels = False
-#gl.right_labels = False
-#plot Slab mesh
-#Slab_obj.plot_slab(ax,colorbar=True)
-#PLOT BARYCENTERS
-#Slab_obj.plot_barycenters_mag(Mw,scaling,ax)
-#Slab_obj.compute_matrix_distance()
-
-
 # Compute the rupturing areas for every barycenter in each combination of magnitude and scaling relationship by applying the method `rupture_areas()`
-
 # In[8]:
 Slab_obj.rupture_areas()
 
-
 # Likewise, we can check the number of rupture areas computed for each combination of magnitude and scaling relationship name
-
 # In[9]:
 Slab_obj.get_RuptAreas_number()
-
-
-# Now, let's plot an example of a computed rupturing area for the scenario $M_w$=8.8846 and scaling relationship: *Murotani*
-
-# In[10]: THIS PART IS ONLY FOR PLOTTING IN THE JN - COMMENTED IN THE .PY WORKFLOW
-#plot barycenters for the specified combination of Mw and scaling name
-#Mw=8.8846
-#scaling='Murotani'
-#Rupture_area_id=5
-#print(f'PLOT BARYCENTERS FOR  Mw={Mw} and SCALING NAME: {scaling}')
-#fig,ax = plt.subplots(1,1,figsize=(6, 6),subplot_kw={'projection': ccrs.PlateCarree()})
-# Create a GeoAxes in the tile's projection
-# Add coastlines and features
-#ax.coastlines(resolution='10m',linewidth=0.7)
-#ax.add_feature(cfeature.LAND, linestyle=':',color='gainsboro')
-#ax.add_feature(cfeature.OCEAN, linestyle=':',color='#0085BD')
-# Add gridlines
-#gl = ax.gridlines(draw_labels=True, alpha=0)
-#gl.top_labels = False
-#gl.right_labels = False
-#Slab_obj.plot_rupture_area(Mw,scaling,Rupture_area_id,ax,True)
 
 
 # Finally, write the output files
@@ -175,10 +94,4 @@ elapsed = end_time - start_time
 minutes = int(elapsed // 60)
 seconds = elapsed % 60
 print(f"Total running time: {minutes} min {seconds:.2f} sec")
-
-
-# In[ ]:
-
-
-
 

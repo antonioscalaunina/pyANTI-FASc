@@ -122,13 +122,9 @@ def Rupture_area_cells(slab, i, j):
     Fact_Area = slab.Fact_Area
 
     fact_mu_z = np.ones(len(Area_cells))
-    exponent_scaling = 1
+    exponent_scaling = 0.5
 
     if slab.Stress_drop_logic:
-        gamma1 = slab.gamma1[0][j]  #FIXED by ANTONIO SCALA 2024/07/17
-        gamma2 = slab.gamma2[0][j]  #FIXED by ANTONIO SCALA 2024/07/17
-        sum_gamma = gamma1 + gamma2
-        exponent_scaling = 0.5 * (gamma2 / sum_gamma)
         fact_mu_z = slab.fact_mu_z[j][:] #corrected by ANTONIO SCALA
 
     Event = [{'cell': [], 'true': True, 'nodes4events': []} for _ in range(len(barycenter[i][j]))]
@@ -198,7 +194,7 @@ def Rupture_area_cells(slab, i, j):
                             Event[l]['cell'].pop()
 
             
-                if Area_event > Fact_Area * np.sqrt(fact_LWA) * AreaSL[index_magnitude[i], j]:
+                if Area_event > Fact_Area * (fact_LWA) * AreaSL[index_magnitude[i], j]:
                     get_out = True
                     
                 elif jj == 2:

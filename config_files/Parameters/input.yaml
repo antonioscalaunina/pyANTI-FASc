@@ -1,0 +1,241 @@
+# ============================================================
+# ANTIFASc input configuration
+# ============================================================
+#
+# YAML is a user-friendly alternative to input.json.
+# It supports comments and is mainly intended for CLI runs.
+#
+# Example:
+#
+#   ./antifasc --input input.yaml
+#
+# The YAML file is converted to JSON before running ANTIFASc.
+# The internal code still reads the generated JSON file.
+#
+# ============================================================
+
+
+# ============================================================
+# Mesh input
+# ============================================================
+
+# Mesh generation mode:
+#   0 = use existing mesh from utils/sz_slabs/<zone_name>/subfaults
+#   1 = generate mesh from existing utils/sz_slabs/<zone_name>_mesh.geojson
+#   2 = generate a rectangular fault from the parameters below
+mesh_gen: 0
+
+# Name of the slab or fault zone.
+#
+# mesh_gen = 0:
+#   zone_name must match a folder in:
+#     utils/sz_slabs/<zone_name>/subfaults
+#
+# mesh_gen = 1:
+#   zone_name must match a GeoJSON file:
+#     utils/sz_slabs/<zone_name>_mesh.geojson
+#
+# mesh_gen = 2:
+#   zone_name is used as the name of the newly generated fault.
+zone_name: kurilsjapan
+
+# Short acronym used internally for mesh and output filenames.
+acronym: KuJ
+
+# Mercator / UTM projection zone.
+# In the notebook this can be inferred automatically, but in CLI
+# mode it should be explicitly defined.
+Merc_zone: 54
+
+# Rake angle in degrees.
+# A single number is applied uniformly to all cells.
+# If omitted, the code falls back to rake = 90 degrees.
+rake: 90.0
+
+
+# ------------------------------------------------------------
+# Parameters used only when mesh_gen = 2
+# ------------------------------------------------------------
+# These can be left commented for mesh_gen = 0 or mesh_gen = 1.
+
+# lon_c: 142.0        # fault center longitude
+# lat_c: 38.0         # fault center latitude
+# depth_km: 10.0      # fault center depth in km
+# length_km: 50.0     # rectangular fault length in km
+# width_km: 25.0      # rectangular fault width in km
+# strike: 0.0         # strike angle in degrees
+# dip: 30.0           # dip angle in degrees
+# elem_size_km2: 5.0  # target average triangular element area in km^2
+
+
+# ============================================================
+# Scaling laws and magnitude bins
+# ============================================================
+
+Scaling:
+
+  # List of scaling laws to use.
+  # Names must match the keys defined in:
+  #   bin/utils/scaling_laws.py
+  laws:
+    - Strasser2010_interface
+    - Murotani2013
+
+  # Magnitude bins can be defined in two alternative ways.
+  magnitude_bins:
+
+    # mode: range
+    #   min, max, and step are used.
+    #
+    # mode: values
+    #   values is used instead.
+    mode: range
+
+    # Used when mode = range.
+    min: 8.8
+    max: 9.2
+    step: 0.1
+
+    # Used when mode = values.
+    # values:
+    #   - 8.8
+    #   - 8.9
+    #   - 9.0
+
+
+# ============================================================
+# Application
+# ============================================================
+
+# Workflow type:
+#
+#   Hazard
+#     Uses all selected magnitude bins and eligible barycenters.
+#
+#   PTF
+#     Event-based Probabilistic Tsunami Forecasting.
+#     Requires the Event block below.
+application: PTF
+
+
+# ============================================================
+# Event information
+# Required only when application = PTF
+# ============================================================
+
+Event:
+
+  # Event or scenario name used to build output folder names.
+  Name: Tohoku_test_yaml
+
+  # Hypocenter coordinates as:
+  #   [longitude, latitude]
+  Hypo_LonLat:
+    - 142.369
+    - 38.322
+
+  # Event magnitude used for PTF magnitude-bin selection.
+  Magnitude: 9.0
+
+
+# ============================================================
+# Ensemble configuration
+# ============================================================
+#
+# The block is called Configure for compatibility with the
+# existing ANTIFASc code.
+#
+# Deprecated options such as preprocess, file_baryc, and
+# file_baryc_name are intentionally omitted.
+
+Configure:
+
+  # Rupture shape.
+  shape: Rectangle
+
+  # Number of stochastic slip distributions per rupture area.
+  numb_stoch: 2
+
+  # Coupling limits in km.
+  coupling_shallow_limit: 1.0
+  coupling_deep_limit: 55.0
+
+
+  # ----------------------------------------------------------
+  # Rupture-area selection parameters
+  # ----------------------------------------------------------
+
+  # Minimum distance from the boundary, scaled by rupture width.
+  minimum_bnd_distance: 0.25
+
+  # Minimum interdistance between selected barycenters, scaled by rupture length.
+  minimum_interdistance: 0.2
+
+  # Multiplicative factor applied to rupture area scaling.
+  Fact_area_scaling: 1.0
+
+
+  # ----------------------------------------------------------
+  # Variable rigidity / stress-drop settings
+  # ----------------------------------------------------------
+
+  # Variable rigidity flag:
+  #   0 = homogeneous rigidity workflow only
+  #   1 = also compute variable-rigidity workflow
+  variable_mu: 1
+
+  # Rigidity file logic:
+  #   0 = use default depth-dependent rigidity model
+  #   1 = use a CSV rigidity file
+  Rigidity_file_logic: 0
+
+  # Required only if Rigidity_file_logic = 1.
+  #
+  # Expected CSV format:
+  #
+  #   Depth,Rigidity
+  #   0,26.5
+  #   10,35.0
+  #
+  # Rigidity_file: ../config_files/Rigidity/my_rigidity.csv
+
+  # Stress-drop variation flag.
+  Stress_drop_var: 0
+
+  # Factor used by the default rigidity model when Rigidity_file_logic = 0.
+  Fact_rigidity: 0.5
+
+
+  # ----------------------------------------------------------
+  # PTF-only selection parameters
+  # Used only when application = PTF
+  # ----------------------------------------------------------
+
+  # Magnitude selection interval:
+  # selected bins satisfy:
+  #   Event.Magnitude - Magnitude_lb <= Mw <= Event.Magnitude + Magnitude_ub
+  Magnitude_lb: 0.1
+  Magnitude_ub: 0.1
+
+  # Hypocenter-to-barycenter distance factor.
+  hypo_baryc_distance: 1.0
+
+
+  # ----------------------------------------------------------
+  # Boundary / sub-boundary settings
+  # ----------------------------------------------------------
+
+  # Sub-boundary logic:
+  #   0 = use the full mesh boundary inferred from the mesh
+  #   1 = use a user-defined sub-boundary CSV file
+  mesh_sub_boundary: 0
+
+  # Required only if mesh_sub_boundary = 1.
+  #
+  # Expected CSV format:
+  #
+  #   Longitude,Latitude
+  #   140.1,35.0
+  #   141.0,36.0
+  #
+  # sub_boundary_file: ../config_files/Mesh/my_sub_boundary.csv
