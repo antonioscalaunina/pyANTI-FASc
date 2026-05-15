@@ -86,7 +86,7 @@ The command
 
 or, on Windows PowerShell,
 
-    .ntifasc.ps1
+    .\antifasc.ps1
 
 runs the full pipeline using the default configuration file:
 
@@ -99,8 +99,8 @@ A different input file can be selected with:
 
 or, on Windows PowerShell,
 
-    .ntifasc.ps1 --input input_test.json
-    .ntifasc.ps1 --input input_test.yaml
+    .\antifasc.ps1 --input input_test.json
+    .\antifasc.ps1 --input input_test.yaml
 
 If only a filename is provided, the file is searched in:
 
@@ -118,7 +118,7 @@ The command
 
 or, on Windows PowerShell,
 
-    .ntifasc.ps1 notebook
+    .\antifasc.ps1 notebook
 
 starts the JupyterLab environment.
 
