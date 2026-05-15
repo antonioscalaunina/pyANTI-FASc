@@ -76,17 +76,37 @@ This allows you to run Docker without `sudo`.
 
 ## ⚙️ How to run
 
+pyANTI-FASc can be launched either in CLI mode or through the interactive Jupyter notebook interface.
+
 ### <img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/75177071-5d70-4223-9026-541e322d5ddb" >  CLI execution
 
 The command
 
     ./antifasc
 
-or, on Windows Power Shell
+or, on Windows PowerShell,
 
-    .\antifasc.ps1
+    .ntifasc.ps1
 
-Runs the full pipeline.
+runs the full pipeline using the default configuration file:
+
+    config_files/Parameters/input.json
+
+A different input file can be selected with:
+
+    ./antifasc --input input_test.json
+    ./antifasc --input input_test.yaml
+
+or, on Windows PowerShell,
+
+    .ntifasc.ps1 --input input_test.json
+    .ntifasc.ps1 --input input_test.yaml
+
+If only a filename is provided, the file is searched in:
+
+    config_files/Parameters/
+
+Both JSON and YAML input files are supported. YAML files are automatically converted to the corresponding JSON file before execution, so the internal ANTIFASc workflow still reads a JSON configuration.
 
 ---
 
@@ -96,15 +116,17 @@ The command
 
     ./antifasc notebook
 
+or, on Windows PowerShell,
 
-or, on Windows Power Shell:
+    .ntifasc.ps1 notebook
 
+starts the JupyterLab environment.
 
-    .\antifasc.ps1 notebook
+The main notebook interface is available at:
 
-accesses to the Jupyter Notebook environment 
-see below 👇
+    bin/antifasc_main.ipynb
 
+The notebook provides interactive widgets to create or update `input.json`, including mesh selection, scaling laws, magnitude bins, application mode, event parameters, and ensemble configuration.
 
 ### 🔑 Accessing JupyterLab
 
@@ -167,23 +189,54 @@ The software is composed of three main modules:
 
 ## 📂 Inputs and configuration
 
-Main configuration file:
+The main configuration file is:
 
-     config_files/Parameters/input.json    
-     config_files/Parameters/scaling_relationship.json
+     config_files/Parameters/input.json
 
-**In the notebook version you can change the input file names**
+YAML input files are also supported for CLI runs, for example:
 
-Through these files the users can control:
-- application mode (Hazard / PTF)
-- magnitude ranges
-- rigidity models
-- scaling laws
+     config_files/Parameters/input.yaml
 
-👉 Changes are immediately available inside Docker (no rebuild required)
+When a YAML file is used with `--input`, it is automatically converted to the corresponding JSON file before the run. This allows users to keep a commented, human-readable YAML file while preserving the internal JSON-based workflow.
 
-**IMPORTANT: please have a look at the [Example1](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) and [Example2](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example2_Mediterranean.md) documentation for
-more details about the input files**
+Example:
+
+    ./antifasc --input input.yaml
+
+will read:
+
+    config_files/Parameters/input.yaml
+
+and create/use:
+
+    config_files/Parameters/input.json
+
+or, for a custom name:
+
+    ./antifasc --input input_test.yaml
+
+will create/use:
+
+    config_files/Parameters/input_test.json
+
+The input configuration controls:
+
+- mesh input mode: existing mesh, GeoJSON mesh, or rectangular fault generation
+- scaling laws and magnitude bins
+- application mode: Hazard or Event-based PTF
+- event information for PTF runs
+- ensemble settings, including stochastic realizations, coupling limits, rupture-area filters, optional sub-boundaries, and variable-rigidity settings
+
+In the notebook version, the input file can be created or updated through interactive widgets. If `input.json` is not present, the notebook starts from default values and creates the file when the user saves the input.
+
+External optional CSV files are expected in:
+
+     config_files/Rigidity/     # rigidity profiles: Depth,Rigidity
+     config_files/Mesh/         # sub-boundaries: Longitude,Latitude
+
+👉 Changes to input files are immediately available inside Docker because the repository is mounted into the container. No rebuild is required after editing input files.
+
+**IMPORTANT: please have a look at the [Example1](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) and [Example2](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example2_Mediterranean.md) documentation for more details about the input files.**
 
 ---
 
@@ -196,7 +249,7 @@ Generated in:
 Includes:
   - ASCII slip files
   - GeoJSON
-  - HTML maps (optionally, look at `bin/plot_interactive_maps.ipynb`
+  - HTML maps (optionally, look at `bin/plot_interactive_maps.ipynb`)
 
 **IMPORTANT: please have a look at the [Example1](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md) and [Example2](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example2_Mediterranean.md) documentation for
 more details about the output folder and its folder tree**
@@ -207,19 +260,20 @@ more details about the output folder and its folder tree**
 
 The command:
 
-
     ./antifasc
 
+runs pyANTI-FASc inside the Docker container in CLI mode.
 
-runs:
+The command:
 
+    ./antifasc notebook
 
-    docker run --rm -it -v $(pwd):/app pyantifasc
+starts JupyterLab inside the same Docker image.
 
-
-This ensures:
+In both cases, the repository is mounted inside the container at `/app`. This ensures:
 
 - full synchronization between container and host
+- input changes immediately visible inside Docker
 - outputs directly available locally
 - reproducibility
 
@@ -272,7 +326,8 @@ A special thanks to Stefano Lorito, Fabrizio Romano, Manuela Volpe, Hafize Basak
 
 Thanks to Roberto Basili, Francesco Emanuele Maesano, Mara Monica Tiberti and Gareth Davies for their contribution in providing slab geometries.
 
-Thanks to Shane Murphy and Andre Herrero for their work on the k223d module.
+The k223d module used in pyANTI-FASc was originally developed by Shane Murphy and Andre Herrero; See the original version [here](https://github.com/s-murfy/k223d). We gratefully acknowledge their fundamental contribution to this component of the workflow.
+
 
 ---
 
