@@ -274,6 +274,15 @@ The notebook widget lets the user select:
 
 The selected options are written to `input.json` before the `Slab` object is created.
 
+For this example, the application is **Hazard**, so the event-related and PTF-only options are not used. The notebook can still show additional widgets to inspect intermediate steps, such as:
+
+- barycenter selection;
+- rupture-area definition;
+- slip-distribution plotting.
+
+These checks are useful for understanding and validating the workflow.
+
+
 ---
 
 # 3 — Run pyANTI-FASc
@@ -339,8 +348,6 @@ Then open the JupyterLab URL printed in the terminal and run:
 ```text
 bin/antifasc_main.ipynb
 ```
-
-The notebook run also allows to visualize intermediate step outcomes such as the barycenter selection and the rupture areas computation
 
 **Look at [README.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) to see how to run the same pipeline of Windows Powershell**
 
