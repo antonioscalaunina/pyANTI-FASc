@@ -285,7 +285,7 @@ A minimal JSON version of the same configuration is:
 The same input can be configured interactively using:
 
 ```text
-bin/antifasc_main_Ex2.ipynb
+bin/antifasc_main.ipynb
 ```
 
 The notebook widget lets the user select:
