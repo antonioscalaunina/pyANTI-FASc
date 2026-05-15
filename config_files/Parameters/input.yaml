@@ -150,7 +150,9 @@ Event:
 
 Configure:
 
-  # Rupture shape.
+  # Rupture shape
+  # Rectangle = preserve the expected aspect ratio from the scaling law
+  # Circle = more isotropic rupture area along strike and dip directions
   shape: Rectangle
 
   # Number of stochastic slip distributions per rupture area.
