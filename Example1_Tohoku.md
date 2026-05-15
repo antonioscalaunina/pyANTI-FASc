@@ -1,271 +1,498 @@
-# EXAMPLE 1 Tohoku earthquake
+# EXAMPLE 1 — Tohoku earthquake
 
-In this brief guide, a practical example to run a pyANTI-FASc application is shown. 
+This guide shows how to run a practical **Event-based PTF** pyANTI-FASc application for the 11 March 2011 Mw 9.0 Tohoku earthquake.
 
-## Goal of this example
+The goal is to generate stochastic slip distributions on the Kuril–Japan slab mesh, using magnitude bins around the target event magnitude and empirical rupture scaling laws.
 
-This example demonstrates how to generate stochastic slip distributions consistent with  2011, March the 11th, Mw 9.0 Tohoku earthquake. It can be run both through Docker or Manual version
+👉 The final output consists of stochastic slip distributions ready to be used as initial conditions for tsunami simulations.
 
-👉 The final output consists of stochastic slip distributions ready for tsunami simulations.
+The same test case can also be configured and launched through the Jupyter notebook:
 
-The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb). 
+```text
+bin/antifasc_main.ipynb
+```
 
+---
 
-# 1 - Mesh
+# 1 — Mesh
 
-pyANTI-FASc provides an ensemble of predefined mesh discretizations representing the seismogenic portions of most subducting plates worldwide. These meshes are derived from geometries defined within the Slab 2.0 project and are available at this [webpage](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467). They are discretized using a relatively uniform node spacing, with a minimum inter-node distance ranging from approximately 10 to 15 km. All available meshes can be found [here](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils/sz_slabs) while Figure 1 provides a global overview of their distribution..
+pyANTI-FASc provides an ensemble of predefined mesh discretizations representing the seismogenic portions of most subducting plates worldwide. These meshes are derived from geometries defined within the Slab 2.0 project and are available at this [webpage](https://www.sciencebase.gov/catalog/item/5aa1b00ee4b0b1c392e86467).
+
+They are discretized using a relatively uniform node spacing, with a minimum inter-node distance of approximately 10–15 km.
+
+All available meshes can be found [here](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/utils/sz_slabs), while Figure 1 provides a global overview of their distribution.
 
 ![Map of the subducting plate meshes available in the current version of pyANTI-FASc](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/map_of_slabs.png)
-*Figure 1 - Map of the subducting plate meshes available in the current version of pyANTI-FASc*
+
+*Figure 1 — Map of the subducting plate meshes available in the current version of pyANTI-FASc.*
+
+For this example, the predefined mesh is:
+
+```text
+kurilsjapan
+```
+
+and is read from:
+
+```text
+utils/sz_slabs/kurilsjapan/subfaults/
+```
+
+---
+
+# 2 — Input configuration
+
+pyANTI-FASc can be configured using either:
+
+```text
+config_files/Parameters/input.json
+```
+
+or, for CLI runs, a YAML file such as:
+
+```text
+config_files/Parameters/input.yaml
+```
+
+YAML files are useful because they support comments. When a YAML input is provided to the CLI, pyANTI-FASc automatically converts it to the corresponding JSON file and then runs the code using the JSON input. The internal workflow therefore remains based on `input.json`.
+
+The notebook interface can also create or update `input.json` interactively through widgets.
+
+---
+
+## 2.1 Recommended YAML input for this example
+
+A compact and documented YAML configuration for the Tohoku example is shown below.
+
+```yaml
+# ============================================================
+# Mesh input
+# ============================================================
+
+# 0 = use an existing mesh from utils/sz_slabs/<zone_name>/subfaults
+# 1 = build mesh from utils/sz_slabs/<zone_name>_mesh.geojson
+# 2 = build a rectangular fault from user-defined parameters
+mesh_gen: 0
+
+# Precomputed Kuril–Japan slab mesh
+zone_name: kurilsjapan
+
+# Short acronym used internally for mesh and output filenames
+acronym: KuJ
+
+# Mercator / UTM projection zone for the selected mesh
+Merc_zone: 54
+
+# Constant rake angle in degrees
+rake: 90.0
 
 
-# 2 - Input files
+# ============================================================
+# Scaling laws and magnitude bins
+# ============================================================
 
-## 2.1 input.json
+Scaling:
 
-This file [input.json](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters/input.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder, defines the main configuration parameters required to run pyANTI-FASc. The file used for execution must always be named `input.json`.
+  # Scaling laws must match the names defined in bin/utils/scaling_laws.py
+  laws:
+    - Strasser2010_interface
+    - Murotani2013
 
-The default configuration is set to run this example, but it can be easily modified to support other use cases.
-
-The key parameters that users may need to adjust are listed below. **Please refer carefully to the comments provided alongside each parameter**. Parameters not shown in this example can be left unchanged. Their functionality will be further refined in future releases and documented in the [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) which is currently under development.
-
-	{"zone_name": "kurilsjapan",      # Name of the precomputed mesh to be used. See the slab database made available within the repository and use the Mesh Folder for the slab you want to select
-	"Merc_zone": 54,                  # Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
-    "acronym": "KuJ",		  # 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database.
-	"mesh_gen": 0,            # This means that the mesh is already in the database in the folder utils/sz_slabs. 
-	 # If not, the run will be stopped and the error message will inform the user that the meshing files were not found: 
-	 # ERROR: Nodes file not in the sz database. Please check the name of slab or ensure your data is in the correct folder
-
-The list of the slab in the database can be found [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/slabs_database) 
-       	
-	"Event": {
-	"Name": "Tohoku_test",                    # Name of the test. It is used to define the output folder name
-	"Hypo_LonLat" : [142.369, 38.322],        # Epicenter of the event
-	"Magnitude" : 9.0                         # Magnitude of the event
-	},
-	"Configure": {
-	"application": "PTF",                     # This application restricts the computed scenarios to a range of magnitude and location around predefined values
-	"shape": "Rectangle",                     # This choice allows to compute scenarios with aspect ratio L/W preserved as prescribed by the selected scaling law. The other possible choice is "Circle". More details soon in the Wiki Documentation
-	"numb_stoch": 5,                          # Number of stochastic slip for each rupture areas
-	"variable_mu": 1,                         # 1 means that also the distributions with variable rigidity will be computed. 0 for computing only the case with homogeneous rigidity
-	"coupling_shallow_limit":1.0,             # Shallow limit for the area where the seismic coupling is expected to decrease
-	"coupling_deep_limit":55.0,		  # Deep limit for the area where the seismic coupling is expected to decrease
+  # Magnitude bins used to generate rupture dimensions
+  magnitude_bins:
+    mode: range
+    min: 8.8
+    max: 9.2
+    step: 0.1
 
 
- 
-	"Magnitude_lb": 0.1,                    # Magnitude in a range [Mw-0.10 Mw+0.10] will be accounted, used only for "application": "PTF"
-	"Magnitude_ub": 0.1,
-        "hypo_baryc_distance": 1.0,             # Rupture barycenters at less than 1 Length form hypocenter will be used to define areas and slip distributions, used only for "application": PTF. The Length is inferred from scaling law for each Magnitude bin.
-	"minimum_bnd_distance": 0.25,           # This option (as well as the next one) is used to limit the number of rupture areas dependending on Magnitude (and Rupture areas extent). During the selection of rupture area barycenter, with this choice, the nodes closer than 0.25 times the Width to the mesh edge are discarded.
-	"minimum_interdistance": 0.1,           # With this choices, the distance between the selected rupture barycenters will be more than 0.1 times the Length. This will avoid to have very similar rupture areas and reduce the number of scenarios at largest magnitude bins (see Scala et al. 2020) 
-	}
-	}
+# ============================================================
+# Application
+# ============================================================
+
+# Event-based Probabilistic Tsunami Forecasting
+application: PTF
 
 
- ## 2.2 scaling_relationship.json
+# ============================================================
+# Event information
+# Required only for application: PTF
+# ============================================================
 
-The magnitude bins and rupture geometries (defined by the selected scaling laws) for this application are set in the input file [scaling_relationship.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/config_files/Parameters/scaling_relationship.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder. 
-The file actually used for the run must be always named `scaling_relationship.json`. The default available file is set to run this example,  and implements a configuration similar to the one proposed in the framework of the project TSUMAPS-NEAM [Basili et al. 2021](https://doi.org/10.3389/feart.2020.616594) using the [Strasser et al. 2010](https://doi.org/10.1785/gssrl.81.6.941) and the [Murotani et al. 2013](https://doi.org/10.1002/grl.50976) scaling relationships. However, it can be easily modified to run the software with different magnitude binnings and scaling laws. In the example below the structure of this file, **look carefully at the comments beside to properly set the values**:
+Event:
 
-    { 
-    "Magnitude_bins": {                                     # Within this section the number of magnitude bins and the magnitude bins are defined
-    "number_bins" : 32, 
-    "Magnitude": [6.0000, 6.5000, 6.8012, 7.0737, 7.3203, 7.5435, 7.7453, 7.9280, 8.0933,
-              8.2429, 8.3782, 8.5007, 8.6115, 8.7118, 8.8025, 8.8846, 8.9588, 9.0260, 
-	      9.0869, 9.1419, 9.1917, 9.2367, 9.2775, 9.3144, 9.3478, 9.3780, 9.4053, 
-	      9.4300, 9.4524 , 9.4727, 9.4910,9.5075]
-    },
+  # Name used to build output folder names
+  Name: Tohoku_test
 
-    "Scaling_law": { "number": 2,                            # Here we declare the number of different scaling laws used in the code        
-    "name" : ["Murotani", "Strasser"],                       # Names of scaling laws (must be consistent with the set number in the parameter "Scaling_law"
-    "Area": [156.233, 494.051, 988.488, 1851.277, 3266.416, 5460.991, 8691.034, 13236.448,                         #Values of the area. They must be "number_bins" * "number" (of Scaling law). In this case the first 32 values refer to Murotani scaling law, while the remaining one to the Strasser scaling
-	          19367.407, 27332.004, 37322.564, 49484.760, 63866.258,  80458.414, 99145.149,
-	          119776.459, 142092.603, 165871.385, 190821.652, 216599.421, 242912.949, 
-	          269467.272, 295988.071, 322227.910, 347970.147, 373030.811, 397258.801, 
-	          420534.777, 442769.108, 463899.186, 483886.383, 502712.864,
-        172.187, 515.229, 997.108, 1812.018, 3111.183, 5074.719, 7898.154, 11788.431, 
-	          16936.419, 23509.360, 31626.155, 41368.179, 52740.956, 65710.323, 80164.115, 
-	      	  95970.819, 112921.750, 130843.454, 149515.800, 168684.550, 188138.900, 207668.823, 
-		  227081.948, 246207.279, 264897.303, 283028.731, 300502.136, 317240.766, 333188.779, 
-		  348309.117, 362581.201, 375998.580],
-    "Length": [10.2770, 20.7196, 31.6095, 46.3198, 65.4563, 89.5107, 118.7881, 153.4749, 193.5108,                #Values of the length. They must be "number_bins" * "number" (of Scaling law). In this case the first 32 refer to Murotani scaling law, while the remaining one to the Strasser scaling. The Width W will be computed for each bin as Area/Length
-                    238.6781, 288.5428, 342.6192, 400.2115, 460.6512, 523.1286, 586.9580,
-                    651.3207, 715.6812, 779.437, 841.965, 902.856, 961.739, 
-		    1018.321, 1072.384, 1123.771, 1172.388, 1218.190, 
-		    1261.171, 1301.370, 1338.847, 1373.687, 1405.992,
-           10.789, 21.159, 31.747, 45.826, 63.882, 86.287, 113.240, 144.837, 180.959, 
-                    221.359, 265.612, 313.263, 363.687, 416.297, 470.395, 525.401, 580.628, 
-		    635.638,689.940, 743.025, 794.570, 844.286, 891.947, 937.387, 980.496, 
-		    1021.208, 1059.502, 1095.388, 1128.905, 1160.116, 1189.101, 1215.950]
- 
+  # Hypocenter coordinates [longitude, latitude]
+  Hypo_LonLat:
+    - 142.369
+    - 38.322
+
+  # Event magnitude
+  Magnitude: 9.0
+
+
+# ============================================================
+# Ensemble configuration
+# ============================================================
+
+Configure:
+
+  # Rupture shape: 
+  # Rectangle = preserve the expected aspect ratio from scaling law)
+  # Circle = pretty isotrope shae along strike and dip directions)
+  shape: Rectangle
+
+  # Number of stochastic slip distributions per rupture area
+  numb_stoch: 2
+
+  # Coupling limits in km
+  coupling_shallow_limit: 1.0
+  coupling_deep_limit: 55.0
+
+  # Rupture-area selection parameters
+  minimum_bnd_distance: 0.25
+  minimum_interdistance: 0.1
+  Fact_area_scaling: 1.0
+
+  # Variable rigidity workflow
+  # 0 = homogeneous rigidity only
+  # 1 = also compute variable-rigidity slip distributions
+  variable_mu: 1
+
+  # 0 = use default rigidity model
+  # 1 = use a CSV file from config_files/Rigidity
+  Rigidity_file_logic: 0
+
+  # Stress-drop variation flag
+  Stress_drop_var: 0
+
+  # Factor used by the default rigidity model
+  Fact_rigidity: 0.5
+
+  # PTF-only parameters
+  # Magnitude bins in [Mw - Magnitude_lb, Mw + Magnitude_ub] are selected
+  Magnitude_lb: 0.1
+  Magnitude_ub: 0.1
+
+  # Barycenters closer than hypo_baryc_distance * rupture length
+  # from the hypocenter are selected
+  hypo_baryc_distance: 1.0
+
+  # Optional sub-boundary
+  # 0 = use the full inferred mesh boundary
+  # 1 = use a CSV boundary file from config_files/Mesh
+  mesh_sub_boundary: 0
+```
+
+---
+
+## 2.2 Equivalent JSON input
+
+The same configuration can also be provided directly as JSON in:
+
+```text
+config_files/Parameters/input.json
+```
+
+In the current workflow, the scaling laws and magnitude bins are defined directly inside the `Scaling` block of the main input file. A separate `scaling_relationship.json` file is no longer required for the standard workflow.
+
+A minimal JSON version of the same configuration is:
+
+```json
+{
+  "mesh_gen": 0,
+  "zone_name": "kurilsjapan",
+  "acronym": "KuJ",
+  "Merc_zone": 54,
+  "rake": 90.0,
+
+  "Scaling": {
+    "laws": [
+      "Strasser2010_interface",
+      "Murotani2013"
+    ],
+    "magnitude_bins": {
+      "mode": "range",
+      "min": 8.8,
+      "max": 9.2,
+      "step": 0.1
     }
-    }
+  },
 
-# 3 Run pyANTI-FASc
+  "application": "PTF",
 
-Once the mesh is selected and the other configuration parameters are set through the described input files, the whole process can be launched simply running the following commands:
+  "Event": {
+    "Name": "Tohoku_test",
+    "Hypo_LonLat": [
+      142.369,
+      38.322
+    ],
+    "Magnitude": 9.0
+  },
 
-For Docker installation
+  "Configure": {
+    "shape": "Rectangle",
+    "numb_stoch": 5,
+    "coupling_shallow_limit": 1.0,
+    "coupling_deep_limit": 55.0,
+    "minimum_bnd_distance": 0.25,
+    "minimum_interdistance": 0.1,
+    "Fact_area_scaling": 1.0,
+    "variable_mu": 1,
+    "Rigidity_file_logic": 0,
+    "Stress_drop_var": 0,
+    "Fact_rigidity": 0.5,
+    "Magnitude_lb": 0.1,
+    "Magnitude_ub": 0.1,
+    "hypo_baryc_distance": 1.0,
+    "mesh_sub_boundary": 0
+  }
+}
+```
 
-	./antifasc
+---
 
-or for accessing to the notebook
+## 2.3 Notebook configuration
 
-	./antifasc notebook
+The same input can be configured interactively using:
 
-For manual installation
+```text
+bin/antifasc_main.ipynb
+```
 
-	conda activate antifasc
-	python antifasc_main.py
+The notebook widget lets the user select:
 
- The output on the screen will allow the user to follow the different steps of the running and that everything is working. Below some details.
+- mesh source;
+- scaling laws;
+- magnitude binning;
+- application mode;
+- event information for Event-based PTF;
+- ensemble parameters;
+- optional rigidity and sub-boundary files.
 
- The software reads the input files and let the user know that the selected mesh discretization (nodes and cells) has been found and will be used for the run
- 	
-  	reading input.json file
-	reading scaling_relationship.json file
-	Great! You already have nodes and cells, I'm just writing
+The selected options are written to `input.json` before the `Slab` object is created.
 
- Subsequently, the software performs the barycenter selection according to the selected application. As you can see in the example, only magnitude bins around the real magnitude of the event is used accordingly to the selected application (PTF). The output on the screen confirms that the two selected scaling laws have been used
+---
 
-	Barycenter selection
-	Magnitude bin # 16 - Mw=8.9588
-	Magnitude bin # 17 - Mw=9.0260
-	Magnitude bin # 18 - Mw=9.0869
-	Barycenter selection (PTF)
-	Magnitude bin # 16 - Mw=8.9588
-	Magnitude bin # 17 - Mw=9.0260
-	Magnitude bin # 18 - Mw=9.0869
-	Mw: [8.9588 9.026  9.0869]
-	Scaling names: ['Murotani', 'Strasser']
+# 3 — Run pyANTI-FASc
 
-After that, the rupture areas computation is performed, for each bin of magnitude and each scaling law. For each of these classes, the output on the screen indicates how many rupture areas have been computed. Finally the rupture areas are written in temporary output files that will be then  used as input for the slip distribution computation
-	
- 	Rupturing area computation
-	Magnitude bin # 16 - Mw=8.9588
-	Magnitude bin # 17 - Mw=9.0260
-	Magnitude bin # 18 - Mw=9.0869
-	Rupturing areas computed!
-	Mw=8.9588, Name scaling: Murotani, N=10, N_all=10
-	Mw=8.9588, Name scaling: Strasser, N=11, N_all=11
-	Mw=9.026, Name scaling: Murotani, N=7, N_all=7
-	Mw=9.026, Name scaling: Strasser, N=10, N_all=10
-	Mw=9.0869, Name scaling: Murotani, N=7, N_all=7
-	Mw=9.0869, Name scaling: Strasser, N=7, N_all=7
-	Writing Output
-	Magnitude bin # 16 - Mw=8.9588
-	Magnitude bin # 17 - Mw=9.0260
-	Magnitude bin # 18 - Mw=9.0869
+Once the input file is ready, the run can be launched from the repository root.
 
- The slip distributions is then finally computed and the screen standard output lets the user know within each class the software is working
+## Docker CLI run
 
- 	Computing slip distributions for the homogeneous and variable rigidity cases
-	
- 	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Murotani
-	 starting ...
-	 Number of scenarios is          50
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/8_9588/Strasser
-	 starting ...
-	 Number of scenarios is          55
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Murotani
-	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0260/Strasser
-	 starting ...
-	 Number of scenarios is          50
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0869/Murotani
-	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/homogeneous_mu/9_0869/Strasser
-	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/8_9588/Murotani
-	 starting ...
-	 Number of scenarios is          50
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/8_9588/Strasser
-	 starting ...
-	 Number of scenarios is          55
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/Murotani
-	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0260/Strasser
-	 starting ...
-	 Number of scenarios is          50
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0869/Murotani
-	 starting ...
-	 Number of scenarios is          35
-	/mnt/c/Users/ascal/Downloads/pyANTI-FASc/Tohoku_test_M90_E14237_N3832_slip_KuJ/variable_mu/9_0869/Strasser
-	 starting ...
-	 Number of scenarios is          35
+Using the default input:
 
- It is worth to highlight that the number of scenarios, that is the number of slip distributions is always 5 times the number of selected areas as set in the **input.json** configuration file.
+```bash
+./antifasc
+```
 
- When the process is over, The output will be finally organized as shown in the following tree:
+This uses:
 
- 	output
-	├── Tohoku_test_M90_E14237_N3832_slip_KuJ
-	│   ├── homogeneous_mu
-	│   │   ├── 8_9588
-	│   │   │   ├── Murotani
-	│   │   │   │   ├── Slip4HySea00004_001.dat
-	│   │   │   │   ├── Slip4HySea00004_002.dat
-	│   │   │   │   ├── Slip4HySea00004_003.dat
-	│   │   │   │   ├── Slip4HySea00004_004.dat
-	│   │   │   │   ├── Slip4HySea00004_005.dat
-	│   │   │   │   ├── Slip4HySea00007_001.dat
-	│   │   │   │   ├── Slip4HySea00007_002.dat
-	│   │   │   │   ├── Slip4HySea00007_003.dat
-	│   │   │   │   ├── Slip4HySea00007_004.dat
-	│   │   │   │   ├── Slip4HySea00007_005.dat
-	│   │   │   │   ├── Slip4HySea00008_001.dat
-	│   │   │   │   ├── Slip4HySea00008_002.dat
-	│   │   │   │   ├── Slip4HySea00008_003.dat
-	│   │   │   │   ├── Slip4HySea00008_004.dat
-	│   │   │   │   ├── Slip4HySea00008_005.dat
-	│   │   │   │   ├── Slip4HySea00023_001.dat
-	│   │   │   │   ├── Slip4HySea00023_002.dat
-	│   │   │   │   ├── Slip4HySea00023_003.dat
-	│   │   │   │   ├── Slip4HySea00023_004.dat
-	│   │   │   │   ├── Slip4HySea00023_005.dat
-	│   │   │   │   ├── Slip4HySea00027_001.dat
-	│   │   │   │   ├── Slip4HySea00027_002.dat
-	│   │   │   │   ├── Slip4HySea00027_003.dat
-	│   │   │   │   ├── Slip4HySea00027_004.dat
-	│   │   │   │   ├── Slip4HySea00027_005.dat
- 	.............................................
+```text
+config_files/Parameters/input.json
+```
 
-The Slip4HySea* files are in the standard format used as input by the software [Tsunami-HySea](https://edanya.uma.es/hysea/) which is one of the most widely used tsunami simulators within the community. 
+Using a YAML input:
 
-	 LON1     LAT1    DEPTH1(km)      LON2    LAT2    DEPTH2(km)      LON3    LAT3    DEPTH3(km)      RAKE    SLIP(m)
-	  142.209106   36.309288    7.494581  142.289078   36.401661    7.454205  142.143066   36.442127   10.402809   90.000000    7.256678
-	  142.209106   36.309288    7.494581  142.336136   36.256641    5.620936  142.289078   36.401661    7.454205   90.000000    7.095560
-	  142.289078   36.401661    7.454205  142.223038   36.534504   10.362430  142.143066   36.442127   10.402809   90.000000    6.840256
-	  142.209106   36.309288    7.494581  142.143066   36.442127   10.402809  142.074631   36.344494   10.356820   90.000000    7.429152
-	  142.209106   36.309288    7.494581  142.275635   36.170479    5.620936  142.336136   36.256641    5.620936   90.000000    6.319403
-	  142.336136   36.256641    5.620936  142.416107   36.349018    5.580560  142.289078   36.401661    7.454205   90.000000    6.555849
-	  142.369064   36.494038    7.413829  142.223038   36.534504   10.362430  142.289078   36.401661    7.454205   90.000000    6.771578
-	  142.223038   36.534504   10.362430  142.077026   36.574970   13.311030  142.143066   36.442127   10.402809   90.000000    5.898129
-	  142.074631   36.344494   10.356820  142.143066   36.442127   10.402809  142.008591   36.477337   13.265040   90.000000    6.484488
-	  142.209106   36.309288    7.494581  142.074631   36.344494   10.356820  142.143524   36.212208    7.409739   90.000000    7.508512
-	  142.209106   36.309288    7.494581  142.143524   36.212208    7.409739  142.275635   36.170479    5.620936   90.000000    6.776600
-	  142.275635   36.170479    5.620936  142.402664   36.117832    3.747290  142.336136   36.256641    5.620936   90.000000    5.396324
-	  142.463165   36.203999    3.747290  142.416107   36.349018    5.580560  142.336136   36.256641    5.620936   90.000000    6.399800
-	  142.416107   36.349018    5.580560  142.369064   36.494038    7.413829  142.289078   36.401661    7.454205   90.000000    6.580969
-	  142.369064   36.494038    7.413829  142.303024   36.626881   10.322050  142.223038   36.534504   10.362430   90.000000    6.556834
-   .........................................................................................................................................
+```bash
+./antifasc --input input.yaml
+```
 
-For each Slip4Hysea*.dat file, a geojson file, containing the same distributions is also produced. (you might find an example [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/Slip4HySea00004_002.json))
+This searches for:
 
+```text
+config_files/Parameters/input.yaml
+```
 
-## Post-process
+converts it to:
 
- The slip distributions can be easily plotted by simple personal scripts. The geojson files can be uploaded to Qgis or to whatever webservice using the geojson standard (e.g. [kepler.gl/](https://kepler.gl/)) 
- 
- Beyond that, in the folder [bin](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/bin) there is another Jupyter Notebook [interactive_slip_maps.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/interactive_slip_maps.ipynb). 
- Within this Jupyter Notebook, the user might select all the slip distributions computed so far (and available in the output folder) and plot for each of them an interactive slip map (either from the GeoJSON files or creating HTML maps) as shown in the Figure 2 
- ![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN.png)
- *Figure 2 - Screenshot showing the working of the interactive slip plotter Jupyter Notebook*
-	
+```text
+config_files/Parameters/input.json
+```
 
-As above mentioned this example can be run, in the Docker version, also through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.ipynb).
-   
+or to the corresponding JSON name, and then runs the code.
+
+Using a custom JSON input:
+
+```bash
+./antifasc --input input_tohoku.json
+```
+
+This searches for:
+
+```text
+config_files/Parameters/input_tohoku.json
+```
+
+**Look at [README.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) to see how to run the same pipeline of Windows Powershell**
+
+## Docker notebook run
+
+```bash
+./antifasc notebook
+```
+
+Then open the JupyterLab URL printed in the terminal and run:
+
+```text
+bin/antifasc_main.ipynb
+```
+
+## Manual installation
+
+If running without Docker:
+
+```bash
+conda activate antifasc
+cd bin
+python antifasc_main.py
+```
+
+or with a custom input:
+
+```bash
+python antifasc_main.py --input input.yaml
+```
+
+**Look at [README.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) to see how to run the same pipeline of Windows Powershell**
+---
+
+# 4 — Expected screen output
+
+During the run, pyANTI-FASc prints the main processing steps.
+
+First, the input file and scaling laws are read:
+
+```text
+reading input.json file
+reading scaling laws from input.json
+Great! You already have nodes and cells, I'm just writing
+reading mesh
+```
+
+Then the barycenters are selected. Since this is an Event-based PTF example, only magnitude bins around the event magnitude are used:
+
+```text
+Barycenter selection
+Magnitude bin # ... - Mw=...
+Barycenter selection (PTF)
+Magnitude bin # ... - Mw=...
+```
+
+The selected magnitudes depend on the magnitude binning and on:
+
+```text
+Magnitude_lb
+Magnitude_ub
+```
+
+For this example, the event magnitude is Mw 9.0 and the selected bins are those within the configured tolerance.
+
+After that, rupture areas are computed for each selected magnitude bin and scaling law:
+
+```text
+Rupturing area computation
+Magnitude bin # ... - Mw=...
+Rupturing areas computed!
+```
+
+The code then writes the rupture-area inputs and computes the stochastic slip distributions:
+
+```text
+Writing Output
+Computing slip distributions for the homogeneous and variable rigidity cases
+```
+
+If `variable_mu` is set to `1`, both homogeneous and variable-rigidity slip distributions are generated. If it is set to `0`, only the homogeneous case is computed.
+
+---
+
+# 5 — Output structure
+
+When the process is complete, the output is organized under:
+
+```text
+output/
+```
+
+For this example, the main output folder will have a name similar to:
+
+```text
+output/Tohoku_test_M90_E14237_N3832_slip_KuJ/
+```
+
+with a structure like:
+
+```text
+output/
+└── Tohoku_test_M90_E14237_N3832_slip_KuJ
+    ├── homogeneous_mu
+    │   ├── 8_9000
+    │   │   ├── Strasser2010_interface
+    │   │   │   ├── Slip4HySea00004_001.dat
+    │   │   │   ├── Slip4HySea00004_002.dat
+    │   │   │   └── ...
+    │   │   └── Murotani2013
+    │   │       └── ...
+    │   └── ...
+    └── variable_mu
+        ├── 8_9000
+        │   ├── Strasser2010_interface
+        │   └── Murotani2013
+        └── ...
+```
+
+The number of generated slip distributions is controlled by:
+
+```text
+Configure.numb_stoch
+```
+
+For each rupture area, `numb_stoch` stochastic slip distributions are produced.
+
+---
+
+# 6 — Slip file format
+
+The `Slip4HySea*.dat` files are written in the standard format used as input by [Tsunami-HySea](https://edanya.uma.es/hysea/), one of the most widely used tsunami simulators in the community.
+
+Each row describes one triangular subfault element and contains:
+
+```text
+LON1 LAT1 DEPTH1(km) LON2 LAT2 DEPTH2(km) LON3 LAT3 DEPTH3(km) RAKE SLIP(m)
+```
+
+Example:
+
+```text
+142.209106 36.309288 7.494581 142.289078 36.401661 7.454205 142.143066 36.442127 10.402809 90.000000 7.256678
+142.209106 36.309288 7.494581 142.336136 36.256641 5.620936 142.289078 36.401661 7.454205 90.000000 7.095560
+142.289078 36.401661 7.454205 142.223038 36.534504 10.362430 142.143066 36.442127 10.402809 90.000000 6.840256
+```
+
+For each `Slip4HySea*.dat` file, a corresponding ***GeoJSON*** file containing the same distribution is also produced. It can be promptly used for visualization. See next section
+
+---
+
+# 7 — Post-process
+
+The slip distributions can be plotted using personal scripts, GIS tools, or web services supporting GeoJSON.
+
+An interactive notebook is available at:
+
+```text
+bin/interactive_slip_maps.ipynb
+```
+
+It allows the user to:
+
+- select one of the output folders;
+- visualize slip and rake maps from the GeoJSON files;
+- optionally generate and export interactive HTML maps.
+
+![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN.png)
+
+*Figure 2 — Screenshot showing the interactive slip plotter Jupyter Notebook.*
+
