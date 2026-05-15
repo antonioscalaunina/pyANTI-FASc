@@ -1,421 +1,562 @@
-# Example 2 – Mediterranean Simulation (EFSM20)
+# EXAMPLE 2 — Mediterranean Hazard simulation (EFSM20)
 
-In this brief guide, a practical example to run a pyANTI-FASc application is shown. 
-In this example, a set of slip distributions simulating an earthquake offshore Sicily, southern Italy, is generated.
+This guide shows how to run a practical **Hazard** pyANTI-FASc application for an offshore Sicily fault system in the central Mediterranean.
 
-👉 The final output consists of thousands of stochastic slip distributions ready for tsunami simulations.
+The goal is to generate a large ensemble of stochastic slip distributions on a fault mesh derived from the EFSM20 mesh service, using all selected magnitude bins and a normal-faulting scaling law.
 
-The test-case shown in this example is also run through the Jupyter Notebook [antifasc_main_Ex2.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb). 
+👉 The final output consists of stochastic slip distributions ready to be used as initial conditions for tsunami simulations.
 
-## Goal of this example
+The same test case can also be configured and launched through the Jupyter notebook:
 
-This example demonstrates how to generate stochastic slip distributions for an offshore Sicily fault system using EFSM20 mesh data and the Hazard application mode.
+```text
+bin/antifasc_main_Ex2.ipynb
+```
 
-> ⚠️ **Performance note**  
-> This notebook includes intermediate plots to illustrate key steps (e.g., barycenter selection and rupture area computation), but it is significantly slower than running the equivalent Python script [antifasc_main.py](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main.py).
+The notebook version includes additional widgets that allow the user to visualize and verify intermediate steps, such as barycenter selection and rupture-area definition. For large Hazard applications, the CLI run is usually faster.
 
+---
 
-# 1 - Mesh
+# 1 — Mesh
 
-pyANTI-FASc is able to generate outputs using meshes made available by the European Database of Seismogenic Faults services ([EFSM20](https://seismofaults.eu/component/tags/tag/efsm20)).
+pyANTI-FASc can use meshes made available through the European Database of Seismogenic Faults services ([EFSM20](https://seismofaults.eu/component/tags/tag/efsm20)).
 
-In particular, it supports the meshes provided by the *EFSM20 Meshes* service, whose details are available [here](https://seismofaults.eu/services/efsm20-services). At this [link](https://services.seismofaults.eu/EFSM20_Meshes/ows?service=WFS&request=GetCapabilities), you can access the XML file required to load the database into QGIS software.
+In particular, this example uses a mesh provided by the *EFSM20 Meshes* service. Details are available [here](https://seismofaults.eu/services/efsm20-services). The WFS service can also be accessed through the GetCapabilities XML file:
 
-If you use this service, please cite: [https://doi.org/10.13127/efsm20/meshes](https://doi.org/10.13127/efsm20/meshes).
+```text
+https://services.seismofaults.eu/EFSM20_Meshes/ows?service=WFS&request=GetCapabilities
+```
+
+If you use this service, please cite:
+
+```text
+https://doi.org/10.13127/efsm20/meshes
+```
 
 Figure 1 shows a screenshot of some of the meshed faults available within the EFSM20 database.
 
-
 ![Screenshot of EFSM mesh database imported to QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis.jpg)
-*Figure 1 - Screenshot of EFSM mesh database imported to QGis*
+
+*Figure 1 — Screenshot of EFSM20 mesh database imported into QGIS.*
+
+For this example, the mesh is:
+
+```text
+ITCF00G
+```
+
+and the starting GeoJSON file is expected at:
+
+```text
+utils/sz_slabs/ITCF00G_mesh.geojson
+```
+
+Since this is a GeoJSON mesh, the input uses:
+
+```text
+mesh_gen: 1
+```
+
+During the first run, pyANTI-FASc reads the GeoJSON file and creates the corresponding nodes and faces files in:
+
+```text
+utils/sz_slabs/ITCF00G/subfaults/
+```
+
+After that, the same mesh can also be reused with:
+
+```text
+mesh_gen: 0
+```
+
+---
+
+# 2 — Input configuration
+
+pyANTI-FASc can be configured using either:
+
+```text
+config_files/Parameters/input.json
+```
+
+or, for CLI runs, a YAML file such as:
+
+```text
+config_files/Parameters/input_Sicily.yaml
+```
+
+YAML files are useful because they support comments. When a YAML input is provided to the CLI, pyANTI-FASc automatically converts it to the corresponding JSON file and then runs the code using the JSON input. The internal workflow therefore remains based on `input.json`.
+
+The notebook interface can also create or update `input.json` interactively through widgets.
+
+---
+
+## 2.1 Recommended YAML input for this example
+
+A compact and documented YAML configuration for the Mediterranean Hazard example is shown below.
+
+```yaml
+# ============================================================
+# Mesh input
+# ============================================================
+
+# 0 = use an existing mesh from utils/sz_slabs/<zone_name>/subfaults
+# 1 = build mesh from utils/sz_slabs/<zone_name>_mesh.geojson
+# 2 = build a rectangular fault from user-defined parameters
+mesh_gen: 1
+
+# EFSM20 mesh name.
+# The file utils/sz_slabs/ITCF00G_mesh.geojson must exist.
+zone_name: ITCF00G
+
+# Short acronym used internally for mesh and output filenames
+acronym: ITC
+
+# Mercator / UTM projection zone for the selected mesh
+Merc_zone: 33
+
+# Constant rake angle in degrees.
+# For this normal-faulting example, rake is set to -90.
+rake: -90.0
 
 
-# 2 - Input files
+# ============================================================
+# Scaling laws and magnitude bins
+# ============================================================
 
-## 2.1 input.json
+Scaling:
 
-This file [input_Sicily.json](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters/input_Sicily.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder, defines the main configuration parameters required to run pyANTI-FASc. The file used for execution must always be named `input.json`.
+  # Scaling laws must match the names defined in bin/utils/scaling_laws.py.
+  # This example uses a Wells & Coppersmith normal-faulting relation.
+  laws:
+    - WC1994_normal
 
-The presented configuration is set to run this example, but it can be easily modified to support other use cases.
-
-The key parameters that users may need to adjust are listed below. **Please refer carefully to the comments provided alongside each parameter**. Parameters not shown in this example can be left unchanged. Their functionality will be further refined in future releases and documented in the [Wiki Documentation](https://github.com/antonioscalaunina/pyANTI-FASc/wiki) which is currently under development.
-
-	{"zone_name": "ITCF00G",     → Name of the precomputed mesh to be used. The mesh downloaded from the ESFM20 service must be saved in geojson file as within the `utils/sz_slabs/' folder as shown [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.geojson)
-	"Merc_zone": 33,             → Mercator zone for the selected slab. See the slab database and use the correct Mercator zone 
-    "acronym": "ITC",		     → 3 digit acronym that is used for that slab. It can be arbitrarily chosen by the user (but must have 3 digits!). You might find suggestions into the slab database.
-	
-	"mesh_gen": 1,           
-	"rake": -90,
-
-If the `mesh_gen` option is set to 1, a GeoJSON file containing the mesh is expected.
-
-The file name must be consistent with the "zone_name" (e.g., zone_name_mesh.json) and it should be located in `utils/sz_slabs` (see [example](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/ITCF00G_mesh.geojson) in the repository).
-
-If the GeoJSON file is not found or the name is incorrect, the run will stop and the following error message will be shown to the user:
-
-**ERROR: Mesh in GeoJSON format does not exist! Please check the options in input.json and the zone/file names**
-
-The `rake` option allows the user to specify a rake value. If not provided, a default value of rake = 90° is assigned to the entire mesh.
-
-Alternatively, this field can contain the path to a CSV file where rake values are defined. In this case, the number of rake values must match the number of mesh cells (and defined in the same order). If this condition is not met, the default rake = 90° will be assigned to the entire mesh.
-	
-We propose a run in `Hazard` mode (see below). All the possible slip distributions (with an optimized number of rupture areas decreasing with magnitude) is computed. The section event can be hence left unmodified
-       	
-	"Configure": {
-	"application": "Hazard",                  → This application restricts the computed scenarios to a range of magnitude and location around predefined values
-	"shape": "Rectangle",                     → This choice allows to compute scenarios with aspect ratio L/W preserved as prescribed by the selected scaling law. The other possible choice is "Circle". More details soon in the Wiki Documentation
-	"numb_stoch": 5,                          → Number of stochastic slip for each rupture areas
-	"variable_mu": 1,                         → 1 means that also the distributions with variable rigidity will be computed. 0 for computing only the case with homogeneous rigidity
-	"coupling_shallow_limit":1.0,             → Shallow limit for the area where the seismic coupling is expected to decrease
-	"coupling_deep_limit":55.0,		          → Deep limit for the area where the seismic coupling is expected to decrease
+  # Magnitude bins used to generate rupture dimensions
+  magnitude_bins:
+    mode: range
+    min: 5.5
+    max: 7.5
+    step: 0.1
 
 
- 
-	
-	"minimum_bnd_distance": 0.1,            → This option (as well as the next one) is used to limit the number of rupture areas dependending on Magnitude (and Rupture areas extent). During the selection of rupture area barycenter, with this choice, the nodes closer than 0.25 times the Width to the mesh edge are discarded.
-	"minimum_interdistance": 0.2,           → With this choices, the distance between the selected rupture barycenters will be more than 0.1 times the Length. This will avoid to have very similar rupture areas and reduce the number of scenarios at largest magnitude bins (see Scala et al. 2020) 
-	}
-	}
+# ============================================================
+# Application
+# ============================================================
+
+# Hazard mode uses all selected magnitude bins and all eligible barycenters.
+application: Hazard
 
 
- ## 2.2 scaling_relationship.json
+# ============================================================
+# Event information
+# Not used when application: Hazard
+# ============================================================
 
- The magnitude bins and rupture geometries (defined by the selected scaling laws) for this application are set in the input file [scaling_relationship_WC.json](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/config_files/Parameters/scaling_relationship_WC.json) contained in the [config_files/Parameters](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/config_files/Parameters) folder. This file implements the [Wells & Coppersmith 1994](https://doi.org/10.1785/BSSA0840040974) scaling relationship for normal faulting.
-The file actually used for the run must be always named **scaling_relationship.json**. The default available file is set to run the [Tohoku example](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/Example1_Tohoku.md), but it is sufficient to copy this `scaling_relationship_WC.json` into `scaling_relathionship.json` to run this example **look carefully at the comments beside and below to properly set the values**:
+Event:
 
-    { 
-    "Magnitude_bins": {                                      →Within this section the number of magnitude bins and the magnitude bins are defined
-    "number_bins" : 21, 
-	"Magnitude": [5.5,5.6,5.7,5.8,5.9,6.0,6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9,7.0,7.1,7.2,7.3,7.4,7.5]
-	},
+  # This block is ignored in Hazard mode, but can be left in the file.
+  Name: Sicily_test
+  Hypo_LonLat:
+    - 12.8
+    - 38.5
+  Magnitude: 7.0
 
-	"Scaling_law": { "number": 1,             → Here we declare the number of different scaling laws used in the code 
-	"name" : ["WellsCopp1994_Normal"],        → Names of scaling laws (must be consistent with the set number in the parameter "Scaling_law"
-	
-	"Area":  [43.6516,   52.7230,   63.6796,   76.9130,   92.8966,  112.2018,  135.5189,  163.6817,  
-	197.6970,  238.7811,  288.4032,  348.3373,  420.7266,  508.1594,  	613.7620,  741.3102,  
-	895.3648, 1081.4340, 1306.1709, 1577.6113, 1905.4607],  
-	"Length": [7.4131,    8.3176,    9.3325,   10.4713,   11.7490,   13.1826,   14.7911,   16.5959,  
-	18.6209,   20.8930,   23.4423,   26.3027,   29.5121,   33.1131,   37.1535,   41.6869,   46.7735,  
-	52.4807,   58.8844,   66.0693,   74.1310] 
-	}
-	}
 
->  ⚠️ **Number of area and length values must be "number_bins" * "number" (of Scaling law)** 
+# ============================================================
+# Ensemble configuration
+# ============================================================
 
-# 3 Run pyANTI-FASc
+Configure:
 
-Once the mesh is selected and the other configuration parameters are set through the described input files, the whole process can be launched simply running the following commands:
+  # Rupture shape:
+  # Rectangle = preserve the expected aspect ratio from the scaling law
+  # Circle = more isotropic rupture area along strike and dip directions
+  shape: Rectangle
 
-For Docker installation
+  # Number of stochastic slip distributions per rupture area
+  numb_stoch: 5
 
-	./antifasc
+  # Coupling limits in km
+  coupling_shallow_limit: 1.0
+  coupling_deep_limit: 55.0
 
-or:
+  # Rupture-area selection parameters.
+  # These values reduce the number of very similar rupture areas,
+  # especially at the largest magnitude bins.
+  minimum_bnd_distance: 0.1
+  minimum_interdistance: 0.2
+  Fact_area_scaling: 1.0
 
-	./antifasc notebook
+  # Variable rigidity workflow
+  # 0 = homogeneous rigidity only
+  # 1 = also compute variable-rigidity slip distributions
+  variable_mu: 1
 
-to access to the notebook
+  # 0 = use default rigidity model
+  # 1 = use a CSV file from config_files/Rigidity
+  Rigidity_file_logic: 0
 
-For manual installation
+  # Stress-drop variation flag
+  Stress_drop_var: 0
 
-	conda activate antifasc
-	cd bin
-	python antifasc_main.py
+  # Factor used by the default rigidity model
+  Fact_rigidity: 0.5
 
- The output on the screen will allow the user to follow the different steps of the running and that everything is working. Below some details.
+  # PTF-only parameters.
+  # They are ignored in Hazard mode but can be left in the file.
+  Magnitude_lb: 0.3
+  Magnitude_ub: 0.3
+  hypo_baryc_distance: 1.0
 
- The software reads the input files and let the user know that the selected mesh discretization (nodes and cells) has been found and will be used for the run
- 	
-  	reading input.json file
-	reading scaling_relationship.json file
-	../utils/sz_slabs/ITCF00G_mesh.json
-	Great! I really love to create mesh files from GeoJSON format
+  # Optional sub-boundary
+  # 0 = use the full inferred mesh boundary
+  # 1 = use a CSV boundary file from config_files/Mesh
+  mesh_sub_boundary: 0
+```
 
-	Files ../utils/sz_slabs/ITCF00G/subfaults/ITCF00G_mesh_nodes.dat and ../utils/sz_slabs/ITCF00G/subfaults/ITCF00G_mesh_faces.dat created successfully inside subfaults!
-This last message inform the author that from now on, the same mesh can be used setting `"mesh_gen":0,` in the `input.json` file, since the new mesh is now part of the `utils/sz_slabs` databese 
+---
 
- Subsequently, the software performs the barycenter selection according to the selected application. As you can see in the example, all the magnitude bins in `scaling_relationship.json` file are selected according to the application `Hazard`. The output on the screen confirms that the selected scaling law has been used
+## 2.2 Equivalent JSON input
 
-	Barycenter selection
-	Magnitude bin # 0 - Mw=5.5000
-	Magnitude bin # 1 - Mw=5.6000
-	Magnitude bin # 2 - Mw=5.7000
-	Magnitude bin # 3 - Mw=5.8000
-	Magnitude bin # 4 - Mw=5.9000
-	Magnitude bin # 5 - Mw=6.0000
-	Magnitude bin # 6 - Mw=6.1000
-	Magnitude bin # 7 - Mw=6.2000
-	Magnitude bin # 8 - Mw=6.3000
-	Magnitude bin # 9 - Mw=6.4000
-	Magnitude bin # 10 - Mw=6.5000
-	Magnitude bin # 11 - Mw=6.6000
-	Magnitude bin # 12 - Mw=6.7000
-	Magnitude bin # 13 - Mw=6.8000
-	Magnitude bin # 14 - Mw=6.9000
-	Magnitude bin # 15 - Mw=7.0000
-	Magnitude bin # 16 - Mw=7.1000
-	Magnitude bin # 17 - Mw=7.2000
-	Magnitude bin # 18 - Mw=7.3000
-	Magnitude bin # 19 - Mw=7.4000
-	Magnitude bin # 20 - Mw=7.5000
-	Mw: [5.5 5.6 5.7 5.8 5.9 6.  6.1 6.2 6.3 6.4 6.5 6.6 6.7 6.8 6.9 7.  7.1 7.2
-	 7.3 7.4 7.5]
-	Scaling names: ['WellsCopp1994_Normal']
+The same configuration can also be provided directly as JSON in:
 
-After that, the rupture areas computation is performed (a waiting bar informs the user about the advancement), for each bin of magnitude and for the selected scaling law. For each of these classes, the output on the screen indicates how many rupture areas have been computed. Finally the rupture areas are written in temporary output files that will be then  used as input for the slip distribution computation
-	
-	Computing Rupturing areas: 100%|████████████████████████████████████████████████████████| 21/21 [00:01<00:00, 11.74it/s]
-	Mw=5.5, Name scaling: WellsCopp1994_Normal, N=743, N_all=743
-	Mw=5.6, Name scaling: WellsCopp1994_Normal, N=743, N_all=743
-	Mw=5.7, Name scaling: WellsCopp1994_Normal, N=743, N_all=743
-	Mw=5.8, Name scaling: WellsCopp1994_Normal, N=743, N_all=743
-	Mw=5.9, Name scaling: WellsCopp1994_Normal, N=743, N_all=743
-	Mw=6.0, Name scaling: WellsCopp1994_Normal, N=737, N_all=737
-	Mw=6.1, Name scaling: WellsCopp1994_Normal, N=737, N_all=737
-	Mw=6.2, Name scaling: WellsCopp1994_Normal, N=735, N_all=735
-	Mw=6.3, Name scaling: WellsCopp1994_Normal, N=735, N_all=735
-	Mw=6.4, Name scaling: WellsCopp1994_Normal, N=312, N_all=312
-	Mw=6.5, Name scaling: WellsCopp1994_Normal, N=312, N_all=312
-	Mw=6.6, Name scaling: WellsCopp1994_Normal, N=199, N_all=199
-	Mw=6.7, Name scaling: WellsCopp1994_Normal, N=149, N_all=149
-	Mw=6.8, Name scaling: WellsCopp1994_Normal, N=128, N_all=128
-	Mw=6.9, Name scaling: WellsCopp1994_Normal, N=100, N_all=100
-	Mw=7.0, Name scaling: WellsCopp1994_Normal, N=82, N_all=82
-	Mw=7.1, Name scaling: WellsCopp1994_Normal, N=69, N_all=69
-	Mw=7.2, Name scaling: WellsCopp1994_Normal, N=54, N_all=54
-	Mw=7.3, Name scaling: WellsCopp1994_Normal, N=44, N_all=44
-	Mw=7.4, Name scaling: WellsCopp1994_Normal, N=37, N_all=37
-	Mw=7.5, Name scaling: WellsCopp1994_Normal, N=32, N_all=32
-	Writing Output
-	Magnitude bin # 0 - Mw=5.5000
-	Magnitude bin # 1 - Mw=5.6000
-	Magnitude bin # 2 - Mw=5.7000
-	Magnitude bin # 3 - Mw=5.8000
-	Magnitude bin # 4 - Mw=5.9000
-	Magnitude bin # 5 - Mw=6.0000
-	Magnitude bin # 6 - Mw=6.1000
-	Magnitude bin # 7 - Mw=6.2000
-	Magnitude bin # 8 - Mw=6.3000
-	Magnitude bin # 9 - Mw=6.4000
-	Magnitude bin # 10 - Mw=6.5000
-	Magnitude bin # 11 - Mw=6.6000
-	Magnitude bin # 12 - Mw=6.7000
-	Magnitude bin # 13 - Mw=6.8000
-	Magnitude bin # 14 - Mw=6.9000
-	Magnitude bin # 15 - Mw=7.0000
-	Magnitude bin # 16 - Mw=7.1000
-	Magnitude bin # 17 - Mw=7.2000
-	Magnitude bin # 18 - Mw=7.3000
-	Magnitude bin # 19 - Mw=7.4000
-	Magnitude bin # 20 - Mw=7.5000
+```text
+config_files/Parameters/input_Sicily.json
+```
 
- The slip distributions is then finally computed and the screen standard output lets the user know within each class the software is working. The last line informs the user about the overall running time
+In the current workflow, the scaling laws and magnitude bins are defined directly inside the `Scaling` block of the main input file. A separate `scaling_relationship.json` file is no longer required for the standard workflow.
 
- 	Computing slip distributions for the homogeneous and variable rigidity cases
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/homogeneous_mu/5_5000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is        3715
-	 scenario #          250
-	 scenario #          500
-	 scenario #          750
-	 scenario #         1000
-	 scenario #         1250
-	 scenario #         1500
-	 scenario #         1750
-	 scenario #         2000
-	 scenario #         2250
-	 scenario #         2500
-	 scenario #         2750
-	 scenario #         3000
-	 scenario #         3250
-	 scenario #         3500
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/homogeneous_mu/5_6000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is        3715
-	 scenario #          250
-	 scenario #          500
-	 scenario #          750
-	 scenario #         1000
-	 scenario #         1250
-	 scenario #         1500
-	 scenario #         1750
-	 scenario #         2000
-	 scenario #         2250
-	 scenario #         2500
-	 scenario #         2750
-	 scenario #         3000
-	 scenario #         3250
-	 scenario #         3500
-	 /home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/homogeneous_mu/5_7000/WellsCopp1994_Normal
-	..........................................................................................ù
-	 scenario #          250
-	 scenario #          500
-	 scenario #          750
-	 scenario #         1000
-	 scenario #         1250
-	 scenario #         1500
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/6_6000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         995
-	 scenario #          250
-	 scenario #          500
-	 scenario #          750
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/6_7000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         745
-	 scenario #          250
-	 scenario #          500
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/6_8000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         640
-	 scenario #          250
-	 scenario #          500
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/6_9000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         500
-	 scenario #          250
-	 scenario #          500
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_0000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         410
-	 scenario #          250
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_1000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         345
-	 scenario #          250
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_2000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         270
-	 scenario #          250
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_3000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         220
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_4000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         185
-	/home/scala/pyANTI-FASc/ITCF00G_Hazard_slip_ITC/variable_mu/7_5000/WellsCopp1994_Normal
-	 starting ...
-	 Number of scenarios is         160
-	316.18324065208435
- It is worth to highlight that the number of scenarios, that is the number of slip distributions is always 5 times the number of selected areas as set in the `input.json` configuration file.
+A minimal JSON version of the same configuration is:
 
- When the process is over, The output will be finally organized as shown in the following tree:
+```json
+{
+  "mesh_gen": 1,
+  "zone_name": "ITCF00G",
+  "acronym": "ITC",
+  "Merc_zone": 33,
+  "rake": -90.0,
 
- 	output/ITCF00G_Hazard_slip_ITC/
-	├── homogeneous_mu
-	│   ├── 5_5000
-	│   │   └── WellsCopp1994_Normal
-	│   │       ├── output_file.log
-	│   │       ├── Slip4HySea00001_000.dat
-	│   │       ├── Slip4HySea00002_000.dat
-	│   │       ├── Slip4HySea00003_000.dat
-	│   │       ├── Slip4HySea00004_000.dat
-	│   │       ├── Slip4HySea00005_000.dat
-	│   │       ├── Slip4HySea00006_000.dat
-	│   │       ├── Slip4HySea00007_000.dat
-	│   │       ├── Slip4HySea00008_000.dat
-	│   │       ├── Slip4HySea00009_000.dat
-	│   │       ├── Slip4HySea00010_000.dat
-	│   │       ├── Slip4HySea00011_000.dat
-	│   │       ├── Slip4HySea00012_000.dat
-	│   │       ├── Slip4HySea00013_000.dat
-	│   │       ├── Slip4HySea00014_000.dat
-	│   │       ├── Slip4HySea00015_000.dat
-	│   │       ├── Slip4HySea00016_000.dat
-	│   │       ├── Slip4HySea00017_000.dat
-	│   │       ├── Slip4HySea00018_000.dat
-	│   │       ├── Slip4HySea00019_000.dat
-	│   │       ├── Slip4HySea00020_000.dat
-	│   │       ├── Slip4HySea00021_000.dat
-	│   │       ├── Slip4HySea00022_000.dat
-	│   │       ├── Slip4HySea00023_000.dat
-	│   │       ├── Slip4HySea00024_000.dat
-	│   │       ├── Slip4HySea00025_000.dat
-	│   │       ├── Slip4HySea00026_000.dat
-	│   │       ├── Slip4HySea00027_000.dat
-	│   │       ├── Slip4HySea00028_000.dat
-	│   │       ├── Slip4HySea00029_000.dat
-	│   │       ├── Slip4HySea00030_000.dat
-	│   │       ├── Slip4HySea00031_000.dat
-	.............................................
-	    └── 7_5000
-	        └── WellsCopp1994_Normal
-	            ├── output_file.log
-	            ├── Slip4HySea00005_001.dat
-	            ├── Slip4HySea00005_001.json
-	            ├── Slip4HySea00005_002.dat
-	            ├── Slip4HySea00005_002.json
-	            ├── Slip4HySea00005_003.dat
-	            ├── Slip4HySea00005_003.json
-	            ├── Slip4HySea00005_004.dat
-	            ├── Slip4HySea00005_004.json
-	            ├── Slip4HySea00005_005.dat
-	            ├── Slip4HySea00005_005.json
-	            ├── Slip4HySea00007_001.dat
-	            ├── Slip4HySea00007_001.json
-	            ├── Slip4HySea00007_002.dat
-	            ├── Slip4HySea00007_002.json
-	            ├── Slip4HySea00007_003.dat
-	            ├── Slip4HySea00007_003.json
-	            ├── Slip4HySea00007_004.dat
-	            ├── Slip4HySea00007_004.json
-	            ├── Slip4HySea00007_005.dat
-	            ├── Slip4HySea00007_005.json
-	            ├── Slip4HySea00011_001.dat
-	            ├── Slip4HySea00011_001.json
-	            ├── Slip4HySea00011_002.dat
-	            ├── Slip4HySea00011_002.json
-	            ├── Slip4HySea00011_003.dat
-	            ├── Slip4HySea00011_003.json	
-	
-For smaller magnitudes not enough cells are defined to build stochastic slip distributions and homogeneous (or modulated by rigidity) slip distributions are computed with file names `Slip4HySeaXXXXX_000.dat`. Those files are in the standard format used as input by the software [Tsunami-HySea](https://edanya.uma.es/hysea/) which is one of the most widely used tsunami simulators within the community. For larger magnitude also GeoJSON files are computed and the second index indicated the numbering of stochastic distributions for each rupture area. Here below an example for one of the `Slip4HySeaXXXXX_00Y.dat` file
+  "Scaling": {
+    "laws": [
+      "WC1994_normal"
+    ],
+    "magnitude_bins": {
+      "mode": "range",
+      "min": 5.5,
+      "max": 7.5,
+      "step": 0.1
+    }
+  },
 
-	  LON1     LAT1    DEPTH1(km)      LON2    LAT2    DEPTH2(km)      LON3    LAT3    DEPTH3(km)      RAKE    SLIP(m)
-	   12.869199   38.554981    8.857142   12.812249   38.546745    8.857142   12.850728   38.512363   11.142860  -90.000000    9.104819
-	   12.812249   38.546745    8.857142   12.869199   38.554981    8.857142   12.807246   38.586212    6.571429  -90.000000    8.936686
-	   12.812249   38.546745    8.857142   12.794422   38.503761   11.142860   12.850728   38.512363   11.142860  -90.000000    9.739596
-	   12.907272   38.519966   11.142860   12.869199   38.554981    8.857142   12.850728   38.512363   11.142860  -90.000000    7.123791
-	   12.869199   38.554981    8.857142   12.863686   38.594292    6.571429   12.807246   38.586212    6.571429  -90.000000    8.475728
-	   12.750983   38.577427    6.571429   12.812249   38.546745    8.857142   12.807246   38.586212    6.571429  -90.000000    9.024770
-	   12.794422   38.503761   11.142860   12.812249   38.546745    8.857142   12.755468   38.537846    8.857142  -90.000000   10.431090
-	   12.794422   38.503761   11.142860   12.855949   38.472931   13.428571   12.850728   38.512363   11.142860  -90.000000    8.040796
-	   12.869199   38.554981    8.857142   12.907272   38.519966   11.142860   12.926314   38.562519    8.857142  -90.000000    6.726944
-	   12.913015   38.480690   13.428571   12.907272   38.519966   11.142860   12.850728   38.512363   11.142860  -90.000000    4.930675
-	   12.863686   38.594292    6.571429   12.869199   38.554981    8.857142   12.926314   38.562519    8.857142  -90.000000    7.812915
-	   12.863686   38.594292    6.571429   12.825430   38.629196    4.285714   12.807246   38.586212    6.571429  -90.000000    8.009076
-	   12.812249   38.546745    8.857142   12.750983   38.577427    6.571429   12.755468   38.537846    8.857142  -90.000000    9.790553
-	   12.768585   38.620533    4.285714   12.750983   38.577427    6.571429   12.807246   38.586212    6.571429  -90.000000    9.096627
-	   12.794422   38.503761   11.142860   12.755468   38.537846    8.857142   12.738218   38.494797   11.142860  -90.000000    9.190249
-	   12.794422   38.503761   11.142860   12.799115   38.464211   13.428571   12.855949   38.472931   13.428571  -90.000000    7.712521
-	   12.855949   38.472931   13.428571   12.913015   38.480690   13.428571   12.850728   38.512363   11.142860  -90.000000    4.808530
-	   12.907272   38.519966   11.142860   12.963851   38.527435   11.142860   12.926314   38.562519    8.857142  -90.000000    5.194019
-	   12.907272   38.519966   11.142860   12.913015   38.480690   13.428571   12.970135   38.488228   13.428571  -90.000000    3.787161
-	   12.863686   38.594292    6.571429   12.926314   38.562519    8.857142   12.920271   38.601757    6.571429  -90.000000    6.774910
-	   12.825430   38.629196    4.285714   12.863686   38.594292    6.571429   12.882524   38.636814    4.285714  -90.000000    7.181717
-	   12.825430   38.629196    4.285714   12.768585   38.620533    4.285714   12.807246   38.586212    6.571429  -90.000000    8.382802
-	   12.755468   38.537846    8.857142   12.750983   38.577427    6.571429   12.694775   38.568462    6.571429  -90.000000   10.362476
-   .........................................................................................................................................
+  "application": "Hazard",
 
-## Post-process
+  "Event": {
+    "Name": "Sicily_test",
+    "Hypo_LonLat": [
+      12.8,
+      38.5
+    ],
+    "Magnitude": 7.0
+  },
 
- The slip distributions can be easily plotted by simple personal scripts. The GeoJSON files can be uploaded to Qgis (see Figure 2) or to whatever webservice using the GeoJSON standard (e.g. [kepler.gl/](https://kepler.gl/)) 
+  "Configure": {
+    "shape": "Rectangle",
+    "numb_stoch": 5,
+    "coupling_shallow_limit": 1.0,
+    "coupling_deep_limit": 55.0,
+    "minimum_bnd_distance": 0.1,
+    "minimum_interdistance": 0.2,
+    "Fact_area_scaling": 1.0,
+    "variable_mu": 1,
+    "Rigidity_file_logic": 0,
+    "Stress_drop_var": 0,
+    "Fact_rigidity": 0.5,
+    "Magnitude_lb": 0.3,
+    "Magnitude_ub": 0.3,
+    "hypo_baryc_distance": 1.0,
+    "mesh_sub_boundary": 0
+  }
+}
+```
+
+---
+
+## 2.3 Notebook configuration
+
+The same input can be configured interactively using:
+
+```text
+bin/antifasc_main_Ex2.ipynb
+```
+
+The notebook widget lets the user select:
+
+- mesh source;
+- scaling laws;
+- magnitude binning;
+- application mode;
+- ensemble parameters;
+- optional rigidity and sub-boundary files.
+
+For this example, the application is **Hazard**, so the event-related and PTF-only options are not used. The notebook can still show additional widgets to inspect intermediate steps, such as:
+
+- barycenter selection;
+- rupture-area definition;
+- slip-distribution plotting.
+
+These checks are useful for understanding and validating the workflow.
+
+---
+
+# 3 — Run pyANTI-FASc
+
+Once the input file is ready, the run can be launched from the repository root.
+
+## Docker CLI run
+
+Using the default input:
+
+```bash
+./antifasc
+```
+
+This uses:
+
+```text
+config_files/Parameters/input.json
+```
+
+Using a YAML input:
+
+```bash
+./antifasc --input input_Sicily.yaml
+```
+
+This searches for:
+
+```text
+config_files/Parameters/input_Sicily.yaml
+```
+
+converts it to:
+
+```text
+config_files/Parameters/input_Sicily.json
+```
+
+and then runs the code.
+
+Using a custom JSON input:
+
+```bash
+./antifasc --input input_Sicily.json
+```
+
+This searches for:
+
+```text
+config_files/Parameters/input_Sicily.json
+```
+
+**Look at [README.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) to see how to run the same pipeline on Windows PowerShell.**
+
+## Docker notebook run
+
+```bash
+./antifasc notebook
+```
+
+Then open the JupyterLab URL printed in the terminal and run:
+
+```text
+bin/antifasc_main_Ex2.ipynb
+```
+**Look at [README.md](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) to see how to run the same pipeline on Windows PowerShell.**
+
+## Manual installation
+
+If running without Docker:
+
+```bash
+conda activate antifasc
+cd bin
+python antifasc_main.py
+```
+
+or with a custom input:
+
+```bash
+python antifasc_main.py --input input_Sicily.yaml
+```
+
+
+---
+
+# 4 — Expected screen output
+
+During the run, pyANTI-FASc prints the main processing steps.
+
+First, the input file and scaling laws are read. Since this example starts from a GeoJSON mesh, the first run also creates the corresponding nodes and faces files:
+
+```text
+reading input.json file
+reading scaling laws from input.json
+../utils/sz_slabs/ITCF00G_mesh.geojson
+Great! I really love to create mesh files from GeoJSON format
+
+Files ../utils/sz_slabs/ITCF00G/subfaults/ITCF00G_mesh_nodes.dat and ../utils/sz_slabs/ITCF00G/subfaults/ITCF00G_mesh_faces.dat created successfully inside subfaults!
+reading mesh
+```
+
+This means that from now on the same mesh can also be reused with:
+
+```text
+mesh_gen: 0
+```
+
+because the mesh is now available in the `utils/sz_slabs` database.
+
+Then the barycenters are selected. Since this is a Hazard example, all selected magnitude bins are used:
+
+```text
+Barycenter selection
+Magnitude bin # 0 - Mw=5.5000
+Magnitude bin # 1 - Mw=5.6000
+Magnitude bin # 2 - Mw=5.7000
+...
+Magnitude bin # 20 - Mw=7.5000
+Mw: [5.5 5.6 5.7 ... 7.5]
+Scaling names: ['WC1994_normal']
+```
+
+After that, rupture areas are computed for each selected magnitude bin and scaling law:
+
+```text
+Computing Rupturing areas: 100%|████████████████████████████████| 21/21
+Mw=5.5, Name scaling: WC1994_normal, N=...
+Mw=5.6, Name scaling: WC1994_normal, N=...
+...
+Mw=7.5, Name scaling: WC1994_normal, N=...
+Writing Output
+```
+
+The code then writes the rupture-area inputs and computes the stochastic slip distributions:
+
+```text
+Computing slip distributions for the homogeneous and variable rigidity cases
+```
+
+If `variable_mu` is set to `1`, both homogeneous and variable-rigidity slip distributions are generated. If it is set to `0`, only the homogeneous case is computed.
+
+---
+
+# 5 — Output structure
+
+When the process is complete, the output is organized under:
+
+```text
+output/
+```
+
+For this example, the main output folder will have a name similar to:
+
+```text
+output/ITCF00G_Hazard_slip_ITC/
+```
+
+with a structure like:
+
+```text
+output/
+└── ITCF00G_Hazard_slip_ITC
+    ├── homogeneous_mu
+    │   ├── 5_5000
+    │   │   └── WC1994_normal
+    │   │       ├── output_file.log
+    │   │       ├── Slip4HySea00001_000.dat
+    │   │       ├── Slip4HySea00001_000.json
+    │   │       └── ...
+    │   └── ...
+    └── variable_mu
+        ├── 5_5000
+        │   └── WC1994_normal
+        │       ├── Slip4HySea00001_000.dat
+        │       ├── Slip4HySea00001_000.json
+        │       └── ...
+        └── ...
+```
+
+The number of generated slip distributions is controlled by:
+
+```text
+Configure.numb_stoch
+```
+
+For each rupture area, `numb_stoch` stochastic slip distributions are produced.
+
+For smaller magnitudes, when there are not enough cells to build fully stochastic slip distributions, homogeneous or rigidity-modulated slip distributions may be produced with file names such as:
+
+```text
+Slip4HySeaXXXXX_000.dat
+```
+
+For larger magnitudes, multiple stochastic distributions are produced for each rupture area, and the second index indicates the stochastic realization number:
+
+```text
+Slip4HySeaXXXXX_001.dat
+Slip4HySeaXXXXX_002.dat
+...
+```
+
+The run also produces corresponding GeoJSON/JSON files for the generated slip distributions. These files can be used directly for visualization.
+
+---
+
+# 6 — Slip file format
+
+The `Slip4HySea*.dat` files are written in the standard format used as input by [Tsunami-HySea](https://edanya.uma.es/hysea/), one of the most widely used tsunami simulators in the community.
+
+Each row describes one triangular subfault element and contains:
+
+```text
+LON1 LAT1 DEPTH1(km) LON2 LAT2 DEPTH2(km) LON3 LAT3 DEPTH3(km) RAKE SLIP(m)
+```
+
+Example:
+
+```text
+12.869199 38.554981 8.857142 12.812249 38.546745 8.857142 12.850728 38.512363 11.142860 -90.000000 9.104819
+12.812249 38.546745 8.857142 12.869199 38.554981 8.857142 12.807246 38.586212 6.571429 -90.000000 8.936686
+12.812249 38.546745 8.857142 12.794422 38.503761 11.142860 12.850728 38.512363 11.142860 -90.000000 9.739596
+```
+
+For each `Slip4HySea*.dat` file, a corresponding ***GeoJSON*** file containing the same distribution is also produced. It can be promptly used for visualization. See next section.
+
+---
+
+# 7 — Post-process
+
+The slip distributions can be plotted using personal scripts, GIS tools, or web services supporting GeoJSON.
+
+The GeoJSON files can be uploaded to QGIS, as shown in Figure 2, or to any web service using the GeoJSON standard, such as [kepler.gl](https://kepler.gl/).
 
 ![Screenshot of a slip distributions imported to QGis](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Image_qgis2.jpg)
-*Figure 2 - Screenshot of a slip distributions imported to QGis* 
- 
-Beyond that, in the folder [bin](https://github.com/antonioscalaunina/pyANTI-FASc/tree/main/bin) there is another Jupyter Notebook [interactive_slip_maps.ipynb](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/interactive_slip_maps.ipynb). 
- Within this Jupyter Notebook, the user might select all the slip distributions computed so far (and available in the output folder) and plot for each of them an interactive slip map (either from the GeoJSON files or creating HTML maps) as shown in the Figure 3 
- ![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN_Sicily.png)
- *Figure 3 - Screenshot showing the working of the interactive slip plotter Jupyter Notebook*
-	
 
-As above mentioned this example can be run, in the Docker version, also through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb).
-   
+*Figure 2 — Screenshot of a slip distribution imported into QGIS.*
 
+An interactive notebook is available at:
 
+```text
+bin/interactive_slip_maps.ipynb
+```
 
+It allows the user to:
 
-Within the selected folder, for each `Slip4Hysea*.dat` file, a new file will be produced that is an interactive maps in HTML format (example [here](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00136_005.html)). 
+- select one of the output folders;
+- visualize slip and rake maps from the GeoJSON files;
+- optionally generate and export interactive HTML maps.
 
-As already outlined in the [README](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/README.md) and at the beginning of this `.md` guide, this example can be run,in the Docker version, also through the Jupyter Notebook available [here](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/bin/antifasc_main_Ex2.ipynb). 
+![screenshot](https://github.com/antonioscalaunina/pyANTI-FASc/blob/main/utils/sz_slabs/Screenshot_interactive_plot_JN_Sicily.png)
+
+*Figure 3 — Screenshot showing the interactive slip plotter Jupyter Notebook.*
+
+Within the selected folder, for each `Slip4HySea*.dat` file, the notebook can also generate an interactive HTML map, such as this [example](https://antonioscalaunina.github.io/pyANTI-FASc/utils/Slip4HySea00136_005.html).
