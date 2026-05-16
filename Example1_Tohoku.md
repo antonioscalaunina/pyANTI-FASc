@@ -153,7 +153,7 @@ Configure:
 
   # Rupture-area selection parameters
   minimum_bnd_distance: 0.25
-  minimum_interdistance: 0.1
+  minimum_interdistance: 0.2
   Fact_area_scaling: 1.0
 
   # Variable rigidity workflow
