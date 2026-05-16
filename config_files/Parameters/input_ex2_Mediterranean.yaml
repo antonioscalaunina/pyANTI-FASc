@@ -23,7 +23,7 @@
 #   0 = use existing mesh from utils/sz_slabs/<zone_name>/subfaults
 #   1 = generate mesh from existing utils/sz_slabs/<zone_name>_mesh.geojson
 #   2 = generate a rectangular fault from the parameters below
-mesh_gen: 0
+mesh_gen: 1
 
 # Name of the slab or fault zone.
 #
@@ -37,20 +37,20 @@ mesh_gen: 0
 #
 # mesh_gen = 2:
 #   zone_name is used as the name of the newly generated fault.
-zone_name: kurilsjapan
+zone_name: ITCF00G
 
 # Short acronym used internally for mesh and output filenames.
-acronym: KuJ
+acronym: ITC
 
 # Mercator / UTM projection zone.
 # In the notebook this can be inferred automatically, but in CLI
 # mode it should be explicitly defined.
-Merc_zone: 54
+Merc_zone: 33
 
 # Rake angle in degrees.
 # A single number is applied uniformly to all cells.
 # If omitted, the code falls back to rake = 90 degrees.
-rake: 90.0
+rake: -90.0
 
 
 # ------------------------------------------------------------
@@ -78,8 +78,7 @@ Scaling:
   # Names must match the keys defined in:
   #   bin/utils/scaling_laws.py
   laws:
-    - Strasser2010_interface
-    - Murotani2013
+    - WC1994_normal
 
   # Magnitude bins can be defined in two alternative ways.
   magnitude_bins:
@@ -92,8 +91,8 @@ Scaling:
     mode: range
 
     # Used when mode = range.
-    min: 8.8
-    max: 9.2
+    min: 5.5
+    max: 7.5
     step: 0.1
 
     # Used when mode = values.
@@ -115,7 +114,7 @@ Scaling:
 #   PTF
 #     Event-based Probabilistic Tsunami Forecasting.
 #     Requires the Event block below.
-application: PTF
+application: Hazard
 
 
 # ============================================================
@@ -126,16 +125,16 @@ application: PTF
 Event:
 
   # Event or scenario name used to build output folder names.
-  Name: Tohoku_test_yaml
+  Name: Sicily_test
 
   # Hypocenter coordinates as:
   #   [longitude, latitude]
   Hypo_LonLat:
-    - 142.369
-    - 38.322
+    - 12.8
+    - 38.5
 
   # Event magnitude used for PTF magnitude-bin selection.
-  Magnitude: 9.0
+  Magnitude: 7.0
 
 
 # ============================================================
@@ -156,7 +155,7 @@ Configure:
   shape: Rectangle
 
   # Number of stochastic slip distributions per rupture area.
-  numb_stoch: 2
+  numb_stoch: 5
 
   # Coupling limits in km.
   coupling_shallow_limit: 1.0
@@ -168,7 +167,7 @@ Configure:
   # ----------------------------------------------------------
 
   # Minimum distance from the boundary, scaled by rupture width.
-  minimum_bnd_distance: 0.25
+  minimum_bnd_distance: 0.1
 
   # Minimum interdistance between selected barycenters, scaled by rupture length.
   minimum_interdistance: 0.2
