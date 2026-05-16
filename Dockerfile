@@ -1,11 +1,13 @@
 # Base image con Miniconda
-FROM continuumio/miniconda3
+FROM anaconda/miniconda
 
 # Copia dei file di configurazione
 COPY ANTIFASc.yml /tmp/ANTIFASc.yml
 #COPY requirements.txt /tmp/requirements.txt
 
 # Creazione dell'ambiente Conda
+RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 RUN conda env create -f /tmp/ANTIFASc.yml
 RUN mkdir -p /tmp/matplotlib && chmod 777 /tmp/matplotlib
 ENV MPLCONFIGDIR=/tmp/matplotlib
@@ -29,7 +31,10 @@ COPY . /app
 WORKDIR /app
 
 # Copia dell'eseguibile Fortran
-RUN cp bin/k223d.x /opt/conda/envs/antifasc/bin/ && chmod +x /opt/conda/envs/antifasc/bin/k223d.x
+RUN mkdir -p "$CONDA_PREFIX/bin" && \
+    cp bin/k223d.x "$CONDA_PREFIX/bin/k223d.x" && \
+    chmod +x "$CONDA_PREFIX/bin/k223d.x"
+#RUN cp bin/k223d.x /opt/conda/envs/antifasc/bin/ && chmod +x /opt/conda/envs/antifasc/bin/k223d.x
 
 # Comando di avvio (da personalizzare)
 WORKDIR /app/bin
