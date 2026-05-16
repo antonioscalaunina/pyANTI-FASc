@@ -238,7 +238,7 @@ A minimal JSON version of the same configuration is:
     "coupling_shallow_limit": 1.0,
     "coupling_deep_limit": 55.0,
     "minimum_bnd_distance": 0.25,
-    "minimum_interdistance": 0.1,
+    "minimum_interdistance": 0.2,
     "Fact_area_scaling": 1.0,
     "variable_mu": 1,
     "Rigidity_file_logic": 0,
