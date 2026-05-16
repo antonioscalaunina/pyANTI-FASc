@@ -203,8 +203,8 @@ Configure:
 
   # PTF-only parameters.
   # They are ignored in Hazard mode but can be left in the file.
-  Magnitude_lb: 0.3
-  Magnitude_ub: 0.3
+  Magnitude_lb: 0.1
+  Magnitude_ub: 0.1
   hypo_baryc_distance: 1.0
 
   # Optional sub-boundary
@@ -270,8 +270,8 @@ A minimal JSON version of the same configuration is:
     "Rigidity_file_logic": 0,
     "Stress_drop_var": 0,
     "Fact_rigidity": 0.5,
-    "Magnitude_lb": 0.3,
-    "Magnitude_ub": 0.3,
+    "Magnitude_lb": 0.1,
+    "Magnitude_ub": 0.1,
     "hypo_baryc_distance": 1.0,
     "mesh_sub_boundary": 0
   }
