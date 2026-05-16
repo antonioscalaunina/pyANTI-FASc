@@ -20,7 +20,7 @@ else {
     docker run --rm -it `
         -e MPLCONFIGDIR=/tmp/matplotlib `
         -v "${PWD}:/app" `
-	-w /app/bin `
+	    -w /app/bin `
         pyantifasc `
         conda run --no-capture-output -n antifasc python antifasc_main.py $args
 }
