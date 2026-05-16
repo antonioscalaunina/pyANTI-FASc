@@ -17,6 +17,8 @@ These slip models can be used as initial conditions for tsunami simulations in:
 👉 Please cite the software as indicated on Zenodo:  
 https://doi.org/10.5281/zenodo.13614657
 
+*For the older version (for instance for a manual definition of Magnitude-size scaling, previous release must be used (until the version v1.4.0 [doi:10.5281/zenodo.19847270](https://doi.org/10.5281/zenodo.19847270))*
+
 ---
 ## 🐳 Install Docker
 
