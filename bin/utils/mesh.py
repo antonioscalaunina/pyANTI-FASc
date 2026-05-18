@@ -673,7 +673,9 @@ def assign_rigidity_from_file(depth, namefile):
     mu[depth < table_mu[0, 0]] = table_mu[0, 1]
     mu[depth > table_mu[-1, 0]] = table_mu[-1, 1]
 
-    return mu, mu_BL
+    mu_bal = None
+
+    return mu, mu_BL, mu_bal
 
 
 

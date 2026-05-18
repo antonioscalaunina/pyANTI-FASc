@@ -76,10 +76,21 @@ def compute_distance2fault2D(fault,stations,logic_sbnd,Merc,hemisphere='N'):
     #Adjust longitudes
     #fault[:,0][fault[:,0]>180]-=360  
 
-    fault_UTM=np.zeros_like(fault)
-    #fault_UTM[:,0],fault_UTM[:,1]=mesh.ll2xy(fault[:,1], fault[:,0], zone=Merc, hemisphere=hemisphere)
-    fault_UTM[:,0],fault_UTM[:,1]=mesh.from_latlon(fault[:,1], fault[:,0], zone=Merc)
-    fault_UTM[:,2]=fault[:,2]
+    # Patch for new boundary from widgets
+    fault_UTM = np.zeros((fault.shape[0], 3))
+
+    fault_UTM[:, 0], fault_UTM[:, 1] = mesh.from_latlon(
+        fault[:, 1],
+        fault[:, 0],
+        zone=Merc
+    )
+    
+    if fault.shape[1] >= 3:
+        fault_UTM[:, 2] = fault[:, 2]
+    else:
+        fault_UTM[:, 2] = 0.0
+    # END OF THE PATCH
+    
     stations_UTM=np.zeros_like(stations)
     #stations_UTM[:,0],stations_UTM[:,1]=mesh.ll2xy(stations[:,1], stations[:,0], zone=Merc, hemisphere=hemisphere)
     stations_UTM[:,0],stations_UTM[:,1]=mesh.from_latlon(stations[:,1], stations[:,0], zone=Merc)

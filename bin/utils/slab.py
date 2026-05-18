@@ -1155,7 +1155,7 @@ def read_mesh(Slab):
                 mu_all, mu_BL, mu_bal = mesh.assign_rigidity(-1e-3 * barycenters_all[:, 2], Slab.Fact_rigidity, exponent)
                 
             else:
-                mu_all, mu_BL = mesh.assign_rigidity_from_file(-1e-3 * barycenters_all[:, 2], Slab.Rigidity_file)
+                mu_all, mu_BL,_ = mesh.assign_rigidity_from_file(-1e-3 * barycenters_all[:, 2], Slab.Rigidity_file)
                 
             fact_mu_z[j, :] = mu_all / mu_BL
     else:
