@@ -824,7 +824,7 @@ def from_latlon(lat, lon, zone):
             x[lat > 0], y[lat > 0], _, _ = utm.from_latlon(lat[lat > 0], lon[lat > 0], force_zone_number=zone)
 
         # Negative sign latitudes
-        if len(lat[lat > 0])<0:
+        if len(lat[lat < 0])>0:
             x[lat < 0], y1, _, _ = utm.from_latlon(lat[lat < 0], lon[lat < 0], force_zone_number=zone)
             y[lat < 0] = y1 - 10000000  # Convert to Northern Hemisphere coordinates
 
