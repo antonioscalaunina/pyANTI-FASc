@@ -20,6 +20,14 @@ Create the `antifasc` environment from the provided environment file:
 micromamba env create -f ANTIFASc.yml
 ```
 
+Copy the `k223d.x` executable into the `antifasc` environment:
+
+```bash
+ENVPATH=$(micromamba run -n antifasc python -c "import sys; print(sys.prefix)")
+cp bin/k223d.x "$ENVPATH/bin/k223d.x"
+chmod +x "$ENVPATH/bin/k223d.x"
+```
+
 
 ## 3. Register the Jupyter kernel
 
