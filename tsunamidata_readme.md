@@ -59,6 +59,8 @@ If `Python (pyANTI-FASc)` is available, you can run the notebook.
 
 The code can also be launched directly from the terminal.
 
+Enter in the Console Python (pyANTI-FASc)
+
 From the repository `bin` folder:
 
 ```bash
