@@ -55,7 +55,7 @@ Kernel → Change Kernel → Python (pyANTI-FASc)
 
 If `Python (pyANTI-FASc)` is available, you can run the notebook.
 
-## 5. Run pyANTI-FASc from the terminal
+### 4.1 Run pyANTI-FASc from the terminal
 
 The code can also be launched directly from the terminal.
 
@@ -65,7 +65,7 @@ From the repository `bin` folder:
 cd pyANTI-FASc/bin
 ```
 
-run:
+run the following command:
 
 ```bash
 micromamba run -n antifasc python antifasc_main.py --input input.json
@@ -79,7 +79,7 @@ config_files/Parameters/input.json
 config_files/Parameters/input.yaml
 ```
 
-## 6. Visualize outputs
+## 5. Visualize outputs
 
 Outputs are written in:
 
@@ -101,7 +101,7 @@ Kernel → Change Kernel → Python (pyANTI-FASc)
 
 Use the notebook widgets to choose the output folder, magnitude, scaling law, background map and slip realization.
 
-## 7. Download outputs
+## 6. Download outputs
 
 In the final section of the interactive notebook `interactive_slip_maps.ipynb`, you can select an output folder and create a `.tar.gz` archive.
 
@@ -118,7 +118,7 @@ To download it:
 3. Right-click the `.tar.gz` file.
 4. Select **Download**.
 
-## 8. Clean outputs from the platform
+## 7. Clean outputs from the platform
 
 After checking that the archive has been downloaded, the user can utilize the cleanup button in the notebook.
 
