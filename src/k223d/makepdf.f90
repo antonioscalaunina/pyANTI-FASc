@@ -127,6 +127,10 @@ subroutine pdftoslip(pdf,amesh,moment,sd,mu,na,rmin,rmax,sct,logic_scenario)
   write(*,*) "width and rmax :",width,rmax
   rmin=dx*rmin
   print*, "rmin=", rmin
+  if (rmin>=rmax) then
+          rmax=2*rmin
+          write(*,*) "width and new rmax :",width,rmax
+  endif
 ! fractal parameter
   p=2.*7./16.*moment/sd/(rmax-rmin)
 ! memory allocation

@@ -119,7 +119,7 @@ def plot_slip_map(Param,geojson_file, map_file, hypo=[0,0]):
     cmap.add_to(m)
 
     # Aggiungi ipocentro
-    if Param['Configure']['application'] == 'PTF':
+    if Param['application'] == 'PTF':
          folium.Marker(
                 location=[hypo[1], hypo[0]],
                 popup="Epicenter",
@@ -268,7 +268,7 @@ def generate_slip_maps(folder, Param):
         return
 
     hypo = None
-    if Param["Configure"]["application"] == "PTF":
+    if Param["application"] == "PTF":
         hypo = Param["Event"]["Hypo_LonLat"]
 
     for i, file in enumerate(file_arr):
