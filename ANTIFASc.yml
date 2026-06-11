@@ -56,7 +56,7 @@ dependencies:
       - pyproj==3.7.2
       - pyshp==2.3.1
       - python-dateutil==2.9.0.post0
-      - pyvista==0.47.3
+      - pyvista[jupyter]==0.47.3
       - pyyaml==6.0.3
       - pyvista==0.47.3
       - requests==2.33.1
