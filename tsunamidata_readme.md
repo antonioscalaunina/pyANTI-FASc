@@ -39,6 +39,13 @@ micromamba run -n antifasc python -m ipykernel install --user --name antifasc --
 
 Then reload JupyterLab.
 
+**WARNING**  
+
+*The kernel registration command may need to be run again at the beginning of a new platform session, depending on how the Jupyter container is initialized* 
+
+*Before running the notebooks, check that `Python (pyANTI-FASc)` is available among the Jupyter kernels. If it is not listed, open a terminal and run the kernel registration command above*
+.
+
 ## 4. Open the main notebook
 
 Open the following notebook in JupyterLab:
