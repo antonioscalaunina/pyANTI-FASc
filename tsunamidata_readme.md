@@ -62,14 +62,38 @@ Kernel → Change Kernel → Python (pyANTI-FASc)
 
 If `Python (pyANTI-FASc)` is available, you can run the notebook.
 
-### 4.1 Run pyANTI-FASc from the terminal
+### 4.1 Run pyANTI-FASc from the console
 
-The code can also be launched directly from the terminal.
+The code can also be launched from the console.
 
-Within the repository `bin` folder, run the following command:
+Within the repository `pyANTI-FASc/bin` folder, open the console `Python (pyANTI-FASc)` and run the following command:
 
 ```bash
 micromamba run -n antifasc python antifasc_main.py --input input.json
+```
+
+The input file must be available in the configuration folder and can be either in JSON or YAML format.
+Please refer to the main documentation and examples for more details:
+
+```text
+config_files/Parameters/input.json
+config_files/Parameters/input.yaml
+```
+
+### 4.2 Run pyANTI-FASc from the terminal
+
+The code can also be launched directly from a terminal.
+
+open a terminal and run the following command to enter in the correct micromamba environment
+
+```bash
+micromamba activate antifasc
+```
+
+Within the repository `pyANTI-FASc/bin` folder: (type `cd pyANTI-FASc/bin`) run the following command:
+
+```bash
+python antifasc_main.py --input input.json
 ```
 
 The input file must be available in the configuration folder and can be either in JSON or YAML format.
