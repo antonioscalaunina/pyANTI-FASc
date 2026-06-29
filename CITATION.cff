@@ -1,0 +1,69 @@
+cff-version: 1.2.0
+message: "If you use pyANTI-FASc, please cite the software using the citation metadata below."
+type: software
+title: "pyANTI-FASc"
+version: "2.0.0"
+date-released: "2026-05-19"
+doi: "10.5281/zenodo.20287413"
+url: "https://github.com/antonioscalaunina/pyANTI-FASc"
+repository-code: "https://github.com/antonioscalaunina/pyANTI-FASc"
+license: "GPL-3.0-only"
+abstract: >-
+  pyANTI-FASc is a Python implementation of ANTI-FASc (Automatic Numerical
+  Tsunami Initial conditions: on-the-Fly rupture Areas and earthquake Scenarios)
+  for the fast generation of large ensembles of stochastic slip distributions on
+  complex non-planar fault geometries. The generated slip models can be used as
+  initial conditions for tsunami simulations in Probabilistic Tsunami Hazard
+  Assessment (PTHA) and real-time Probabilistic Tsunami Forecasting (PTF).
+keywords:
+  - tsunami
+  - earthquake scenarios
+  - stochastic slip distributions
+  - complex fault geometries
+  - non-planar fault geometries
+  - Probabilistic Tsunami Hazard Assessment
+  - PTHA
+  - Probabilistic Tsunami Forecasting
+  - PTF
+  - Python
+  - Docker
+authors:
+  - family-names: "Scala"
+    given-names: "Antonio"
+    affiliation: "Istituto Nazionale di Geofisica e Vulcanologia (INGV) - Sezione Osservatorio Vesuviano"
+  - family-names: "Mojica"
+    given-names: "Manuel"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.13614657"
+    description: "Zenodo concept DOI for all versions of pyANTI-FASc"
+  - type: doi
+    value: "10.5281/zenodo.20287413"
+    description: "Zenodo DOI for pyANTI-FASc v2.0.0"
+references:
+  - type: article
+    authors:
+      - family-names: "Herrero"
+        given-names: "Andre"
+      - family-names: "Murphy"
+        given-names: "Samuel"
+    title: "Self-similar slip distributions on irregular shaped faults"
+    journal: "Geophysical Journal International"
+    year: 2018
+    doi: "10.1093/gji/ggy104"
+  - type: article
+    authors:
+      - family-names: "Basili"
+        given-names: "Roberto"
+    title: "The Making of the NEAM Tsunami Hazard Model 2018 (NEAMTHM18)"
+    journal: "Frontiers in Earth Science"
+    year: 2021
+    doi: "10.3389/feart.2020.616594"
+  - type: article
+    authors:
+      - family-names: "Scala"
+        given-names: "Antonio"
+    title: "Effect of Shallow Slip Amplification Uncertainty on Probabilistic Tsunami Hazard Analysis in Subduction Zones: Use of Long-Term Balanced Stochastic Slip Models"
+    journal: "Pure and Applied Geophysics"
+    year: 2020
+    doi: "10.1007/s00024-019-02260-x"

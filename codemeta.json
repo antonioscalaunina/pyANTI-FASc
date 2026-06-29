@@ -1,0 +1,75 @@
+{
+  "@context": "https://w3id.org/codemeta/3.0",
+  "@type": "SoftwareSourceCode",
+  "name": "pyANTI-FASc",
+  "description": "Python implementation of ANTI-FASc (Automatic Numerical Tsunami Initial conditions: on-the-Fly rupture Areas and earthquake Scenarios) for the fast generation of large ensembles of stochastic slip distributions on complex non-planar fault geometries. The generated slip models can be used as initial conditions for tsunami simulations in Probabilistic Tsunami Hazard Assessment (PTHA) and real-time Probabilistic Tsunami Forecasting (PTF).",
+  "abstract": "pyANTI-FASc generates ensembles of stochastic slip distributions on complex non-planar fault geometries for tsunami-related applications.",
+  "codeRepository": "https://github.com/antonioscalaunina/pyANTI-FASc",
+  "url": "https://github.com/antonioscalaunina/pyANTI-FASc",
+  "issueTracker": "https://github.com/antonioscalaunina/pyANTI-FASc/issues",
+  "version": "2.0.0",
+  "datePublished": "2026-05-19",
+  "license": "https://spdx.org/licenses/GPL-3.0-only.html",
+  "programmingLanguage": "Python",
+  "runtimePlatform": [
+    "Docker",
+    "Python"
+  ],
+  "applicationCategory": "Scientific software",
+  "softwareRequirements": [
+    "Docker",
+    "Python"
+  ],
+  "keywords": [
+    "tsunami",
+    "earthquake scenarios",
+    "stochastic slip distributions",
+    "fault geometry",
+    "complex non-planar fault geometries",
+    "Probabilistic Tsunami Hazard Assessment",
+    "PTHA",
+    "Probabilistic Tsunami Forecasting",
+    "PTF",
+    "Python",
+    "Docker"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Antonio",
+      "familyName": "Scala",
+      "affiliation": {
+        "@type": "Organization",
+        "name": "Istituto Nazionale di Geofisica e Vulcanologia (INGV) - Sezione Osservatorio Vesuviano II"
+      }
+    },
+    {
+      "@type": "Person",
+      "givenName": "Manuel",
+      "familyName": "Mojica"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Organization",
+      "name": "Geo-INQUIRE",
+      "roleName": "Sponsor",
+      "identifier": "https://doi.org/10.3030/101058518"
+    }
+  ],
+  "identifier": "https://doi.org/10.5281/zenodo.20287413",
+  "sameAs": [
+    "https://doi.org/10.5281/zenodo.13614657",
+    "https://doi.org/10.5281/zenodo.20287413"
+  ],
+  "citation": [
+    "https://doi.org/10.5281/zenodo.13614657",
+    "https://doi.org/10.5281/zenodo.20287413"
+  ],
+  "funding": "This software was supported by the EU through Horizon Europe Grant 101058518 (Geo-INQUIRE).",
+  "sponsor": {
+    "@type": "Organization",
+    "name": "Geo-INQUIRE",
+    "identifier": "https://doi.org/10.3030/101058518"
+  }
+}
